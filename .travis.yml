@@ -16,9 +16,7 @@ cache:
     - $HOME/.android/build-cache
 
 before_install:
-  - bash .travis-android-license-bugfix.sh
   - echo y | android update sdk --no-ui --all --filter sys-img-armeabi-v7a-android-27,sys-img-x86_64-android-27,build-tools-27.0.3
-  - yes | sdkmanager "platforms;android-27"
 
 android:
   components:

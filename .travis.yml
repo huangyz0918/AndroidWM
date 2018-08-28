@@ -1,0 +1,16 @@
+language: android
+jdk: oraclejdk8
+
+notifications:
+    email: false
+    
+android:
+  components:
+    - platform-tools
+    - tools
+    - build-tools-26.1.0
+    - android-26
+    - tools
+    - extra-android-m2repository
+
+script: ./gradlew checkstyle pmd

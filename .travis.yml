@@ -6,7 +6,7 @@ notifications:
     email: false
 
 before_install:
-    - yes | sdkmanager "platforms;android-28"
+    - yes | sudo sdkmanager --license
     
 android:
   components:

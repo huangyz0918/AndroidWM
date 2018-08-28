@@ -16,11 +16,27 @@
  */
 package com.watermark.androidwm;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
+
 /**
  * The main class for watermark processing library.
  *
  * @author huangyz0918 (huangyz0918@gmail.com)
  */
-public class WMManager {
+public class WaterMark {
+    private String inputText;
+    private Bitmap inputBitmap;
+    private Context context;
 
+    WaterMark(@NonNull Context context,
+              @NonNull Bitmap inputBitmap,
+              @NonNull String inputText) {
+
+        this.context = context;
+        this.inputBitmap = inputBitmap;
+        this.inputText = inputText;
+
+    }
 }

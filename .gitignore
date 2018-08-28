@@ -8,24 +8,4 @@
 /build
 /captures
 .externalNativeBuild
-<<<<<<< HEAD
-=======
 
-# Google Services (e.g. APIs or Firebase)
-google-services.json
-
-# Freeline
-freeline.py
-freeline/
-freeline_project_description.json
-
-# fastlane
-fastlane/report.xml
-fastlane/Preview.html
-fastlane/screenshots
-fastlane/test_output
-fastlane/readme.md
-
-# macOS
-.DS_Store
->>>>>>> 6252163e322aee991bd02fb3405dc948c6d3e021

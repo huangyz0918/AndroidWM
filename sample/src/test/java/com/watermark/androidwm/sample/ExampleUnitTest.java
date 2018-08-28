@@ -1,4 +1,4 @@
-package com.androidwm.watermark.androidwm;
+package com.watermark.androidwm.sample;
 
 import org.junit.Test;
 

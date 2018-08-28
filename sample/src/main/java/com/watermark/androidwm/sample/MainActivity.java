@@ -1,7 +1,8 @@
-package com.androidwm.watermark.androidwm;
+package com.watermark.androidwm.sample;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
 
 public class MainActivity extends AppCompatActivity {
 

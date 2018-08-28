@@ -1,4 +1,4 @@
-package com.androidwm.watermark.androidwm;
+package com.watermark.androidwm;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

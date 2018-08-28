@@ -14,7 +14,7 @@
  *   limitations under the License.
  *
  */
-package com.androidwm.watermark.androidwm.util;
+package com.watermark.androidwm.utils;
 
 import java.io.ByteArrayOutputStream;
 import java.security.Key;

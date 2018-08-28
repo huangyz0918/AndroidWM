@@ -14,7 +14,7 @@
  *   limitations under the License.
  *
  */
-package com.androidwm.watermark.androidwm;
+package com.watermark.androidwm;
 
 /**
  * The main class for watermark processing library.

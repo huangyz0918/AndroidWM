@@ -1,4 +1,60 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
+subprojects { project ->
+    apply plugin: 'checkstyle'
+    apply plugin: 'pmd'
+
+    checkstyle {
+        toolVersion = '6.12.1'
+    }
+
+    checkstyle {
+        configFile = rootProject.file('./config/checkstyle.xml')
+        configProperties.checkStyleConfigDir = rootProject.rootDir
+    }
+
+    task('checkstyle', type: Checkstyle) {
+        source 'src'
+        ignoreFailures false
+        showViolations true
+        include '**/*.java'
+        exclude '**/gen/**'
+
+        classpath = files()
+    }
+
+    afterEvaluate {
+        if (project.tasks.findByName('check')) {
+            check.dependsOn('checkstyle')
+        }
+    }
+
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << '-Xlint:unchecked' << '-Xlint:deprecation'
+        }
+    }
+
+    task pmd(type: Pmd) {
+        ignoreFailures = false
+        ruleSetFiles = files("${project.rootDir}/config/pmd-ruleset.xml")
+        ruleSets = []
+
+        source 'src'
+        include '**/*.java'
+        exclude '**/gen/**'
+
+        reports {
+            xml.enabled = false
+            html.enabled = true
+            xml {
+                destination "$project.buildDir/reports/pmd/pmd.xml"
+            }
+            html {
+                destination "$project.buildDir/reports/pmd/pmd.html"
+            }
+        }
+    }
+}
 
 buildscript {
     

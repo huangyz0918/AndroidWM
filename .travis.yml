@@ -12,5 +12,6 @@ android:
     - build-tools-27.0.3
     - android-27
     - extra-android-m2repository
+    - yes | sudo sdkmanager --licenses
 
 script: ./gradlew checkstyle pmd

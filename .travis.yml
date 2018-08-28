@@ -5,9 +5,6 @@ sudo: false
 notifications:
     email: false
     
-before_install:
-    - yes | sdkmanager --licenses
-    
 android:
   components:
     - platform-tools

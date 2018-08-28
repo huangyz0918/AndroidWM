@@ -5,6 +5,9 @@ sudo: false
 notifications:
     email: false
     
+before_install:
+    - yes | sdkmanager --licenses
+    
 android:
   components:
     - platform-tools
@@ -12,6 +15,5 @@ android:
     - build-tools-27.0.3
     - android-27
     - extra-android-m2repository
-    - yes | sudo sdkmanager --licenses
 
 script: ./gradlew checkstyle pmd

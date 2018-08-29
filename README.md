@@ -11,10 +11,10 @@ You can add a watermark image or watermark text into your background by adding `
 
 ```java
     WatermarkBuilder
-      .create(this, backgroundBitmap)
-      .loadWatermarkImage(watermarkBitmap)
-      .loadWatermarkText(watermarkText)
-      .getWatermark();
+            .create(this, backgroundBitmap)
+            .loadWatermarkImage(watermarkBitmap)
+            .loadWatermarkText(watermarkText)
+            .getWatermark();
 ```
 
 There are packaged `WatermarkImage` and `WatermarkText` classes for you, you can create a more flexible and more customized watermark by instantiating them and put them in the ImageView quickly:

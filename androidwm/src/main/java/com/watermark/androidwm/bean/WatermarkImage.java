@@ -10,7 +10,8 @@ import android.graphics.Bitmap;
  */
 public class WatermarkImage {
     private Bitmap image;
-    private WatermarkPosition position;
+    // set the default values for the position.
+    private WatermarkPosition position = new WatermarkPosition(0, 0, 0);
 
     public WatermarkImage(Bitmap image) {
         this.image = image;

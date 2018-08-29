@@ -26,9 +26,9 @@ package com.watermark.androidwm.bean;
  */
 public class WatermarkPosition {
 
-    private double positionX = 0; //default X position
-    private double positionY = 0; //default Y position
-    private double rotation = 0; //default rotation
+    private double positionX;
+    private double positionY;
+    private double rotation;
 
     public WatermarkPosition(double positionX, double positionY) {
         this.positionX = positionX;

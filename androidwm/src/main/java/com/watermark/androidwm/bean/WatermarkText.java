@@ -10,7 +10,8 @@ package com.watermark.androidwm.bean;
 public class WatermarkText {
 
     private String text;
-    private WatermarkPosition position;
+    // set the default values for the position.
+    private WatermarkPosition position = new WatermarkPosition(0, 0, 0);
 
     public WatermarkText(String text) {
         this.text = text;

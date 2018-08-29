@@ -59,11 +59,11 @@ public class MainActivity extends AppCompatActivity {
                 R.drawable.test_watermark);
 
         WatermarkImage watermarkImage = new WatermarkImage(watermarkBitmap)
+                .setPositionRotation(45)
                 .setPositionX(10.5)
                 .setPositionY(20.1)
-                .setPosition(new WatermarkPosition(10.5, 20.1))
-                .setPositionRotation(45);
-        
+                .setPosition(new WatermarkPosition(10.5, 20.1));
+
         WatermarkBuilder
                 .create(this, backgroundBitmap)
                 .loadWatermarkImage(watermarkBitmap)

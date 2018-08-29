@@ -62,6 +62,9 @@ public class MainActivity extends AppCompatActivity {
                 .setPositionRotation(45)
                 .setPositionX(10.5)
                 .setPositionY(20.1)
+                .setImageAlpha(5)
+                .setWatermarkEncrypted(true)
+                .setWatermarkVisibility(true)
                 .setPosition(new WatermarkPosition(10.5, 20.1));
 
         WatermarkBuilder

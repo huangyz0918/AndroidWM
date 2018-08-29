@@ -10,6 +10,9 @@ import android.graphics.Bitmap;
  */
 public class WatermarkImage {
     private Bitmap image;
+    private boolean isEncrypted = false;
+    private boolean isVisible = true;
+    private float alpha = 1;
     // set the default values for the position.
     private WatermarkPosition position = new WatermarkPosition(0, 0, 0);
 
@@ -24,6 +27,18 @@ public class WatermarkImage {
 
     public Bitmap getImage() {
         return image;
+    }
+
+    public boolean isEncrypted() {
+        return isEncrypted;
+    }
+
+    public boolean isVisible() {
+        return isVisible;
+    }
+
+    public float getAlpha() {
+        return alpha;
     }
 
     public WatermarkPosition getPosition() {
@@ -47,6 +62,21 @@ public class WatermarkImage {
 
     public WatermarkImage setPositionRotation(double rotation) {
         this.position.setPositionX(rotation);
+        return this;
+    }
+
+    public WatermarkImage setImageAlpha(float textAlpha) {
+        this.alpha = textAlpha;
+        return this;
+    }
+
+    public WatermarkImage setWatermarkVisibility(boolean isVisible) {
+        this.isVisible = isVisible;
+        return this;
+    }
+
+    public WatermarkImage setWatermarkEncrypted(boolean isEncrypted) {
+        this.isEncrypted = isEncrypted;
         return this;
     }
 

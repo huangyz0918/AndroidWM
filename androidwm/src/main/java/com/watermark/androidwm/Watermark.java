@@ -21,25 +21,37 @@ import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.watermark.androidwm.bean.WatermarkImage;
+import com.watermark.androidwm.bean.WatermarkPosition;
+import com.watermark.androidwm.bean.WatermarkText;
+
+import java.util.List;
+
 /**
  * The main class for watermark processing library.
  *
  * @author huangyz0918 (huangyz0918@gmail.com)
  */
 public class Watermark {
-    private String inputText;
-    private Bitmap watermarkImg;
+    private WatermarkText inputText;
+    private WatermarkImage watermarkImg;
     private Bitmap backgroundImg;
     private Context context;
+    private List<WatermarkImage> wmBitmapList;
+    private List<WatermarkText> wmTextList;
 
     Watermark(@NonNull Context context,
               @NonNull Bitmap backgroundImg,
-              @Nullable Bitmap watermarkImg,
-              @Nullable String inputText) {
+              @Nullable WatermarkImage watermarkImg,
+              @Nullable List<WatermarkImage> wmBitmapList,
+              @Nullable WatermarkText inputText,
+              @Nullable List<WatermarkText> wmTextList) {
 
         this.context = context;
         this.watermarkImg = watermarkImg;
+        this.wmBitmapList = wmBitmapList;
         this.backgroundImg = backgroundImg;
+        this.wmTextList = wmTextList;
         this.inputText = inputText;
     }
 
@@ -47,16 +59,41 @@ public class Watermark {
         return context;
     }
 
-    public String getInputText() {
+    public WatermarkText getInputText() {
         return inputText;
-    }
-
-    public Bitmap getwatermarkImg() {
-        return watermarkImg;
     }
 
     public Bitmap getBackgroundImg() {
         return backgroundImg;
     }
 
+    public WatermarkImage getWatermarkImg() {
+        return watermarkImg;
+    }
+
+    public List<WatermarkImage> getWmBitmapList() {
+        return wmBitmapList;
+    }
+
+    public List<WatermarkText> getWmTextList() {
+        return wmTextList;
+    }
+
+    /**
+     * set the position of a single image.
+     *
+     * @param position the position of image watermark.
+     */
+    public void setImagePosition(@NonNull WatermarkPosition position) {
+
+    }
+
+    /**
+     * set the position of a single text.
+     *
+     * @param position the position of text watermark.
+     */
+    public void setTextPosition(@NonNull WatermarkPosition position) {
+
+    }
 }

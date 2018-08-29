@@ -16,13 +16,16 @@
  */
 package com.watermark.androidwm.sample;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.bumptech.glide.Glide;
+//import com.bumptech.glide.Glide;
 import com.watermark.androidwm.WatermarkBuilder;
+import com.watermark.androidwm.bean.WatermarkPosition;
 
 /**
  * This is the sample for library: androidwm.
@@ -47,9 +50,15 @@ public class MainActivity extends AppCompatActivity {
         btnAddImg = findViewById(R.id.btn_add_image);
         btnAddText = findViewById(R.id.btn_add_text);
 
-        // init library
-//        Glide.with();
-//        WatermarkBuilder.getInstance()
+        // init library tests.
+        Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(),
+                R.drawable.test);
+        Bitmap watermark = BitmapFactory.decodeResource(this.getResources(),
+                R.drawable.test_watermark);
+        WatermarkBuilder.getInstance(this, bitmap)
+                .loadWatermarkImage(watermark, new WatermarkPosition(10, 10))
+                .getWatermark();
+
     }
 
     private void initEvents() {

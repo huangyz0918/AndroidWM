@@ -19,59 +19,39 @@ package com.watermark.androidwm;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+
+import com.watermark.androidwm.bean.WatermarkImage;
+import com.watermark.androidwm.bean.WatermarkPosition;
+import com.watermark.androidwm.bean.WatermarkText;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A builder class for setting default structural classes for watermark to use.
  *
  * @author huangyz0918 (huangyz0918@gmail.com)
  */
-public class WatermarkBuilder {
-    private Bitmap backgroundImg;
-    private String inputWatermarkText;
+public final class WatermarkBuilder {
     private Context context;
-    private Bitmap watermarkImg;
+    private Bitmap backgroundImg;
+    private WatermarkImage watermarkImage;
+    private WatermarkText watermarkText;
+    private List<WatermarkText> watermarkTexts = new ArrayList<>();
+    private List<WatermarkImage> watermarkBitmaps = new ArrayList<>();
+
+    private WatermarkBuilder(@NonNull Context context, @NonNull Bitmap backgroundImg) {
+        this.context = context;
+        this.backgroundImg = backgroundImg;
+    }
 
     /**
      * to get an instance form class.
      *
      * @return instance of WatermarkBuilder
      */
-    public static WatermarkBuilder getInstance() {
-        return new WatermarkBuilder();
-    }
-
-    /**
-     * Sets the {@link Context} application context
-     * as the args which ready for adding a watermark.
-     *
-     * @param context The context to use.
-     * @return This builder.
-     */
-    public WatermarkBuilder loadContext(@NonNull Context context) {
-        this.context = context;
-        return this;
-    }
-
-    /**
-     * Check if {@code context == null}, then return false.
-     *
-     * @return whether context is bull.
-     */
-    public boolean isNullContext() {
-        return (context == null);
-    }
-
-    /**
-     * Sets the {@link Bitmap} inputImage as the
-     * args which ready for adding a watermark.
-     *
-     * @param inputImage The image bitmap to use.
-     * @return This builder.
-     */
-    public WatermarkBuilder loadImage(@NonNull Bitmap inputImage) {
-        this.backgroundImg = inputImage;
-        return this;
+    public static WatermarkBuilder getInstance(Context context, Bitmap backgroundImg) {
+        return new WatermarkBuilder(context, backgroundImg);
     }
 
     /**
@@ -81,8 +61,22 @@ public class WatermarkBuilder {
      * @param inputText The text to add.
      * @return This builder.
      */
-    public WatermarkBuilder loadWatermarkText(@Nullable String inputText) {
-        this.inputWatermarkText = inputText;
+    public WatermarkBuilder loadWatermarkText(@NonNull String inputText,
+                                              @NonNull WatermarkPosition position) {
+        watermarkText = WatermarkText.string2WMimage(inputText, position);
+        return this;
+    }
+
+    /**
+     * Sets the {@link String} as the args
+     * which ready for adding to a watermark.
+     * And, this is a set of Strings.
+     *
+     * @param watermarkTexts The texts to add.
+     * @return This builder.
+     */
+    public WatermarkBuilder loadWatermarkTexts(@NonNull List<WatermarkText> watermarkTexts) {
+        this.watermarkTexts = watermarkTexts;
         return this;
     }
 
@@ -90,11 +84,25 @@ public class WatermarkBuilder {
      * Sets the {@link Bitmap} as the args
      * which ready for adding to a background.
      *
-     * @param wmImg The text to add.
+     * @param wmImg The image to add.
      * @return This builder.
      */
-    public WatermarkBuilder loadWatermarkImage(@Nullable Bitmap wmImg) {
-        this.watermarkImg = wmImg;
+    public WatermarkBuilder loadWatermarkImage(@NonNull Bitmap wmImg,
+                                               @NonNull WatermarkPosition position) {
+        watermarkImage = WatermarkImage.bitmap2WMimage(wmImg, position);
+        return this;
+    }
+
+    /**
+     * Sets the {@link Bitmap} as the args
+     * which ready for adding to a background.
+     * And, this is a set of bitmaps.
+     *
+     * @param bitmapList The bitmaps to add.
+     * @return This builder.
+     */
+    public WatermarkBuilder loadWatermarkImages(@NonNull List<WatermarkImage> bitmapList) {
+        this.watermarkBitmaps = bitmapList;
         return this;
     }
 
@@ -104,9 +112,13 @@ public class WatermarkBuilder {
      * @return a new watermark object
      */
     public Watermark getWatermark() {
-        return new Watermark(context,
+        return new Watermark(
+                context,
                 backgroundImg,
-                watermarkImg,
-                inputWatermarkText);
+                watermarkImage,
+                watermarkBitmaps,
+                watermarkText,
+                watermarkTexts
+        );
     }
 }

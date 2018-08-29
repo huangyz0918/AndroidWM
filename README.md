@@ -21,7 +21,7 @@ There are packaged `WatermarkImage` and `WatermarkText` classes for you to creat
 
 ```java
     WatermarkImage watermarkImage = new WatermarkImage(watermarkBitmap)
-            .setPositionRotation(45)
+            .setRotation(45)
             .setPositionX(10.5)
             .setPositionY(20.1);
             

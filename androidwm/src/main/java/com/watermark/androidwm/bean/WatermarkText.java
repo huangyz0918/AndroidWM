@@ -60,8 +60,8 @@ public class WatermarkText {
         return this;
     }
 
-    public WatermarkText setPositionRotation(double rotation) {
-        this.position.setPositionX(rotation);
+    public WatermarkText setRotation(double rotation) {
+        this.position.setRotation(rotation);
         return this;
     }
 

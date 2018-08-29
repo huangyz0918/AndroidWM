@@ -60,8 +60,8 @@ public class WatermarkImage {
         return this;
     }
 
-    public WatermarkImage setPositionRotation(double rotation) {
-        this.position.setPositionX(rotation);
+    public WatermarkImage setRotation(double rotation) {
+        this.position.setRotation(rotation);
         return this;
     }
 

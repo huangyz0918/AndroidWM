@@ -8,7 +8,7 @@ A lightweight android image watermark library that supports encrypted watermarks
 To use this library by gradle:
 
 ```java
-compile 'com.watermark:androidwm:0.1.2'
+implementation 'com.watermark:androidwm:0.1.2'
 ```
 
 For maven:

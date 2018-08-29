@@ -27,6 +27,7 @@ import android.widget.Button;
 import com.watermark.androidwm.WatermarkBuilder;
 import com.watermark.androidwm.bean.WatermarkImage;
 import com.watermark.androidwm.bean.WatermarkPosition;
+import com.watermark.androidwm.bean.WatermarkText;
 
 /**
  * This is the sample for library: androidwm.
@@ -59,18 +60,20 @@ public class MainActivity extends AppCompatActivity {
                 R.drawable.test_watermark);
 
         WatermarkImage watermarkImage = new WatermarkImage(watermarkBitmap)
-                .setRotation(45)
-                .setPositionX(10.5)
-                .setPositionY(20.1)
                 .setImageAlpha(5)
                 .setWatermarkEncrypted(true)
                 .setWatermarkVisibility(true)
-                .setPosition(new WatermarkPosition(10.5, 20.1));
+                .setPosition(new WatermarkPosition(10.5, 20.1, 45));
+
+        WatermarkText watermarkText = new WatermarkText("2333")
+                .setTextAlpha(50)
+                .setPositionY(10);
 
         WatermarkBuilder
                 .create(this, backgroundBitmap)
                 .loadWatermarkImage(watermarkBitmap)
                 .loadWatermarkImage(watermarkImage)
+                .loadWatermarkText(watermarkText)
                 .loadWatermarkImage(watermarkBitmap, new WatermarkPosition(10, 10))
                 .getWatermark();
 

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">androidWM</string>
+    <string name="btn_add_text">Add text</string>
+    <string name="btn_add_image">Add image</string>
 </resources>

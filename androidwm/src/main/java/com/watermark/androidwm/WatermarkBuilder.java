@@ -19,11 +19,27 @@ package com.watermark.androidwm;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
-public class WaterMarkBuilder {
-    private Bitmap inputImage;
-    private String inputWaterMarkText;
+/**
+ * A builder class for setting default structural classes for watermark to use.
+ *
+ * @author huangyz0918 (huangyz0918@gmail.com)
+ */
+public class WatermarkBuilder {
+    private Bitmap backgroundImg;
+    private String inputWatermarkText;
     private Context context;
+    private Bitmap watermarkImg;
+
+    /**
+     * to get an instance form class.
+     *
+     * @return instance of WatermarkBuilder
+     */
+    public static WatermarkBuilder getInstance() {
+        return new WatermarkBuilder();
+    }
 
     /**
      * Sets the {@link Context} application context
@@ -32,9 +48,18 @@ public class WaterMarkBuilder {
      * @param context The context to use.
      * @return This builder.
      */
-    public WaterMarkBuilder loadContext(@NonNull Context context) {
+    public WatermarkBuilder loadContext(@NonNull Context context) {
         this.context = context;
         return this;
+    }
+
+    /**
+     * Check if {@code context == null}, then return false.
+     *
+     * @return whether context is bull.
+     */
+    public boolean isNullContext() {
+        return (context == null);
     }
 
     /**
@@ -44,8 +69,8 @@ public class WaterMarkBuilder {
      * @param inputImage The image bitmap to use.
      * @return This builder.
      */
-    public WaterMarkBuilder loadImage(@NonNull Bitmap inputImage) {
-        this.inputImage = inputImage;
+    public WatermarkBuilder loadImage(@NonNull Bitmap inputImage) {
+        this.backgroundImg = inputImage;
         return this;
     }
 
@@ -56,8 +81,20 @@ public class WaterMarkBuilder {
      * @param inputText The text to add.
      * @return This builder.
      */
-    public WaterMarkBuilder loadWaterMarkText(@NonNull String inputText) {
-        this.inputWaterMarkText = inputText;
+    public WatermarkBuilder loadWatermarkText(@Nullable String inputText) {
+        this.inputWatermarkText = inputText;
+        return this;
+    }
+
+    /**
+     * Sets the {@link Bitmap} as the args
+     * which ready for adding to a background.
+     *
+     * @param wmImg The text to add.
+     * @return This builder.
+     */
+    public WatermarkBuilder loadWatermarkImage(@Nullable Bitmap wmImg) {
+        this.watermarkImg = wmImg;
         return this;
     }
 
@@ -66,7 +103,10 @@ public class WaterMarkBuilder {
      *
      * @return a new watermark object
      */
-    public WaterMark getWaterMark() {
-        return new WaterMark(context, inputImage, inputWaterMarkText);
+    public Watermark getWatermark() {
+        return new Watermark(context,
+                backgroundImg,
+                watermarkImg,
+                inputWatermarkText);
     }
 }

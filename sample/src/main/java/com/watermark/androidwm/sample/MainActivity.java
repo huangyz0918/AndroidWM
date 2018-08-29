@@ -25,6 +25,7 @@ import android.widget.Button;
 
 //import com.bumptech.glide.Glide;
 import com.watermark.androidwm.WatermarkBuilder;
+import com.watermark.androidwm.bean.WatermarkImage;
 import com.watermark.androidwm.bean.WatermarkPosition;
 
 /**
@@ -51,12 +52,23 @@ public class MainActivity extends AppCompatActivity {
         btnAddText = findViewById(R.id.btn_add_text);
 
         // init library tests.
-        Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(),
+        Bitmap backgroundBitmap = BitmapFactory.decodeResource(this.getResources(),
                 R.drawable.test);
-        Bitmap watermark = BitmapFactory.decodeResource(this.getResources(),
+
+        Bitmap watermarkBitmap = BitmapFactory.decodeResource(this.getResources(),
                 R.drawable.test_watermark);
-        WatermarkBuilder.getInstance(this, bitmap)
-                .loadWatermarkImage(watermark, new WatermarkPosition(10, 10))
+
+        WatermarkImage watermarkImage = new WatermarkImage(watermarkBitmap)
+                .setPositionX(10.5)
+                .setPositionY(20.1)
+                .setPosition(new WatermarkPosition(10.5, 20.1))
+                .setPositionRotation(45);
+        
+        WatermarkBuilder
+                .create(this, backgroundBitmap)
+                .loadWatermarkImage(watermarkBitmap)
+                .loadWatermarkImage(watermarkImage)
+                .loadWatermarkImage(watermarkBitmap, new WatermarkPosition(10, 10))
                 .getWatermark();
 
     }

@@ -20,9 +20,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.widget.ImageView;
 
 import com.watermark.androidwm.bean.WatermarkImage;
-import com.watermark.androidwm.bean.WatermarkPosition;
 import com.watermark.androidwm.bean.WatermarkText;
 
 import java.util.List;
@@ -33,12 +33,13 @@ import java.util.List;
  * @author huangyz0918 (huangyz0918@gmail.com)
  */
 public class Watermark {
-    private WatermarkText inputText;
+    private WatermarkText watermarkText;
     private WatermarkImage watermarkImg;
     private Bitmap backgroundImg;
     private Context context;
     private List<WatermarkImage> wmBitmapList;
     private List<WatermarkText> wmTextList;
+    private Bitmap outputImage;
 
     Watermark(@NonNull Context context,
               @NonNull Bitmap backgroundImg,
@@ -52,7 +53,9 @@ public class Watermark {
         this.wmBitmapList = wmBitmapList;
         this.backgroundImg = backgroundImg;
         this.wmTextList = wmTextList;
-        this.inputText = inputText;
+        this.watermarkText = inputText;
+
+        createImage();
     }
 
     public Context getContext() {
@@ -60,7 +63,7 @@ public class Watermark {
     }
 
     public WatermarkText getInputText() {
-        return inputText;
+        return watermarkText;
     }
 
     public Bitmap getBackgroundImg() {
@@ -80,20 +83,39 @@ public class Watermark {
     }
 
     /**
-     * set the position of a single image.
-     *
-     * @param position the position of image watermark.
+     * Creating the composite image.
+     * This method cannot be called outside.
      */
-    public void setImagePosition(@NonNull WatermarkPosition position) {
+    private void createImage() {
 
     }
 
     /**
-     * set the position of a single text.
+     * interface for getting the watermark bitmap.
      *
-     * @param position the position of text watermark.
+     * @return bitmap in watermark.
      */
-    public void setTextPosition(@NonNull WatermarkPosition position) {
-
+    public Bitmap getWatermarkBitmap() {
+        return watermarkImg.getImage();
     }
+
+    /**
+     * interface for getting the watermark text.
+     *
+     * @return bitmap in watermark.
+     */
+    public String getWatermarkText() {
+        return watermarkText.getText();
+    }
+
+    /**
+     * You can use this function to set the composite
+     * image into an ImageView.
+     *
+     * @param target the target image view.
+     */
+    public void setToImageView(ImageView target) {
+        target.setImageBitmap(outputImage);
+    }
+
 }

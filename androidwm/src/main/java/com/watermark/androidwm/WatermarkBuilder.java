@@ -50,20 +50,48 @@ public final class WatermarkBuilder {
      *
      * @return instance of WatermarkBuilder
      */
-    public static WatermarkBuilder getInstance(Context context, Bitmap backgroundImg) {
+    @SuppressWarnings("PMD")
+    public static WatermarkBuilder create(Context context, Bitmap backgroundImg) {
         return new WatermarkBuilder(context, backgroundImg);
     }
 
     /**
      * Sets the {@link String} as the args
      * which ready for adding to a watermark.
+     * Using the default position.
      *
      * @param inputText The text to add.
      * @return This builder.
      */
+    public WatermarkBuilder loadWatermarkText(@NonNull String inputText) {
+        watermarkText = new WatermarkText(inputText);
+        return this;
+    }
+
+    /**
+     * Sets the {@link String} as the args
+     * which ready for adding to a watermark.
+     * Using the new position.
+     *
+     * @param inputText The text to add.
+     * @param position  The position in the background image.
+     * @return This builder.
+     */
     public WatermarkBuilder loadWatermarkText(@NonNull String inputText,
                                               @NonNull WatermarkPosition position) {
-        watermarkText = WatermarkText.string2WMimage(inputText, position);
+        watermarkText = new WatermarkText(inputText, position);
+        return this;
+    }
+
+    /**
+     * Sets the {@link String} as the args
+     * which ready for adding to a watermark.
+     *
+     * @param watermarkString The watermark text object.
+     * @return This builder.
+     */
+    public WatermarkBuilder loadWatermarkText(@NonNull WatermarkText watermarkString) {
+        watermarkText = watermarkString;
         return this;
     }
 
@@ -83,13 +111,40 @@ public final class WatermarkBuilder {
     /**
      * Sets the {@link Bitmap} as the args
      * which ready for adding to a background.
+     * Using the default position.
      *
      * @param wmImg The image to add.
      * @return This builder.
      */
+    public WatermarkBuilder loadWatermarkImage(@NonNull Bitmap wmImg) {
+        watermarkImage = new WatermarkImage(wmImg);
+        return this;
+    }
+
+    /**
+     * Sets the {@link Bitmap} as the args
+     * which ready for adding to a background.
+     * Using the new position.
+     *
+     * @param position The position in the background image.
+     * @param wmImg    The bitmap to add into.
+     * @return This builder.
+     */
     public WatermarkBuilder loadWatermarkImage(@NonNull Bitmap wmImg,
                                                @NonNull WatermarkPosition position) {
-        watermarkImage = WatermarkImage.bitmap2WMimage(wmImg, position);
+        watermarkImage = new WatermarkImage(wmImg, position);
+        return this;
+    }
+
+    /**
+     * Sets the {@link Bitmap} as the args
+     * which ready for adding to a background.
+     *
+     * @param watermarkImg The watermark image object.
+     * @return This builder.
+     */
+    public WatermarkBuilder loadWatermarkImage(@NonNull WatermarkImage watermarkImg) {
+        watermarkImage = watermarkImg;
         return this;
     }
 

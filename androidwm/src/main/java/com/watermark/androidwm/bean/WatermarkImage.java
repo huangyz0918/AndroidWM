@@ -12,7 +12,11 @@ public class WatermarkImage {
     private Bitmap image;
     private WatermarkPosition position;
 
-    WatermarkImage(Bitmap image, WatermarkPosition position) {
+    public WatermarkImage(Bitmap image) {
+        this.image = image;
+    }
+
+    public WatermarkImage(Bitmap image, WatermarkPosition position) {
         this.image = image;
         this.position = position;
     }
@@ -21,26 +25,28 @@ public class WatermarkImage {
         return image;
     }
 
-    public void setImage(Bitmap image) {
-        this.image = image;
-    }
-
     public WatermarkPosition getPosition() {
         return position;
     }
 
-    public void setPosition(WatermarkPosition position) {
+    public WatermarkImage setPosition(WatermarkPosition position) {
         this.position = position;
+        return this;
     }
 
-    /**
-     * convert the bitmap into watermark image.
-     *
-     * @param bitmap input bitmap
-     * @return WatermarkImage
-     */
-    public static WatermarkImage bitmap2WMimage(Bitmap bitmap,
-                                                WatermarkPosition position) {
-        return new WatermarkImage(bitmap, position);
+    public WatermarkImage setPositionX(double x) {
+        this.position.setPositionX(x);
+        return this;
     }
+
+    public WatermarkImage setPositionY(double y) {
+        this.position.setPositionY(y);
+        return this;
+    }
+
+    public WatermarkImage setPositionRotation(double rotation) {
+        this.position.setPositionX(rotation);
+        return this;
+    }
+
 }

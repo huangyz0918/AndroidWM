@@ -12,7 +12,11 @@ public class WatermarkText {
     private String text;
     private WatermarkPosition position;
 
-    WatermarkText(String text, WatermarkPosition position) {
+    public WatermarkText(String text) {
+        this.text = text;
+    }
+
+    public WatermarkText(String text, WatermarkPosition position) {
         this.text = text;
         this.position = position;
     }
@@ -21,26 +25,28 @@ public class WatermarkText {
         return text;
     }
 
-    public void setText(String text) {
-        this.text = text;
-    }
-
     public WatermarkPosition getPosition() {
         return position;
     }
 
-    public void setPosition(WatermarkPosition position) {
+    public WatermarkText setPosition(WatermarkPosition position) {
         this.position = position;
+        return this;
     }
 
-    /**
-     * convert the String into watermark text.
-     *
-     * @param text input String
-     * @return WatermarkText
-     */
-    public static WatermarkText string2WMimage(String text,
-                                               WatermarkPosition position) {
-        return new WatermarkText(text, position);
+    public WatermarkText setPositionX(double x) {
+        this.position.setPositionX(x);
+        return this;
     }
+
+    public WatermarkText setPositionY(double y) {
+        this.position.setPositionY(y);
+        return this;
+    }
+
+    public WatermarkText setPositionRotation(double rotation) {
+        this.position.setPositionX(rotation);
+        return this;
+    }
+
 }

@@ -18,15 +18,17 @@ package com.watermark.androidwm.sample;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 
-//import com.bumptech.glide.Glide;
+import com.bumptech.glide.Glide;
 import com.watermark.androidwm.WatermarkBuilder;
 import com.watermark.androidwm.bean.WatermarkImage;
-import com.watermark.androidwm.bean.WatermarkPosition;
 import com.watermark.androidwm.bean.WatermarkText;
 
 /**
@@ -40,6 +42,11 @@ public class MainActivity extends AppCompatActivity {
     private Button btnAddText;
     private Button btnAddImg;
 
+    private ImageView backgroundView;
+    private Bitmap watermarkBitmap;
+
+    private EditText editText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,48 +58,47 @@ public class MainActivity extends AppCompatActivity {
     private void initViews() {
         btnAddImg = findViewById(R.id.btn_add_image);
         btnAddText = findViewById(R.id.btn_add_text);
+        editText = findViewById(R.id.editText);
+        backgroundView = findViewById(R.id.imageView);
 
-        // init library tests.
-        Bitmap backgroundBitmap = BitmapFactory.decodeResource(this.getResources(),
-                R.drawable.test);
+        Glide.with(this).load(R.drawable.test)
+                .into(backgroundView);
 
-        Bitmap watermarkBitmap = BitmapFactory.decodeResource(this.getResources(),
+        watermarkBitmap = BitmapFactory.decodeResource(getResources(),
                 R.drawable.test_watermark);
-
-        WatermarkImage watermarkImage = new WatermarkImage(watermarkBitmap)
-                .setImageAlpha(5)
-                .setWatermarkEncrypted(true)
-                .setWatermarkVisibility(true)
-                .setPosition(new WatermarkPosition(10.5, 20.1, 45));
-
-        WatermarkText watermarkText = new WatermarkText("2333")
-                .setTextAlpha(50)
-                .setPositionY(10);
-
-        WatermarkBuilder
-                .create(this, backgroundBitmap)
-                .loadWatermarkImage(watermarkBitmap)
-                .loadWatermarkImage(watermarkImage)
-                .loadWatermarkText(watermarkText)
-                .loadWatermarkImage(watermarkBitmap, new WatermarkPosition(10, 10))
-                .getWatermark();
-
     }
 
     private void initEvents() {
+        // The sample method of adding a text watermark.
+        btnAddText.setOnClickListener((View v) -> {
+            WatermarkText watermarkText = new WatermarkText("+86 13394091580")
+                    .setPositionX(Math.random())
+                    .setPositionY(Math.random())
+                    .setSize(2)
+                    .setColor(Color.GREEN);
 
-        btnAddText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
+            WatermarkBuilder
+                    .create(this, backgroundView)
+                    .loadWatermarkText(watermarkText)
+                    .getWatermark()
+                    .setToImageView(backgroundView);
         });
 
-        btnAddImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        // The sample method of adding a image watermark.
+        btnAddImg.setOnClickListener((View v) -> {
 
-            }
+            // Math.random()
+            WatermarkImage watermarkImage = new WatermarkImage(watermarkBitmap)
+                    .setImageAlpha(100)
+                    .setPositionX(Math.random())
+                    .setPositionY(Math.random())
+                    .setSize(0.2);
+
+            WatermarkBuilder
+                    .create(this, backgroundView)
+                    .loadWatermarkImage(watermarkImage)
+                    .getWatermark()
+                    .setToImageView(backgroundView);
         });
 
     }

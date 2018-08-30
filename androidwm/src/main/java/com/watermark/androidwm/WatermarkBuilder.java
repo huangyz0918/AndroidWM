@@ -18,7 +18,9 @@ package com.watermark.androidwm;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.annotation.NonNull;
+import android.widget.ImageView;
 
 import com.watermark.androidwm.bean.WatermarkImage;
 import com.watermark.androidwm.bean.WatermarkPosition;
@@ -40,19 +42,38 @@ public final class WatermarkBuilder {
     private List<WatermarkText> watermarkTexts = new ArrayList<>();
     private List<WatermarkImage> watermarkBitmaps = new ArrayList<>();
 
+    /**
+     * Constructors for WatermarkBuilder
+     */
     private WatermarkBuilder(@NonNull Context context, @NonNull Bitmap backgroundImg) {
         this.context = context;
         this.backgroundImg = backgroundImg;
     }
 
+    private WatermarkBuilder(@NonNull Context context, @NonNull ImageView backgroundImageView) {
+        this.context = context;
+        backgroundFromImageView(backgroundImageView);
+    }
+
     /**
      * to get an instance form class.
      *
-     * @return instance of WatermarkBuilder
+     * @return instance of {@link WatermarkBuilder}
      */
     @SuppressWarnings("PMD")
     public static WatermarkBuilder create(Context context, Bitmap backgroundImg) {
         return new WatermarkBuilder(context, backgroundImg);
+    }
+
+    /**
+     * to get an instance form class.
+     * Load the background image from a {@link ImageView}。
+     *
+     * @return instance of {@link WatermarkBuilder}
+     */
+    @SuppressWarnings("PMD")
+    public static WatermarkBuilder create(Context context, ImageView imageView) {
+        return new WatermarkBuilder(context, imageView);
     }
 
     /**
@@ -61,7 +82,7 @@ public final class WatermarkBuilder {
      * Using the default position.
      *
      * @param inputText The text to add.
-     * @return This builder.
+     * @return This {@link WatermarkBuilder}.
      */
     public WatermarkBuilder loadWatermarkText(@NonNull String inputText) {
         watermarkText = new WatermarkText(inputText);
@@ -75,7 +96,7 @@ public final class WatermarkBuilder {
      *
      * @param inputText The text to add.
      * @param position  The position in the background image.
-     * @return This builder.
+     * @return This {@link WatermarkBuilder}.
      */
     public WatermarkBuilder loadWatermarkText(@NonNull String inputText,
                                               @NonNull WatermarkPosition position) {
@@ -87,8 +108,8 @@ public final class WatermarkBuilder {
      * Sets the {@link String} as the args
      * which ready for adding to a watermark.
      *
-     * @param watermarkString The watermark text object.
-     * @return This builder.
+     * @param watermarkString The {@link WatermarkText} object.
+     * @return This {@link WatermarkBuilder}.
      */
     public WatermarkBuilder loadWatermarkText(@NonNull WatermarkText watermarkString) {
         watermarkText = watermarkString;
@@ -101,7 +122,7 @@ public final class WatermarkBuilder {
      * And, this is a set of Strings.
      *
      * @param watermarkTexts The texts to add.
-     * @return This builder.
+     * @return This {@link WatermarkBuilder}.
      */
     public WatermarkBuilder loadWatermarkTexts(@NonNull List<WatermarkText> watermarkTexts) {
         this.watermarkTexts = watermarkTexts;
@@ -114,7 +135,7 @@ public final class WatermarkBuilder {
      * Using the default position.
      *
      * @param wmImg The image to add.
-     * @return This builder.
+     * @return This {@link WatermarkBuilder}.
      */
     public WatermarkBuilder loadWatermarkImage(@NonNull Bitmap wmImg) {
         watermarkImage = new WatermarkImage(wmImg);
@@ -128,7 +149,7 @@ public final class WatermarkBuilder {
      *
      * @param position The position in the background image.
      * @param wmImg    The bitmap to add into.
-     * @return This builder.
+     * @return This {@link WatermarkBuilder}.
      */
     public WatermarkBuilder loadWatermarkImage(@NonNull Bitmap wmImg,
                                                @NonNull WatermarkPosition position) {
@@ -140,8 +161,8 @@ public final class WatermarkBuilder {
      * Sets the {@link Bitmap} as the args
      * which ready for adding to a background.
      *
-     * @param watermarkImg The watermark image object.
-     * @return This builder.
+     * @param watermarkImg The {@link WatermarkImage} object.
+     * @return This {@link WatermarkBuilder}.
      */
     public WatermarkBuilder loadWatermarkImage(@NonNull WatermarkImage watermarkImg) {
         watermarkImage = watermarkImg;
@@ -150,21 +171,36 @@ public final class WatermarkBuilder {
 
     /**
      * Sets the {@link Bitmap} as the args
-     * which ready for adding to a background.
+     * which ready for adding into the background.
      * And, this is a set of bitmaps.
      *
      * @param bitmapList The bitmaps to add.
-     * @return This builder.
+     * @return This {@link WatermarkBuilder}.
      */
     public WatermarkBuilder loadWatermarkImages(@NonNull List<WatermarkImage> bitmapList) {
         this.watermarkBitmaps = bitmapList;
         return this;
     }
 
+
+    /**
+     * load a bitmap as background image from a ImageView.
+     *
+     * @param imageView the {@link ImageView} we need to use.
+     */
+    public WatermarkBuilder backgroundFromImageView(ImageView imageView) {
+        imageView.invalidate();
+        if (imageView.getDrawable() != null) {
+            BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+            backgroundImg = drawable.getBitmap();
+        }
+        return this;
+    }
+
     /**
      * let the watermark builder to build a new watermark object
      *
-     * @return a new watermark object
+     * @return a new {@link Watermark} object
      */
     public Watermark getWatermark() {
         return new Watermark(

@@ -6,12 +6,20 @@
     tools:context="com.watermark.androidwm.sample.MainActivity">
 
     <ImageView
-        android:id="@+id/image"
+        android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_above="@id/editText"
         android:src="@drawable/test" />
 
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_above="@id/linearLayout" />
+
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
@@ -32,6 +40,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/btn_add_image" />
+
     </LinearLayout>
 
 </RelativeLayout>

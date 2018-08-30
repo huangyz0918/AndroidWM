@@ -30,6 +30,9 @@ public class WatermarkPosition {
     private double positionY;
     private double rotation;
 
+    /**
+     * Constructors for WatermarkImage
+     */
     public WatermarkPosition(double positionX, double positionY) {
         this.positionX = positionX;
         this.positionY = positionY;
@@ -41,6 +44,9 @@ public class WatermarkPosition {
         this.rotation = rotation;
     }
 
+    /**
+     * Getters for those attrs.
+     */
     public double getPositionX() {
         return positionX;
     }
@@ -53,6 +59,9 @@ public class WatermarkPosition {
         return rotation;
     }
 
+    /**
+     * Setters for those attrs.
+     */
     public void setRotation(double rotation) {
         this.rotation = rotation;
     }

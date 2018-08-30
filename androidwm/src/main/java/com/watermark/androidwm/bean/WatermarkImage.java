@@ -1,6 +1,8 @@
 package com.watermark.androidwm.bean;
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.widget.ImageView;
 
 /**
  * It's a wrapper of the watermark image.
@@ -12,10 +14,14 @@ public class WatermarkImage {
     private Bitmap image;
     private boolean isEncrypted = false;
     private boolean isVisible = true;
-    private float alpha = 1;
+    private int alpha = 50;
+    private double size = 0.2;
     // set the default values for the position.
     private WatermarkPosition position = new WatermarkPosition(0, 0, 0);
 
+    /**
+     * Constructors for WatermarkImage
+     */
     public WatermarkImage(Bitmap image) {
         this.image = image;
     }
@@ -25,6 +31,9 @@ public class WatermarkImage {
         this.position = position;
     }
 
+    /**
+     * Getters for those attrs.
+     */
     public Bitmap getImage() {
         return image;
     }
@@ -37,7 +46,7 @@ public class WatermarkImage {
         return isVisible;
     }
 
-    public float getAlpha() {
+    public int getAlpha() {
         return alpha;
     }
 
@@ -45,6 +54,13 @@ public class WatermarkImage {
         return position;
     }
 
+    public double getSize() {
+        return size;
+    }
+
+    /**
+     * Setters for those attrs.
+     */
     public WatermarkImage setPosition(WatermarkPosition position) {
         this.position = position;
         return this;
@@ -65,19 +81,48 @@ public class WatermarkImage {
         return this;
     }
 
-    public WatermarkImage setImageAlpha(float textAlpha) {
+    /**
+     * @param textAlpha can be set to 0-255.
+     */
+    public WatermarkImage setImageAlpha(int textAlpha) {
         this.alpha = textAlpha;
         return this;
     }
 
+    /**
+     * @param size can be set to 0-1 as the proportion of
+     *             background image.
+     */
+    public WatermarkImage setSize(double size) {
+        this.size = size;
+        return this;
+    }
+
+    /**
+     * @param isVisible whether to set this watermark invisible.
+     */
     public WatermarkImage setWatermarkVisibility(boolean isVisible) {
         this.isVisible = isVisible;
         return this;
     }
 
+    /**
+     * @param isEncrypted whether to encrypted this watermark.
+     */
     public WatermarkImage setWatermarkEncrypted(boolean isEncrypted) {
         this.isEncrypted = isEncrypted;
         return this;
+    }
+
+    /**
+     * load a bitmap as watermark image from a ImageView.
+     *
+     * @param imageView the ImageView we need to use.
+     */
+    public void watermarkFromImageView(ImageView imageView) {
+        imageView.invalidate();
+        BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+        this.image = drawable.getBitmap();
     }
 
 }

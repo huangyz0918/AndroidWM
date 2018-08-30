@@ -3,7 +3,7 @@
 
 A lightweight android image watermark library that supports encrypted watermarks.
 
-## Download Library
+## Download Library (The beta)
 
 To use this library by gradle:
 

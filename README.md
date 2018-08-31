@@ -8,7 +8,7 @@ A lightweight android image watermark library that supports encrypted watermarks
 To use this library by gradle:
 
 ```java
-implementation 'com.watermark:androidwm:0.1.2'
+implementation 'com.watermark:androidwm:0.1.3'
 ```
 
 For maven:
@@ -17,7 +17,7 @@ For maven:
 <dependency>
   <groupId>com.watermark</groupId>
   <artifactId>androidwm</artifactId>
-  <version>0.1.2</version>
+  <version>0.1.3</version>
   <type>pom</type>
 </dependency>
 ```
@@ -25,7 +25,7 @@ For maven:
 For lvy:
 
 ```java
-<dependency org='com.watermark' name='androidwm' rev='0.1.2'>
+<dependency org='com.watermark' name='androidwm' rev='0.1.3'>
   <artifact name='androidwm' ext='pom' />
 </dependency>
 ```

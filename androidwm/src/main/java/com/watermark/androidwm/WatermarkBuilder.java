@@ -210,6 +210,7 @@ public final class WatermarkBuilder {
                 watermarkBitmaps,
                 watermarkText,
                 watermarkTexts
+
         );
     }
 }

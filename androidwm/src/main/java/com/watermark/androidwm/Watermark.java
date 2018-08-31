@@ -18,7 +18,7 @@ package com.watermark.androidwm;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+//import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
@@ -37,8 +37,8 @@ import java.util.List;
  * @author huangyz0918 (huangyz0918@gmail.com)
  */
 public class Watermark {
-    private WatermarkText watermarkText = null;
-    private WatermarkImage watermarkImg = null;
+    private WatermarkText watermarkText;
+    private WatermarkImage watermarkImg;
     private Bitmap backgroundImg;
     private Context context;
     private List<WatermarkImage> wmBitmapList;
@@ -62,13 +62,8 @@ public class Watermark {
         this.wmTextList = wmTextList;
         this.watermarkText = inputText;
 
-        if ((watermarkImg != null || wmBitmapList != null)) {
-            createWatermarkImage();
-        }
-
-        if ((watermarkText != null || wmTextList != null)) {
-            createWatermarkText();
-        }
+        createWatermarkImage();
+        createWatermarkText();
 
     }
 
@@ -105,20 +100,23 @@ public class Watermark {
      */
     private void createWatermarkImage() {
         Paint watermarkPaint = new Paint();
-        watermarkPaint.setAlpha(watermarkImg.getAlpha());
-        Bitmap newBitmap = Bitmap.createBitmap(backgroundImg.getWidth(),
-                backgroundImg.getHeight(), backgroundImg.getConfig());
-        Canvas watermarkCanvas = new Canvas(newBitmap);
-        watermarkCanvas.drawBitmap(backgroundImg, 0, 0, null);
+        if (watermarkImg != null) {
+            watermarkPaint.setAlpha(watermarkImg.getAlpha());
+            Bitmap newBitmap = Bitmap.createBitmap(backgroundImg.getWidth(),
+                    backgroundImg.getHeight(), backgroundImg.getConfig());
+            Canvas watermarkCanvas = new Canvas(newBitmap);
+            watermarkCanvas.drawBitmap(backgroundImg, 0, 0, null);
 
-        Bitmap scaledWMBitmap = resizeBitmap();
-        scaledWMBitmap = adjustPhotoRotation(scaledWMBitmap,
-                (int) watermarkImg.getPosition().getRotation());
-        watermarkCanvas.drawBitmap(scaledWMBitmap,
-                (float) watermarkImg.getPosition().getPositionX() * backgroundImg.getWidth(),
-                (float) watermarkImg.getPosition().getPositionY() * backgroundImg.getHeight(),
-                watermarkPaint);
-        outputImage = newBitmap;
+            Bitmap scaledWMBitmap = resizeBitmap();
+            scaledWMBitmap = adjustPhotoRotation(scaledWMBitmap,
+                    (int) watermarkImg.getPosition().getRotation());
+            watermarkCanvas.drawBitmap(scaledWMBitmap,
+                    (float) watermarkImg.getPosition().getPositionX() * backgroundImg.getWidth(),
+                    (float) watermarkImg.getPosition().getPositionY() * backgroundImg.getHeight(),
+                    watermarkPaint);
+            outputImage = newBitmap;
+        }
+
     }
 
     /**
@@ -127,23 +125,25 @@ public class Watermark {
      */
     private void createWatermarkText() {
         Paint watermarkPaint = new Paint();
-        watermarkPaint.setColor(watermarkText.getColor());
-        watermarkPaint.setStyle(watermarkText.getStyle());
-        watermarkPaint.setAlpha(watermarkText.getAlpha());
-        watermarkPaint.setTextSize((float) watermarkText.getSize());
+        if (watermarkText != null) {
+            watermarkPaint.setColor(watermarkText.getColor());
+            watermarkPaint.setStyle(watermarkText.getStyle());
+            watermarkPaint.setAlpha(watermarkText.getAlpha());
+            watermarkPaint.setTextSize((float) watermarkText.getSize());
 
-        Bitmap newBitmap = Bitmap.createBitmap(backgroundImg.getWidth(),
-                backgroundImg.getHeight(), backgroundImg.getConfig());
-        Canvas watermarkCanvas = new Canvas(newBitmap);
+            Bitmap newBitmap = Bitmap.createBitmap(backgroundImg.getWidth(),
+                    backgroundImg.getHeight(), backgroundImg.getConfig());
+            Canvas watermarkCanvas = new Canvas(newBitmap);
 
-        watermarkCanvas.drawBitmap(backgroundImg, 0, 0, null);
-        watermarkCanvas.drawPaint(watermarkPaint);
+            watermarkCanvas.drawBitmap(backgroundImg, 0, 0, null);
+            watermarkCanvas.drawPaint(watermarkPaint);
 
-        watermarkCanvas.drawText(watermarkText.getText(),
-                (float) watermarkText.getPosition().getPositionX() * backgroundImg.getWidth(),
-                (float) watermarkText.getPosition().getPositionY() * backgroundImg.getHeight(),
-                watermarkPaint);
-        outputImage = newBitmap;
+            watermarkCanvas.drawText(watermarkText.getText(),
+                    (float) watermarkText.getPosition().getPositionX() * backgroundImg.getWidth(),
+                    (float) watermarkText.getPosition().getPositionY() * backgroundImg.getHeight(),
+                    watermarkPaint);
+            outputImage = newBitmap;
+        }
     }
 
     /**
@@ -217,14 +217,14 @@ public class Watermark {
      *
      * @return {@link Bitmap} the bitmap return.
      */
-    private Bitmap resizeLocalPicture(String localPath) {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(localPath, options);
-        double radio = Math.max(options.outWidth * 1.0d / 1024f, options.outHeight * 1.0d / 1024f);
-        options.inSampleSize = (int) Math.ceil(radio);
-        options.inJustDecodeBounds = false;
-        return BitmapFactory.decodeFile(localPath, options);
-    }
+//    private Bitmap resizeLocalPicture(String localPath) {
+//        BitmapFactory.Options options = new BitmapFactory.Options();
+//        options.inJustDecodeBounds = true;
+//        BitmapFactory.decodeFile(localPath, options);
+//        double radio = Math.max(options.outWidth * 1.0d / 1024f, options.outHeight * 1.0d / 1024f);
+//        options.inSampleSize = (int) Math.ceil(radio);
+//        options.inJustDecodeBounds = false;
+//        return BitmapFactory.decodeFile(localPath, options);
+//    }
 
 }

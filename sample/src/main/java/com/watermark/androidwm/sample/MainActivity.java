@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private Bitmap watermarkBitmap;
 
     private EditText editText;
+    private String inputText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
 
         watermarkBitmap = BitmapFactory.decodeResource(getResources(),
                 R.drawable.test_watermark);
+
+        inputText = editText.getText().toString();
     }
 
     private void initEvents() {
@@ -74,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             WatermarkText watermarkText = new WatermarkText("+86 13394091580")
                     .setPositionX(Math.random())
                     .setPositionY(Math.random())
-                    .setSize(2)
+                    .setSize(0.1)
                     .setColor(Color.GREEN);
 
             WatermarkBuilder

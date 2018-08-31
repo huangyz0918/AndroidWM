@@ -18,12 +18,14 @@ package com.watermark.androidwm;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-//import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.StaticLayout;
+import android.text.TextPaint;
 import android.widget.ImageView;
 
 import com.watermark.androidwm.bean.WatermarkImage;
@@ -99,15 +101,14 @@ public class Watermark {
      * This method cannot be called outside.
      */
     private void createWatermarkImage() {
-        Paint watermarkPaint = new Paint();
         if (watermarkImg != null) {
+            Paint watermarkPaint = new Paint();
             watermarkPaint.setAlpha(watermarkImg.getAlpha());
             Bitmap newBitmap = Bitmap.createBitmap(backgroundImg.getWidth(),
                     backgroundImg.getHeight(), backgroundImg.getConfig());
             Canvas watermarkCanvas = new Canvas(newBitmap);
             watermarkCanvas.drawBitmap(backgroundImg, 0, 0, null);
-
-            Bitmap scaledWMBitmap = resizeBitmap();
+            Bitmap scaledWMBitmap = resizeBitmap(watermarkImg.getImage(), (float) watermarkImg.getSize());
             scaledWMBitmap = adjustPhotoRotation(scaledWMBitmap,
                     (int) watermarkImg.getPosition().getRotation());
             watermarkCanvas.drawBitmap(scaledWMBitmap,
@@ -124,21 +125,18 @@ public class Watermark {
      * This method cannot be called outside.
      */
     private void createWatermarkText() {
-        Paint watermarkPaint = new Paint();
         if (watermarkText != null) {
-            watermarkPaint.setColor(watermarkText.getColor());
-            watermarkPaint.setStyle(watermarkText.getStyle());
+            Paint watermarkPaint = new Paint();
             watermarkPaint.setAlpha(watermarkText.getAlpha());
-            watermarkPaint.setTextSize((float) watermarkText.getSize());
-
             Bitmap newBitmap = Bitmap.createBitmap(backgroundImg.getWidth(),
                     backgroundImg.getHeight(), backgroundImg.getConfig());
             Canvas watermarkCanvas = new Canvas(newBitmap);
-
             watermarkCanvas.drawBitmap(backgroundImg, 0, 0, null);
-            watermarkCanvas.drawPaint(watermarkPaint);
 
-            watermarkCanvas.drawText(watermarkText.getText(),
+            Bitmap scaledWMBitmap = textAsBitmap();
+            scaledWMBitmap = adjustPhotoRotation(scaledWMBitmap,
+                    (int) watermarkText.getPosition().getRotation());
+            watermarkCanvas.drawBitmap(scaledWMBitmap,
                     (float) watermarkText.getPosition().getPositionX() * backgroundImg.getWidth(),
                     (float) watermarkText.getPosition().getPositionY() * backgroundImg.getHeight(),
                     watermarkPaint);
@@ -198,11 +196,10 @@ public class Watermark {
      *
      * @return {@link Bitmap} the new bitmap.
      */
-    private Bitmap resizeBitmap() {
-        Bitmap bitmap = watermarkImg.getImage();
+    private Bitmap resizeBitmap(Bitmap bitmap, float size) {
         int bitmapWidth = bitmap.getWidth();
         int bitmapHeight = bitmap.getHeight();
-        float scaleWidth = (float) (backgroundImg.getWidth() * watermarkImg.getSize()) / bitmapWidth;
+        float scaleWidth = (backgroundImg.getWidth() * size) / bitmapWidth;
         float scaleHeight = (float) (bitmap.getHeight() / bitmap.getWidth()) * scaleWidth;
 
         Matrix matrix = new Matrix();
@@ -226,5 +223,48 @@ public class Watermark {
 //        options.inJustDecodeBounds = false;
 //        return BitmapFactory.decodeFile(localPath, options);
 //    }
+
+    /**
+     * build a bitmap from a text.
+     *
+     * @return {@link Bitmap} the bitmap return.
+     */
+    private Bitmap textAsBitmap() {
+        TextPaint watermarkPaint = new TextPaint();
+        watermarkPaint.setColor(watermarkText.getColor());
+        watermarkPaint.setStyle(watermarkText.getStyle());
+        watermarkPaint.setAlpha(watermarkText.getAlpha());
+        watermarkPaint.setTextSize((float) watermarkText.getSize() *
+                context.getResources().getDisplayMetrics().density);
+        watermarkPaint.setAntiAlias(true);
+        watermarkPaint.setTextAlign(Paint.Align.LEFT);
+        watermarkPaint.setStrokeWidth(5);
+
+        float baseline = (int) (-watermarkPaint.ascent() + 1f);
+        Rect bounds = new Rect();
+        watermarkPaint.getTextBounds(watermarkText.getText(),
+                0, watermarkText.getText().length(), bounds);
+
+        int boundWidth = bounds.width() + 20;
+        int mTextMaxWidth = (int) watermarkPaint.measureText(watermarkText.getText());
+        if (boundWidth > mTextMaxWidth) {
+            boundWidth = mTextMaxWidth;
+        }
+        StaticLayout staticLayout = new StaticLayout(watermarkText.getText(),
+                0, watermarkText.getText().length(),
+                watermarkPaint, mTextMaxWidth, android.text.Layout.Alignment.ALIGN_NORMAL, 2.0f,
+                2.0f, false);
+
+        int lineCount = staticLayout.getLineCount();
+        int height = (int) (baseline + watermarkPaint.descent() + 3) * lineCount;
+        Bitmap image = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
+        if (boundWidth > 0 && height > 0) {
+            image = Bitmap.createBitmap(boundWidth, height, Bitmap.Config.ARGB_8888);
+        }
+        Canvas canvas = new Canvas(image);
+        canvas.drawColor(watermarkText.getBackgroundColor());
+        staticLayout.draw(canvas);
+        return image;
+    }
 
 }

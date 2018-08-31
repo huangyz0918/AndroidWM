@@ -20,6 +20,7 @@ public class WatermarkText {
     private int alpha = 50;
     private double size = 20;
     private int color = Color.BLACK;
+    private int backgroundColor = Color.WHITE;
     private Paint.Style style = Paint.Style.FILL;
     // set the default values for the position.
     private WatermarkPosition position = new WatermarkPosition(0, 0, 0);
@@ -71,6 +72,11 @@ public class WatermarkText {
         return style;
     }
 
+    public int getBackgroundColor() {
+        return backgroundColor;
+    }
+
+
     /**
      * Setters for those attrs.
      */
@@ -101,6 +107,11 @@ public class WatermarkText {
 
     public WatermarkText setStyle(Paint.Style style) {
         this.style = style;
+        return this;
+    }
+
+    public WatermarkText setBackgroundColor(int backgroundColor) {
+        this.backgroundColor = backgroundColor;
         return this;
     }
 

@@ -1,17 +1,17 @@
-# AndroidWM
+# AndroidWM 
  [ ![Download](https://api.bintray.com/packages/galaxyrockets/AndroidWM/androidwm/images/download.svg) ](https://bintray.com/galaxyrockets/AndroidWM/androidwm/_latestVersion) [![build Status](https://travis-ci.org/GalaxyRockets/AndroidWM.svg?branch=master)](https://travis-ci.org/GalaxyRockets/AndroidWM) [![principal](https://img.shields.io/badge/principal-huangyz0918-yellow.svg)](https://github.com/huangyz0918) [![contributions](https://img.shields.io/badge/contributions-welcome-green.svg)](https://github.com/GalaxyRockets/AndroidWM)
 
-A lightweight android image watermark library that supports encrypted watermarks. [中文版本](./README-CN.md)
+一个轻量级的 Android 图片水印框架，支持隐形水印和加密水印。 [English version](./README.md)
 
-## Download Library (The beta)
+## 下载与安装 (测试版本)
 
-To use this library by gradle:
+使用 gradle 下载框架:
 
 ```java
 implementation 'com.watermark:androidwm:0.1.3'
 ```
 
-For maven:
+使用 maven 下载框架:
 
 ```java
 <dependency>
@@ -22,7 +22,7 @@ For maven:
 </dependency>
 ```
 
-For lvy:
+使用 lvy 下载框架:
 
 ```java
 <dependency org='com.watermark' name='androidwm' rev='0.1.3'>
@@ -30,9 +30,9 @@ For lvy:
 </dependency>
 ```
 
-## Quick Start
-After downloading the library and adding it into your project, you can get a watermark instance by `WatermarkBuilder`.
-You can add a watermark image or watermark text into your background by adding `loadWatermarkImage(Bitmap)` or `loadWatermarkText(String)` like this:
+## 快速入门
+在下载并且在您的项目内配置好 androidwm 之后, 您可以使用 `WatermarkBuilder` 快速地获取到一个水印的实例 (`Watermark`).
+同时，您可以使用 `loadWatermarkImage(Bitmap)` 或者 `loadWatermarkText(String)` 方法为背景图片添加一个图片水印或者是文字水印:
 
 ```java
     WatermarkBuilder
@@ -42,7 +42,7 @@ You can add a watermark image or watermark text into your background by adding `
             .getWatermark();
 ```
 
-There are packaged `WatermarkImage` and `WatermarkText` classes for you to create a more flexible and more customized watermark, you can also instantiate them and put them in the ImageView quickly:
+androidwm 里面有封装好的 `WatermarkImage` 和 `WatermarkText` 类，它们可以帮助您灵活定制一个水印。在构建完成水印之后，您可以选择把新建的带水印图片放置到 ImageView 中:
 
 ```java
     WatermarkImage watermarkImage = new WatermarkImage(watermarkBitmap)

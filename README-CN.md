@@ -3,14 +3,14 @@
 
 一个轻量级的 Android 图片水印框架，支持隐形水印和加密水印。 [English version](./README.md)
 
-![](https://i.loli.net/2018/09/01/5b8a70f72a223.png)
+![](https://i.loli.net/2018/09/01/5b8aa948a8935.png)
 
 ## 下载与安装 (测试版本)
 
 使用 gradle 下载框架:
 
 ```java
-implementation 'com.watermark:androidwm:0.1.4'
+implementation 'com.watermark:androidwm:0.1.5'
 ```
 
 使用 maven 下载框架:
@@ -19,7 +19,7 @@ implementation 'com.watermark:androidwm:0.1.4'
 <dependency>
   <groupId>com.watermark</groupId>
   <artifactId>androidwm</artifactId>
-  <version>0.1.4</version>
+  <version>0.1.5</version>
   <type>pom</type>
 </dependency>
 ```
@@ -27,7 +27,7 @@ implementation 'com.watermark:androidwm:0.1.4'
 使用 lvy 下载框架:
 
 ```java
-<dependency org='com.watermark' name='androidwm' rev='0.1.4'>
+<dependency org='com.watermark' name='androidwm' rev='0.1.5'>
   <artifact name='androidwm' ext='pom' />
 </dependency>
 ```

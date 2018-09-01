@@ -37,6 +37,14 @@ public class WatermarkText {
         this.position = position;
     }
 
+    public WatermarkText(TextView textView) {
+        textFromTextView(textView);
+    }
+
+    public WatermarkText(EditText editText) {
+        textFromEditText(editText);
+    }
+
     /**
      * Getters for those attrs.
      */
@@ -152,7 +160,7 @@ public class WatermarkText {
      *
      * @param textView the {@link TextView} we need to use.
      */
-    public void textFromTextView(TextView textView) {
+    private void textFromTextView(TextView textView) {
         this.text = textView.getText().toString();
     }
 
@@ -161,7 +169,7 @@ public class WatermarkText {
      *
      * @param editText the {@link EditText} we need to use.
      */
-    public void textFromEditText(EditText editText) {
+    private void textFromEditText(EditText editText) {
         this.text = editText.getText().toString();
     }
 

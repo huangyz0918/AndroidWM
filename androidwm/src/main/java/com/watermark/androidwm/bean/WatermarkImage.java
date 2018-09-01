@@ -31,6 +31,10 @@ public class WatermarkImage {
         this.position = position;
     }
 
+    public WatermarkImage(ImageView imageView) {
+        watermarkFromImageView(imageView);
+    }
+
     /**
      * Getters for those attrs.
      */
@@ -82,10 +86,10 @@ public class WatermarkImage {
     }
 
     /**
-     * @param textAlpha can be set to 0-255.
+     * @param imageAlpha can be set to 0-255.
      */
-    public WatermarkImage setImageAlpha(int textAlpha) {
-        this.alpha = textAlpha;
+    public WatermarkImage setImageAlpha(int imageAlpha) {
+        this.alpha = imageAlpha;
         return this;
     }
 
@@ -119,7 +123,7 @@ public class WatermarkImage {
      *
      * @param imageView the ImageView we need to use.
      */
-    public void watermarkFromImageView(ImageView imageView) {
+    private void watermarkFromImageView(ImageView imageView) {
         imageView.invalidate();
         BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
         this.image = drawable.getBitmap();

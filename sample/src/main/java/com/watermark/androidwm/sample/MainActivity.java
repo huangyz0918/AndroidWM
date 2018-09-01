@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnAddImg;
     private Button btnAddAll;
     private Button btnAddList;
+    private Button btnClear;
 
     private ImageView backgroundView;
     private Bitmap watermarkBitmap;
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         btnAddText = findViewById(R.id.btn_add_text);
         btnAddAll = findViewById(R.id.btn_add_all);
         btnAddList = findViewById(R.id.btn_add_list);
+        btnClear = findViewById(R.id.btn_clear_watermark);
 
         editText = findViewById(R.id.editText);
         backgroundView = findViewById(R.id.imageView);
@@ -82,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
     private void initEvents() {
         // The sample method of adding a text watermark.
         btnAddText.setOnClickListener((View v) -> {
-            WatermarkText watermarkText = new WatermarkText(editText.getText().toString())
+            WatermarkText watermarkText = new WatermarkText(editText)
                     .setPositionX(Math.random())
                     .setPositionY(Math.random())
                     .setTextColor(Color.BLACK)
@@ -145,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
             List<WatermarkText> watermarkTexts = new ArrayList<>();
             List<WatermarkImage> watermarkImages = new ArrayList<>();
             for (int i = 0; i < 3; i++) {
-                WatermarkText watermarkText = new WatermarkText("This is watermark: " + i)
+                WatermarkText watermarkText = new WatermarkText("FBI Warning: " + i)
                         .setPositionX(Math.random())
                         .setPositionY(Math.random())
                         .setTextColor(Color.WHITE)
@@ -169,6 +171,11 @@ public class MainActivity extends AppCompatActivity {
                     .loadWatermarkImages(watermarkImages)
                     .getWatermark()
                     .setToImageView(backgroundView);
+        });
+
+        btnClear.setOnClickListener((View v) -> {
+            Glide.with(this).load(R.drawable.test)
+                    .into(backgroundView);
         });
 
     }

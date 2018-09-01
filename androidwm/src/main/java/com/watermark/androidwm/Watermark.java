@@ -69,6 +69,7 @@ public class Watermark {
         this.watermarkText = inputText;
 
         canvasBitmap = backgroundImg;
+        outputImage = backgroundImg;
 
         createWatermarkImage(watermarkImg);
         createWatermarkImages(wmBitmapList);

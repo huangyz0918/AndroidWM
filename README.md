@@ -103,7 +103,7 @@ And if you want to add many watermark at the same time, you can use a `List<>` t
 If you want to get the result bitmap, we also have a `.getOutputImage()` method for you:
 
 ```java
-    WatermarkBuilder
+    Bitmap bitmap = WatermarkBuilder
             .create(this, backgroundImageView)
             .getWatermark()
             .getOutputImage();

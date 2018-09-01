@@ -1,5 +1,5 @@
 # AndroidWM
- [![Download](https://api.bintray.com/packages/galaxyrockets/AndroidWM/androidwm/images/download.svg?version=v0.1.2)](https://bintray.com/galaxyrockets/AndroidWM/androidwm/v0.1.2/link) [![build Status](https://travis-ci.org/GalaxyRockets/AndroidWM.svg?branch=master)](https://travis-ci.org/GalaxyRockets/AndroidWM) [![principal](https://img.shields.io/badge/principal-huangyz0918-yellow.svg)](https://github.com/huangyz0918) [![contributions](https://img.shields.io/badge/contributions-welcome-green.svg)](https://github.com/GalaxyRockets/AndroidWM)
+ [ ![Download](https://api.bintray.com/packages/galaxyrockets/AndroidWM/androidwm/images/download.svg) ](https://bintray.com/galaxyrockets/AndroidWM/androidwm/_latestVersion) [![build Status](https://travis-ci.org/GalaxyRockets/AndroidWM.svg?branch=master)](https://travis-ci.org/GalaxyRockets/AndroidWM) [![principal](https://img.shields.io/badge/principal-huangyz0918-yellow.svg)](https://github.com/huangyz0918) [![contributions](https://img.shields.io/badge/contributions-welcome-green.svg)](https://github.com/GalaxyRockets/AndroidWM)
 
 A lightweight android image watermark library that supports encrypted watermarks.
 

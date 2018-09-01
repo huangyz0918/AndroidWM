@@ -125,12 +125,14 @@ public class MainActivity extends AppCompatActivity {
                     .setBackgroundColor(Color.GREEN)
                     .setSize(50);
 
-            WatermarkBuilder
+
+            Bitmap outputBitmap = WatermarkBuilder
                     .create(this, backgroundView)
                     .loadWatermarkImage(watermarkImage)
                     .loadWatermarkText(watermarkText)
-                    .getWatermark()
-                    .setToImageView(backgroundView);
+                    .getWatermark().getOutputImage();
+
+            backgroundView.setImageBitmap(outputBitmap);
         });
 
     }

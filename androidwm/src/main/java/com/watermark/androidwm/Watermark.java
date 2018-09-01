@@ -103,6 +103,24 @@ public class Watermark {
     }
 
     /**
+     * interface for getting the watermark bitmap.
+     *
+     * @return {@link Bitmap} in watermark.
+     */
+    public Bitmap getWatermarkBitmap() {
+        return watermarkImg.getImage();
+    }
+
+    /**
+     * interface for getting the watermark text.
+     *
+     * @return {@link Bitmap} in watermark.
+     */
+    public String getWatermarkText() {
+        return watermarkText.getText();
+    }
+
+    /**
      * Creating the composite image with {@link WatermarkImage}.
      * This method cannot be called outside.
      */
@@ -152,22 +170,14 @@ public class Watermark {
         }
     }
 
-    /**
-     * interface for getting the watermark bitmap.
-     *
-     * @return {@link Bitmap} in watermark.
-     */
-    public Bitmap getWatermarkBitmap() {
-        return watermarkImg.getImage();
-    }
 
     /**
-     * interface for getting the watermark text.
+     * The interface for getting the output image.
      *
-     * @return {@link Bitmap} in watermark.
+     * @return {@link Bitmap} out bitmap.
      */
-    public String getWatermarkText() {
-        return watermarkText.getText();
+    public Bitmap getOutputImage() {
+        return outputImage;
     }
 
     /**

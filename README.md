@@ -3,7 +3,7 @@
 
 A lightweight android image watermark library that supports encrypted watermarks. [中文版本](./README-CN.md)
 
-![](https://i.loli.net/2018/09/01/5b8a5ab312d67.png)
+![](https://i.loli.net/2018/09/01/5b8a70f727d4c.png)
 
 ## Download Library (The beta)
 

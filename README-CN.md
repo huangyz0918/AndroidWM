@@ -3,6 +3,8 @@
 
 一个轻量级的 Android 图片水印框架，支持隐形水印和加密水印。 [English version](./README.md)
 
+![](https://i.loli.net/2018/09/01/5b8a5ab312d67.png)
+
 ## 下载与安装 (测试版本)
 
 使用 gradle 下载框架:

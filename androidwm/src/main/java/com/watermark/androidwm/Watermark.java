@@ -21,11 +21,14 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.StaticLayout;
 import android.text.TextPaint;
+import android.view.Display;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.watermark.androidwm.bean.WatermarkImage;
@@ -214,20 +217,21 @@ public class Watermark {
     }
 
     /**
-     * resize image form local resources, we need to resize it first
-     * to speed up computer processing time.
+     * Get screen width in pixel.
      *
-     * @return {@link Bitmap} the bitmap return.
+     * @return the pixel in screen, if we cannot get the
+     * {@link WindowManager}, return 0.
      */
-//    private Bitmap resizeLocalPicture(String localPath) {
-//        BitmapFactory.Options options = new BitmapFactory.Options();
-//        options.inJustDecodeBounds = true;
-//        BitmapFactory.decodeFile(localPath, options);
-//        double radio = Math.max(options.outWidth * 1.0d / 1024f, options.outHeight * 1.0d / 1024f);
-//        options.inSampleSize = (int) Math.ceil(radio);
-//        options.inJustDecodeBounds = false;
-//        return BitmapFactory.decodeFile(localPath, options);
-//    }
+    private int getScreenWidth() {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        if (wm != null) {
+            Display display = wm.getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            return size.x;
+        }
+        return 0;
+    }
 
     /**
      * build a bitmap from a text.
@@ -240,7 +244,8 @@ public class Watermark {
         watermarkPaint.setStyle(watermarkText.getStyle());
         watermarkPaint.setAlpha(watermarkText.getAlpha());
         watermarkPaint.setTextSize((float) watermarkText.getSize() *
-                context.getResources().getDisplayMetrics().density);
+                context.getResources().getDisplayMetrics().density
+                * (backgroundImg.getWidth() / getScreenWidth()));
         watermarkPaint.setAntiAlias(true);
         watermarkPaint.setTextAlign(Paint.Align.LEFT);
         watermarkPaint.setStrokeWidth(5);

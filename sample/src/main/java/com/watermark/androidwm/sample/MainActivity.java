@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageView backgroundView;
     private Bitmap watermarkBitmap;
+//    private Bitmap watermarkBackground;
 
     private EditText editText;
 
@@ -65,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
 
         Glide.with(this).load(R.drawable.test)
                 .into(backgroundView);
+
+//        watermarkBackground = BitmapFactory.decodeResource(getResources(), R.drawable.test);
 
         watermarkBitmap = BitmapFactory.decodeResource(getResources(),
                 R.drawable.test_watermark);
@@ -119,9 +122,8 @@ public class MainActivity extends AppCompatActivity {
                     .setPositionY(Math.random())
                     .setColor(Color.WHITE)
                     .setTextAlpha(150)
-                    .setRotation(90)
                     .setBackgroundColor(Color.GREEN)
-                    .setSize(30);
+                    .setSize(50);
 
             WatermarkBuilder
                     .create(this, backgroundView)

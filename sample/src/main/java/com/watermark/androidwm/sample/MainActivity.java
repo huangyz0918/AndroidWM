@@ -88,6 +88,8 @@ public class MainActivity extends AppCompatActivity {
                     .setPositionX(Math.random())
                     .setPositionY(Math.random())
                     .setTextColor(Color.BLACK)
+                    .setTextFont(R.font.champagne)
+                    .setTextShadow(0.1f, 5, 5, Color.BLUE)
                     .setTextAlpha(150)
                     .setRotation(30)
                     .setTextSize(20);

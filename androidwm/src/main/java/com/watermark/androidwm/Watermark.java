@@ -23,8 +23,10 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.res.ResourcesCompat;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.view.Display;
@@ -128,7 +130,7 @@ public class Watermark {
      * This method cannot be called outside.
      */
     private void createWatermarkImage(WatermarkImage watermarkImg) {
-        if (watermarkImg != null) {
+        if (watermarkImg != null && backgroundImg != null) {
             Paint watermarkPaint = new Paint();
             watermarkPaint.setAlpha(watermarkImg.getAlpha());
             Bitmap newBitmap = Bitmap.createBitmap(backgroundImg.getWidth(),
@@ -166,7 +168,7 @@ public class Watermark {
      * This method cannot be called outside.
      */
     private void createWatermarkText(WatermarkText watermarkText) {
-        if (watermarkText != null) {
+        if (watermarkText != null && backgroundImg != null) {
             Paint watermarkPaint = new Paint();
             watermarkPaint.setAlpha(watermarkText.getTextAlpha());
             Bitmap newBitmap = Bitmap.createBitmap(backgroundImg.getWidth(),
@@ -281,10 +283,29 @@ public class Watermark {
         TextPaint watermarkPaint = new TextPaint();
         watermarkPaint.setColor(watermarkText.getTextColor());
         watermarkPaint.setStyle(watermarkText.getTextStyle());
-        watermarkPaint.setAlpha(watermarkText.getTextAlpha());
+
+        if (watermarkText.getTextAlpha() >= 0 && watermarkText.getTextAlpha() <= 255) {
+            watermarkPaint.setAlpha(watermarkText.getTextAlpha());
+        }
+
         watermarkPaint.setTextSize((float) watermarkText.getTextSize() *
                 context.getResources().getDisplayMetrics().density
                 * (backgroundImg.getWidth() / getScreenWidth()));
+
+        if (watermarkText.getTextShadowBlurRadius() != 0
+                || watermarkText.getTextShadowXOffset() != 0
+                || watermarkText.getTextShadowYOffset() != 0) {
+            watermarkPaint.setShadowLayer(watermarkText.getTextShadowBlurRadius(),
+                    watermarkText.getTextShadowXOffset(),
+                    watermarkText.getTextShadowYOffset(),
+                    watermarkText.getTextShadowColor());
+        }
+
+        if (watermarkText.getTextFont() != 0) {
+            Typeface typeface = ResourcesCompat.getFont(context, watermarkText.getTextFont());
+            watermarkPaint.setTypeface(typeface);
+        }
+
         watermarkPaint.setAntiAlias(true);
         watermarkPaint.setTextAlign(Paint.Align.LEFT);
         watermarkPaint.setStrokeWidth(5);

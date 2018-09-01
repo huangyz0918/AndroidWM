@@ -1,8 +1,32 @@
+/*
+ *    Copyright 2018 huangyz0918
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ *
+ */
 package com.watermark.androidwm.bean;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.support.annotation.DrawableRes;
+import android.util.Log;
 import android.widget.ImageView;
+
+import com.watermark.androidwm.exceptions.IllegalWatermarkImageException;
+
+import static com.watermark.androidwm.exceptions.Constant.EXCEPTION_INVALIED_DRAWABLE;
 
 /**
  * It's a wrapper of the watermark image.
@@ -12,9 +36,12 @@ import android.widget.ImageView;
  */
 public class WatermarkImage {
     private Bitmap image;
+    @DrawableRes
+    private int imageDrawable;
     private boolean isEncrypted = false;
     private boolean isVisible = true;
     private int alpha = 50;
+    private Context context;
     private double size = 0.2;
     // set the default values for the position.
     private WatermarkPosition position = new WatermarkPosition(0, 0, 0);
@@ -24,6 +51,31 @@ public class WatermarkImage {
      */
     public WatermarkImage(Bitmap image) {
         this.image = image;
+    }
+
+    public WatermarkImage(Context context, @DrawableRes int imageDrawable, WatermarkPosition position)
+            throws IllegalWatermarkImageException {
+        String resourceName = String.valueOf(imageDrawable);
+        if (context.getResources().getIdentifier(resourceName,
+                "drawable", context.getPackageName()) == 0) {
+            throw new IllegalWatermarkImageException(EXCEPTION_INVALIED_DRAWABLE);
+        }
+        this.imageDrawable = imageDrawable;
+        this.position = position;
+        this.context = context;
+        this.image = getBitmapFromDrawable(imageDrawable);
+    }
+
+    public WatermarkImage(Context context, @DrawableRes int imageDrawable)
+            throws IllegalWatermarkImageException {
+        String resourceName = String.valueOf(imageDrawable);
+        if (context.getResources().getIdentifier(resourceName,
+                "drawable", context.getPackageName()) == 0) {
+            throw new IllegalWatermarkImageException(EXCEPTION_INVALIED_DRAWABLE);
+        }
+        this.imageDrawable = imageDrawable;
+        this.context = context;
+        this.image = getBitmapFromDrawable(imageDrawable);
     }
 
     public WatermarkImage(Bitmap image, WatermarkPosition position) {
@@ -62,6 +114,10 @@ public class WatermarkImage {
         return size;
     }
 
+    public int getImageDrawable() {
+        return imageDrawable;
+    }
+
     /**
      * Setters for those attrs.
      */
@@ -82,6 +138,11 @@ public class WatermarkImage {
 
     public WatermarkImage setRotation(double rotation) {
         this.position.setRotation(rotation);
+        return this;
+    }
+
+    public WatermarkImage setImageDrawable(int imageDrawable) {
+        this.imageDrawable = imageDrawable;
         return this;
     }
 
@@ -129,4 +190,17 @@ public class WatermarkImage {
         this.image = drawable.getBitmap();
     }
 
+    private Bitmap getBitmapFromDrawable(@DrawableRes int imageDrawable) {
+        String resourceName = String.valueOf(imageDrawable);
+        try {
+            if (context.getResources().getIdentifier(resourceName,
+                    "drawable", context.getPackageName()) == 0) {
+                throw new IllegalWatermarkImageException(EXCEPTION_INVALIED_DRAWABLE);
+            }
+        } catch (IllegalWatermarkImageException e) {
+            Log.e("Exception:", e.getMessage());
+        }
+
+        return BitmapFactory.decodeResource(context.getResources(), imageDrawable);
+    }
 }

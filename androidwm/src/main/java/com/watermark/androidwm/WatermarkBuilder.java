@@ -18,16 +18,21 @@ package com.watermark.androidwm;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.widget.ImageView;
 
 import com.watermark.androidwm.bean.WatermarkImage;
 import com.watermark.androidwm.bean.WatermarkPosition;
 import com.watermark.androidwm.bean.WatermarkText;
+import com.watermark.androidwm.exceptions.IllegalWatermarkImageException;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.watermark.androidwm.exceptions.Constant.EXCEPTION_INVALIED_DRAWABLE;
 
 /**
  * A builder class for setting default structural classes for watermark to use.
@@ -55,6 +60,11 @@ public final class WatermarkBuilder {
         backgroundFromImageView(backgroundImageView);
     }
 
+    private WatermarkBuilder(@NonNull Context context, @DrawableRes int backgroundDrawable) {
+        this.context = context;
+        this.backgroundImg = BitmapFactory.decodeResource(context.getResources(), backgroundDrawable);
+    }
+
     /**
      * to get an instance form class.
      *
@@ -74,6 +84,22 @@ public final class WatermarkBuilder {
     @SuppressWarnings("PMD")
     public static WatermarkBuilder create(Context context, ImageView imageView) {
         return new WatermarkBuilder(context, imageView);
+    }
+
+    /**
+     * to get an instance form class.
+     * Load the background image from a {@link DrawableRes}。
+     *
+     * @return instance of {@link WatermarkBuilder}
+     */
+    @SuppressWarnings("PMD")
+    public static WatermarkBuilder create(Context context, @DrawableRes int backgroundDrawable) throws IllegalWatermarkImageException {
+        String resourceName = String.valueOf(backgroundDrawable);
+        if (context.getResources().getIdentifier(resourceName,
+                "drawable", context.getPackageName()) == 0) {
+            throw new IllegalWatermarkImageException(EXCEPTION_INVALIED_DRAWABLE);
+        }
+        return new WatermarkBuilder(context, backgroundDrawable);
     }
 
     /**

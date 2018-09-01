@@ -1,8 +1,26 @@
+/*
+ *    Copyright 2018 huangyz0918
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ *
+ */
 package com.watermark.androidwm.bean;
 
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.support.annotation.ColorInt;
+import android.support.annotation.FontRes;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -19,9 +37,16 @@ public class WatermarkText {
     private boolean isVisible = true;
     private int alpha = 50;
     private double size = 20;
+    @ColorInt
     private int color = Color.BLACK;
+    @ColorInt
     private int backgroundColor = Color.TRANSPARENT;
     private Paint.Style style = Paint.Style.FILL;
+    @FontRes
+    private int typeFaceId = 0;
+    private float textShadowBlurRadius, textShadowXOffset, textShadowYOffset;
+    @ColorInt
+    private int textShadowColor = Color.WHITE;
     // set the default values for the position.
     private WatermarkPosition position = new WatermarkPosition(0, 0, 0);
 
@@ -84,6 +109,25 @@ public class WatermarkText {
         return backgroundColor;
     }
 
+    public float getTextShadowBlurRadius() {
+        return textShadowBlurRadius;
+    }
+
+    public float getTextShadowXOffset() {
+        return textShadowXOffset;
+    }
+
+    public float getTextShadowYOffset() {
+        return textShadowYOffset;
+    }
+
+    public int getTextShadowColor() {
+        return textShadowColor;
+    }
+
+    public int getTextFont() {
+        return typeFaceId;
+    }
 
     /**
      * Setters for those attrs.
@@ -120,6 +164,26 @@ public class WatermarkText {
 
     public WatermarkText setBackgroundColor(int backgroundColor) {
         this.backgroundColor = backgroundColor;
+        return this;
+    }
+
+    /**
+     * Use the typeface path to get the text typeface.
+     */
+    public WatermarkText setTextFont(@FontRes int typeFaceId) {
+        this.typeFaceId = typeFaceId;
+        return this;
+    }
+
+    /**
+     * Set the shadow of the text watermark.
+     */
+    public WatermarkText setTextShadow(final float blurRadius, final float shadowXOffset,
+                                       final float shadowYOffset, @ColorInt final int shadowColor) {
+        this.textShadowBlurRadius = blurRadius;
+        this.textShadowXOffset = shadowXOffset;
+        this.textShadowYOffset = shadowYOffset;
+        this.textShadowColor = shadowColor;
         return this;
     }
 

@@ -3,14 +3,14 @@
 
 A lightweight android image watermark library that supports encrypted watermarks. [中文版本](./README-CN.md)
 
-![](https://i.loli.net/2018/09/01/5b8a70f727d4c.png)
+![](https://i.loli.net/2018/09/01/5b8aa948a2020.png)
 
 ## Download Library (The beta)
 
 To use this library by gradle:
 
 ```java
-implementation 'com.watermark:androidwm:0.1.4'
+implementation 'com.watermark:androidwm:0.1.5'
 ```
 
 For maven:
@@ -19,7 +19,7 @@ For maven:
 <dependency>
   <groupId>com.watermark</groupId>
   <artifactId>androidwm</artifactId>
-  <version>0.1.4</version>
+  <version>0.1.5</version>
   <type>pom</type>
 </dependency>
 ```
@@ -27,40 +27,63 @@ For maven:
 For lvy:
 
 ```java
-<dependency org='com.watermark' name='androidwm' rev='0.1.4'>
+<dependency org='com.watermark' name='androidwm' rev='0.1.5'>
   <artifact name='androidwm' ext='pom' />
 </dependency>
 ```
 
 ## Quick Start
-After downloading the library and adding it into your project, you can get a watermark instance by `WatermarkBuilder`.
-You can add a watermark image or watermark text into your background by adding `loadWatermarkImage(Bitmap)` or `loadWatermarkText(String)` like this:
+After downloading the library and adding it into your project, You can create a `WatermarkImage` or `WatermarkText` and do some pre-settings with their instance.
 
 ```java
-    WatermarkBuilder
-            .create(context, backgroundBitmap)
-            .loadWatermarkImage(watermarkBitmap)
-            .loadWatermarkText(watermarkText)
-            .getWatermark();
+    WatermarkText watermarkText = new WatermarkText(editText)
+            .setPositionX(0.5)
+            .setPositionY(0.5)
+            .setTextColor(Color.WHITE)
+            .setTextFont(R.font.champagne)
+            .setTextShadow(0.1f, 5, 5, Color.BLUE)
+            .setTextAlpha(150)
+            .setRotation(30)
+            .setTextSize(20);
 ```
 
-There are packaged `WatermarkImage` and `WatermarkText` classes for you to create a more flexible and more customized watermark, you can also instantiate them and put them in the ImageView quickly:
+There are many attributes that can help you to make a customization with a text watermark or an image watermark. You can get more information from the specific documentation section that follows.
+
+After the preparation is complete, you need a `WatermarkBuilder` to create a watermark image. You can get an instance from the `create` method of `WatermarkBuilder`, and, you need to put a `Bitmap` or an int `Drawable` as the background image first.
 
 ```java
-    WatermarkImage watermarkImage = new WatermarkImage(watermarkBitmap)
-            .setRotation(45)
-            .setPositionX(10.5)
-            .setPositionY(20.1);
-            
     WatermarkBuilder
             .create(context, backgroundBitmap)
+            .loadWatermarkText(watermarkText)
             .loadWatermarkImage(watermarkImage)
             .getWatermark()
             .setToImageView(imageView);
 ```
 
-Here is a table of attributes in `WatermarkText` that you can custom:
+You can create both text watermark and image watermark, and load them into your `WatermarkBuilder`. If you want to get the result bitmap, we also have a `.getOutputImage()` method for you after getting the watermark:
 
+```java
+    Bitmap bitmap = WatermarkBuilder
+            .create(this, backgroundBitmap)
+            .getWatermark()
+            .getOutputImage();
+```
+
+And if you want to add many watermarks at the same time, you can use a `List<>` to hold your watermarks. You can add the `List<>` into the background image by ` .loadWatermarkTexts(watermarkTexts)`, the same as watermark images:
+
+```java
+    WatermarkBuilder
+            .create(this, backgroundBitmap)
+            .loadWatermarkTexts(watermarkTexts)
+            .loadWatermarkImages(watermarkImages)
+            .getWatermark();
+```
+
+Enjoy yourself!
+
+### Detailed usages
+
+Here is a table of attributes in `WatermarkText` that you can custom:
 
 |   __Method__  | __Description__ | __Default value__ |
 | ------------- | ------------- | ------------- |
@@ -74,42 +97,24 @@ Here is a table of attributes in `WatermarkText` that you can custom:
 | setTextAlpha   |  the text alpha of the `WatermarkText`, from 0 to 255 | _50_  |
 | setTextSize  |  the text size of the `WatermarkText` | _20_   |
 | setWatermarkVisibility  |  the visibility of the `WatermarkText` | _true_   |
-| setWatermarkEncrypted  |  whether to encrypted the `WatermarkText` | _false_   |
+| setTextFont  | font of the `WatermarkText` | default  |
+| setTextShadow  |  shadow of the `WatermarkText` | (0, 0, 0)  |
 
-The basic methods of `WatermarkImage` are the same as `WatermarkText`, but for a image watermark, there is no background and background color. If you want to load a watermark image or a watermark from a view, you can use those methods like this:
+The basic methods of `WatermarkImage` are the same as `WatermarkText`, but for a image watermark, there is no background and background color. If you want to load a watermark image or a watermark from a view or resources, you can use those methods like this:
 
 ```java
 WatermarkText watermarkText = new WatermarkText(editText); // for a text from EditText.
 WatermarkText watermarkText = new WatermarkText(textView); // for a text from TextView.
-WatermarkImage watermarkImage = new WatermarkImage(imageView); // for a image from imageView.
+WatermarkImage watermarkImage = new WatermarkImage(imageView); // for an image from ImageView.
+WatermarkImage watermarkImage = new WatermarkImage(this, R.drawable.image); // for an image from Resource.
 ```
-Also, the background image can be added via `ImageView`:
+
+The  `WatermarkBuilder` can be create from resources too. Also, the background image can be added via `ImageView`:
 
 ```java
     WatermarkBuilder
             .create(this, backgroundImageView)
             .getWatermark()
-
-```
-
-And if you want to add many watermark at the same time, you can use a `List<>` to hold your watermark texts. You can add the `List<>` into the background image by ` .loadWatermarkTexts(watermarkTexts)`, the same as watermark images:
-
-```java
-    WatermarkBuilder
-            .create(this, backgroundImageView)
-            .loadWatermarkTexts(watermarkTexts)
-            .loadWatermarkImages(watermarkImages)
-            .getWatermark()
-```
-
-If you want to get the result bitmap, we also have a `.getOutputImage()` method for you:
-
-```java
-    Bitmap bitmap = WatermarkBuilder
-            .create(this, backgroundImageView)
-            .getWatermark()
-            .getOutputImage();
-
 ```
 
 If you didn't load a watermark ,the default value is as the same as background, nothing will be changed.

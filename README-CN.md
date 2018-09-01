@@ -8,7 +8,7 @@
 使用 gradle 下载框架:
 
 ```java
-implementation 'com.watermark:androidwm:0.1.3'
+implementation 'com.watermark:androidwm:0.1.4'
 ```
 
 使用 maven 下载框架:
@@ -17,7 +17,7 @@ implementation 'com.watermark:androidwm:0.1.3'
 <dependency>
   <groupId>com.watermark</groupId>
   <artifactId>androidwm</artifactId>
-  <version>0.1.3</version>
+  <version>0.1.4</version>
   <type>pom</type>
 </dependency>
 ```
@@ -25,7 +25,7 @@ implementation 'com.watermark:androidwm:0.1.3'
 使用 lvy 下载框架:
 
 ```java
-<dependency org='com.watermark' name='androidwm' rev='0.1.3'>
+<dependency org='com.watermark' name='androidwm' rev='0.1.4'>
   <artifact name='androidwm' ext='pom' />
 </dependency>
 ```
@@ -36,7 +36,7 @@ implementation 'com.watermark:androidwm:0.1.3'
 
 ```java
     WatermarkBuilder
-            .create(this, backgroundBitmap)
+            .create(context, backgroundBitmap)
             .loadWatermarkImage(watermarkBitmap)
             .loadWatermarkText(watermarkText)
             .getWatermark();
@@ -51,8 +51,64 @@ androidwm 里面有封装好的 `WatermarkImage` 和 `WatermarkText` 类，它�
             .setPositionY(20.1);
             
     WatermarkBuilder
-            .create(this, backgroundBitmap)
+            .create(context, backgroundBitmap)
             .loadWatermarkImage(watermarkImage)
             .getWatermark()
             .setToImageView(imageView);
 ```
+
+对于 `WatermarkText` 的定制化，我们提供了一些常用的方法:
+
+
+|   __方法名称__  | __备注__ | __默认值__ |
+| ------------- | ------------- | ------------- |
+| setPosition  |    `WatermarkText` 的 `WatermarkPosition` | _null_ |
+| setPositionX  |  `WatermarkText` 绘制的横轴坐标  | _0_  |
+| setPositionY  |  `WatermarkText` 绘制的纵轴坐标 | _0_ |
+| setRotation  |  `WatermarkText` 的旋转角度, 从 0 到 360 | _0_  |
+| setTextColor   |   `WatermarkText` 的字体颜色 | _`Color.BLACK`_  |
+| setTextStyle    |   `WatermarkText` 的字体风格 | _`Paint.Style.FILL`_  |
+| setBackgroundColor   |  `WatermarkText` 水印文字的背景颜色 | _null_  |
+| setTextAlpha   |   `WatermarkText` 的透明度, 从 0 到 255 | _50_  |
+| setTextSize  |  `WatermarkText` 的字体大小 | _20_   |
+| setWatermarkVisibility  |  `WatermarkText` 水印是否是可见水印 | _true_   |
+| setWatermarkEncrypted  | `WatermarkText` 是否对水印进行加密| _false_   |
+
+`WatermarkImage` 的一些基本属性和`WatermarkText` 的相同, 但是对于图片水印来说, 没有文字样式和背景（所以也就不存在什么背景颜色）. 如果你要从一个视图中加载字符串作为水印文字, 你可以使用下面的方法:
+
+```java
+WatermarkText watermarkText = new WatermarkText(editText); // for a text from EditText.
+WatermarkText watermarkText = new WatermarkText(textView); // for a text from TextView.
+WatermarkImage watermarkImage = new WatermarkImage(imageView); // for a image from imageView.
+```
+同理，你也可以从 `ImageView` 中加载图片作为水印图片:
+
+```java
+    WatermarkBuilder
+            .create(this, backgroundImageView)
+            .getWatermark()
+
+```
+
+如果你想要一次性添加多个不同的文字水印，你可以使用一个线性表 `List<>` 来放置你的水印， 你可以把放有你水印的 `List<>` 通过方法： ` .loadWatermarkTexts(watermarkTexts)` 加载到水印构建器中，添加图片类型的水印同理：
+
+```java
+    WatermarkBuilder
+            .create(this, backgroundImageView)
+            .loadWatermarkTexts(watermarkTexts)
+            .loadWatermarkImages(watermarkImages)
+            .getWatermark()
+```
+
+如果你想要获得处理后的图片，你可以使用方法 `.getOutputImage()` ，就像这样：
+
+```java
+    WatermarkBuilder
+            .create(this, backgroundImageView)
+            .getWatermark()
+            .getOutputImage();
+
+```
+
+如果在水印构建器中你既没有加载文字水印也没有加载图片水印，那么处理过后的图片将保持原样，毕竟你啥也没干 :)。
+

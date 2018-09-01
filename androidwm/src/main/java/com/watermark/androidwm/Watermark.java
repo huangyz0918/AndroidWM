@@ -18,11 +18,13 @@ package com.watermark.androidwm;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -52,6 +54,7 @@ public class Watermark {
     private List<WatermarkText> wmTextList;
     private Bitmap outputImage;
     private Bitmap canvasBitmap;
+    private boolean isTileMode;
 
     /**
      * Constructors for WatermarkImage
@@ -61,9 +64,11 @@ public class Watermark {
               @Nullable WatermarkImage watermarkImg,
               @Nullable List<WatermarkImage> wmBitmapList,
               @Nullable WatermarkText inputText,
-              @Nullable List<WatermarkText> wmTextList) {
+              @Nullable List<WatermarkText> wmTextList,
+              boolean isTileMode) {
 
         this.context = context;
+        this.isTileMode = isTileMode;
         this.watermarkImg = watermarkImg;
         this.wmBitmapList = wmBitmapList;
         this.backgroundImg = backgroundImg;
@@ -140,10 +145,20 @@ public class Watermark {
             Bitmap scaledWMBitmap = resizeBitmap(watermarkImg.getImage(), (float) watermarkImg.getSize());
             scaledWMBitmap = adjustPhotoRotation(scaledWMBitmap,
                     (int) watermarkImg.getPosition().getRotation());
-            watermarkCanvas.drawBitmap(scaledWMBitmap,
-                    (float) watermarkImg.getPosition().getPositionX() * backgroundImg.getWidth(),
-                    (float) watermarkImg.getPosition().getPositionY() * backgroundImg.getHeight(),
-                    watermarkPaint);
+
+            if (isTileMode) {
+                watermarkPaint.setShader(new BitmapShader(scaledWMBitmap,
+                        Shader.TileMode.REPEAT,
+                        Shader.TileMode.REPEAT));
+                Rect bitmapShaderRect = watermarkCanvas.getClipBounds();
+                watermarkCanvas.drawRect(bitmapShaderRect, watermarkPaint);
+            } else {
+                watermarkCanvas.drawBitmap(scaledWMBitmap,
+                        (float) watermarkImg.getPosition().getPositionX() * backgroundImg.getWidth(),
+                        (float) watermarkImg.getPosition().getPositionY() * backgroundImg.getHeight(),
+                        watermarkPaint);
+            }
+
             canvasBitmap = newBitmap;
             outputImage = newBitmap;
         }
@@ -175,14 +190,23 @@ public class Watermark {
                     backgroundImg.getHeight(), backgroundImg.getConfig());
             Canvas watermarkCanvas = new Canvas(newBitmap);
             watermarkCanvas.drawBitmap(canvasBitmap, 0, 0, null);
-
             Bitmap scaledWMBitmap = textAsBitmap(watermarkText);
             scaledWMBitmap = adjustPhotoRotation(scaledWMBitmap,
                     (int) watermarkText.getPosition().getRotation());
-            watermarkCanvas.drawBitmap(scaledWMBitmap,
-                    (float) watermarkText.getPosition().getPositionX() * backgroundImg.getWidth(),
-                    (float) watermarkText.getPosition().getPositionY() * backgroundImg.getHeight(),
-                    watermarkPaint);
+
+            if (isTileMode) {
+                watermarkPaint.setShader(new BitmapShader(scaledWMBitmap,
+                        Shader.TileMode.REPEAT,
+                        Shader.TileMode.REPEAT));
+                Rect bitmapShaderRect = watermarkCanvas.getClipBounds();
+                watermarkCanvas.drawRect(bitmapShaderRect, watermarkPaint);
+            } else {
+                watermarkCanvas.drawBitmap(scaledWMBitmap,
+                        (float) watermarkText.getPosition().getPositionX() * backgroundImg.getWidth(),
+                        (float) watermarkText.getPosition().getPositionY() * backgroundImg.getHeight(),
+                        watermarkPaint);
+            }
+
             canvasBitmap = newBitmap;
             outputImage = newBitmap;
         }

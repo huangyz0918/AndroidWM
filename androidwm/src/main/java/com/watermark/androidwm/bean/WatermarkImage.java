@@ -21,12 +21,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.annotation.DrawableRes;
-import android.util.Log;
 import android.widget.ImageView;
-
-import com.watermark.androidwm.exceptions.IllegalWatermarkImageException;
-
-import static com.watermark.androidwm.exceptions.Constant.EXCEPTION_INVALIED_DRAWABLE;
 
 /**
  * It's a wrapper of the watermark image.
@@ -53,26 +48,14 @@ public class WatermarkImage {
         this.image = image;
     }
 
-    public WatermarkImage(Context context, @DrawableRes int imageDrawable, WatermarkPosition position)
-            throws IllegalWatermarkImageException {
-        String resourceName = String.valueOf(imageDrawable);
-        if (context.getResources().getIdentifier(resourceName,
-                "drawable", context.getPackageName()) == 0) {
-            throw new IllegalWatermarkImageException(EXCEPTION_INVALIED_DRAWABLE);
-        }
+    public WatermarkImage(Context context, @DrawableRes int imageDrawable, WatermarkPosition position) {
         this.imageDrawable = imageDrawable;
         this.position = position;
         this.context = context;
         this.image = getBitmapFromDrawable(imageDrawable);
     }
 
-    public WatermarkImage(Context context, @DrawableRes int imageDrawable)
-            throws IllegalWatermarkImageException {
-        String resourceName = String.valueOf(imageDrawable);
-        if (context.getResources().getIdentifier(resourceName,
-                "drawable", context.getPackageName()) == 0) {
-            throw new IllegalWatermarkImageException(EXCEPTION_INVALIED_DRAWABLE);
-        }
+    public WatermarkImage(Context context, @DrawableRes int imageDrawable) {
         this.imageDrawable = imageDrawable;
         this.context = context;
         this.image = getBitmapFromDrawable(imageDrawable);
@@ -141,7 +124,7 @@ public class WatermarkImage {
         return this;
     }
 
-    public WatermarkImage setImageDrawable(int imageDrawable) {
+    public WatermarkImage setImageDrawable(@DrawableRes int imageDrawable) {
         this.imageDrawable = imageDrawable;
         return this;
     }
@@ -191,16 +174,6 @@ public class WatermarkImage {
     }
 
     private Bitmap getBitmapFromDrawable(@DrawableRes int imageDrawable) {
-        String resourceName = String.valueOf(imageDrawable);
-        try {
-            if (context.getResources().getIdentifier(resourceName,
-                    "drawable", context.getPackageName()) == 0) {
-                throw new IllegalWatermarkImageException(EXCEPTION_INVALIED_DRAWABLE);
-            }
-        } catch (IllegalWatermarkImageException e) {
-            Log.e("Exception:", e.getMessage());
-        }
-
         return BitmapFactory.decodeResource(context.getResources(), imageDrawable);
     }
 }

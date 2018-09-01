@@ -27,12 +27,9 @@ import android.widget.ImageView;
 import com.watermark.androidwm.bean.WatermarkImage;
 import com.watermark.androidwm.bean.WatermarkPosition;
 import com.watermark.androidwm.bean.WatermarkText;
-import com.watermark.androidwm.exceptions.IllegalWatermarkImageException;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.watermark.androidwm.exceptions.Constant.EXCEPTION_INVALIED_DRAWABLE;
 
 /**
  * A builder class for setting default structural classes for watermark to use.
@@ -42,6 +39,8 @@ import static com.watermark.androidwm.exceptions.Constant.EXCEPTION_INVALIED_DRA
 public final class WatermarkBuilder {
     private Context context;
     private Bitmap backgroundImg;
+    private boolean isTileMode = false;
+
     private WatermarkImage watermarkImage;
     private WatermarkText watermarkText;
     private List<WatermarkText> watermarkTexts = new ArrayList<>();
@@ -88,17 +87,12 @@ public final class WatermarkBuilder {
 
     /**
      * to get an instance form class.
-     * Load the background image from a {@link DrawableRes}。
+     * Load the background image from a DrawableRes。
      *
      * @return instance of {@link WatermarkBuilder}
      */
     @SuppressWarnings("PMD")
-    public static WatermarkBuilder create(Context context, @DrawableRes int backgroundDrawable) throws IllegalWatermarkImageException {
-        String resourceName = String.valueOf(backgroundDrawable);
-        if (context.getResources().getIdentifier(resourceName,
-                "drawable", context.getPackageName()) == 0) {
-            throw new IllegalWatermarkImageException(EXCEPTION_INVALIED_DRAWABLE);
-        }
+    public static WatermarkBuilder create(Context context, @DrawableRes int backgroundDrawable) {
         return new WatermarkBuilder(context, backgroundDrawable);
     }
 
@@ -208,6 +202,14 @@ public final class WatermarkBuilder {
         return this;
     }
 
+    /**
+     * Set mode to tile. We need to draw watermark over the
+     * whole background.
+     */
+    public WatermarkBuilder setTileMode(boolean tileMode) {
+        isTileMode = tileMode;
+        return this;
+    }
 
     /**
      * load a bitmap as background image from a ImageView.
@@ -235,8 +237,8 @@ public final class WatermarkBuilder {
                 watermarkImage,
                 watermarkBitmaps,
                 watermarkText,
-                watermarkTexts
-
+                watermarkTexts,
+                isTileMode
         );
     }
 }

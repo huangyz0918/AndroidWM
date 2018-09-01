@@ -22,7 +22,7 @@ bintray {
         userOrg = 'galaxyrockets'
 
         version {
-            name = 'v0.1.4'
+            name = 'v0.1.5'
             desc = "A lightweight image watermark library that supports encrypted watermarks, android"
             vcsTag = version
         }

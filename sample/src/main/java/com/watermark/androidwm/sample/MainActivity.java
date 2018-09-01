@@ -88,8 +88,6 @@ public class MainActivity extends AppCompatActivity {
                     .setPositionX(Math.random())
                     .setPositionY(Math.random())
                     .setTextColor(Color.BLACK)
-                    .setTextFont(R.font.champagne)
-                    .setTextShadow(0.1f, 5, 5, Color.BLUE)
                     .setTextAlpha(150)
                     .setRotation(30)
                     .setTextSize(20);
@@ -97,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
             WatermarkBuilder
                     .create(this, backgroundView)
                     .loadWatermarkText(watermarkText)
+                    .setTileMode(true)
                     .getWatermark()
                     .setToImageView(backgroundView);
         });
@@ -109,11 +108,13 @@ public class MainActivity extends AppCompatActivity {
                     .setImageAlpha(100)
                     .setPositionX(Math.random())
                     .setPositionY(Math.random())
+                    .setRotation(15)
                     .setSize(0.2);
 
             WatermarkBuilder
                     .create(this, backgroundView)
                     .loadWatermarkImage(watermarkImage)
+                    .setTileMode(true)
                     .getWatermark()
                     .setToImageView(backgroundView);
         });

@@ -77,9 +77,9 @@ androidwm 里面有封装好的 `WatermarkImage` 和 `WatermarkText` 类，它�
 `WatermarkImage` 的一些基本属性和`WatermarkText` 的相同, 但是对于图片水印来说, 没有文字样式和背景（所以也就不存在什么背景颜色）. 如果你要从一个视图中加载字符串作为水印文字, 你可以使用下面的方法:
 
 ```java
-WatermarkText watermarkText = new WatermarkText(editText); // for a text from EditText.
-WatermarkText watermarkText = new WatermarkText(textView); // for a text from TextView.
-WatermarkImage watermarkImage = new WatermarkImage(imageView); // for a image from imageView.
+WatermarkText watermarkText = new WatermarkText(editText); // EditText.
+WatermarkText watermarkText = new WatermarkText(textView); // TextView.
+WatermarkImage watermarkImage = new WatermarkImage(imageView); // ImageView.
 ```
 同理，你也可以从 `ImageView` 中加载图片作为水印图片:
 
@@ -103,7 +103,7 @@ WatermarkImage watermarkImage = new WatermarkImage(imageView); // for a image fr
 如果你想要获得处理后的图片，你可以使用方法 `.getOutputImage()` ，就像这样：
 
 ```java
-    WatermarkBuilder
+    Bitmap bitmap = WatermarkBuilder
             .create(this, backgroundImageView)
             .getWatermark()
             .getOutputImage();

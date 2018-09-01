@@ -31,6 +31,9 @@ import com.watermark.androidwm.WatermarkBuilder;
 import com.watermark.androidwm.bean.WatermarkImage;
 import com.watermark.androidwm.bean.WatermarkText;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * This is the sample for library: androidwm.
  *
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnAddText;
     private Button btnAddImg;
     private Button btnAddAll;
+    private Button btnAddList;
 
     private ImageView backgroundView;
     private Bitmap watermarkBitmap;
@@ -61,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
         btnAddImg = findViewById(R.id.btn_add_image);
         btnAddText = findViewById(R.id.btn_add_text);
         btnAddAll = findViewById(R.id.btn_add_all);
+        btnAddList = findViewById(R.id.btn_add_list);
+
         editText = findViewById(R.id.editText);
         backgroundView = findViewById(R.id.imageView);
 
@@ -79,11 +85,10 @@ public class MainActivity extends AppCompatActivity {
             WatermarkText watermarkText = new WatermarkText(editText.getText().toString())
                     .setPositionX(Math.random())
                     .setPositionY(Math.random())
-                    .setColor(Color.WHITE)
+                    .setTextColor(Color.BLACK)
                     .setTextAlpha(150)
                     .setRotation(30)
-                    .setBackgroundColor(Color.BLUE)
-                    .setSize(20);
+                    .setTextSize(20);
 
             WatermarkBuilder
                     .create(this, backgroundView)
@@ -120,10 +125,10 @@ public class MainActivity extends AppCompatActivity {
             WatermarkText watermarkText = new WatermarkText("FFF")
                     .setPositionX(Math.random())
                     .setPositionY(Math.random())
-                    .setColor(Color.WHITE)
+                    .setTextColor(Color.WHITE)
                     .setTextAlpha(150)
                     .setBackgroundColor(Color.GREEN)
-                    .setSize(50);
+                    .setTextSize(50);
 
 
             Bitmap outputBitmap = WatermarkBuilder
@@ -133,6 +138,37 @@ public class MainActivity extends AppCompatActivity {
                     .getWatermark().getOutputImage();
 
             backgroundView.setImageBitmap(outputBitmap);
+        });
+
+        // The sample method of adding a list of watermarks.
+        btnAddList.setOnClickListener((View v) -> {
+            List<WatermarkText> watermarkTexts = new ArrayList<>();
+            List<WatermarkImage> watermarkImages = new ArrayList<>();
+            for (int i = 0; i < 3; i++) {
+                WatermarkText watermarkText = new WatermarkText("This is watermark: " + i)
+                        .setPositionX(Math.random())
+                        .setPositionY(Math.random())
+                        .setTextColor(Color.WHITE)
+                        .setTextAlpha(150)
+                        .setBackgroundColor(Color.RED)
+                        .setTextSize(20);
+
+                WatermarkImage watermarkImage = new WatermarkImage(watermarkBitmap)
+                        .setImageAlpha(150)
+                        .setPositionX(Math.random())
+                        .setPositionY(Math.random())
+                        .setSize(0.1);
+
+                watermarkTexts.add(watermarkText);
+                watermarkImages.add(watermarkImage);
+            }
+
+            WatermarkBuilder
+                    .create(this, backgroundView)
+                    .loadWatermarkTexts(watermarkTexts)
+                    .loadWatermarkImages(watermarkImages)
+                    .getWatermark()
+                    .setToImageView(backgroundView);
         });
 
     }

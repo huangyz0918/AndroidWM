@@ -70,8 +70,10 @@ public class Watermark {
 
         canvasBitmap = backgroundImg;
 
-        createWatermarkImage();
-        createWatermarkText();
+        createWatermarkImage(watermarkImg);
+        createWatermarkImages(wmBitmapList);
+        createWatermarkText(watermarkText);
+        createWatermarkTexts(wmTextList);
 
     }
 
@@ -124,7 +126,7 @@ public class Watermark {
      * Creating the composite image with {@link WatermarkImage}.
      * This method cannot be called outside.
      */
-    private void createWatermarkImage() {
+    private void createWatermarkImage(WatermarkImage watermarkImg) {
         if (watermarkImg != null) {
             Paint watermarkPaint = new Paint();
             watermarkPaint.setAlpha(watermarkImg.getAlpha());
@@ -146,19 +148,32 @@ public class Watermark {
     }
 
     /**
+     * Creating the composite image with {@link WatermarkImage}.
+     * The input of the method is a set of {@link WatermarkImage}s.
+     */
+
+    private void createWatermarkImages(List<WatermarkImage> watermarkImages) {
+        if (watermarkImages != null) {
+            for (int i = 0; i < watermarkImages.size(); i++) {
+                createWatermarkImage(watermarkImages.get(i));
+            }
+        }
+    }
+
+    /**
      * Creating the composite image with  {@link WatermarkText}.
      * This method cannot be called outside.
      */
-    private void createWatermarkText() {
+    private void createWatermarkText(WatermarkText watermarkText) {
         if (watermarkText != null) {
             Paint watermarkPaint = new Paint();
-            watermarkPaint.setAlpha(watermarkText.getAlpha());
+            watermarkPaint.setAlpha(watermarkText.getTextAlpha());
             Bitmap newBitmap = Bitmap.createBitmap(backgroundImg.getWidth(),
                     backgroundImg.getHeight(), backgroundImg.getConfig());
             Canvas watermarkCanvas = new Canvas(newBitmap);
             watermarkCanvas.drawBitmap(canvasBitmap, 0, 0, null);
 
-            Bitmap scaledWMBitmap = textAsBitmap();
+            Bitmap scaledWMBitmap = textAsBitmap(watermarkText);
             scaledWMBitmap = adjustPhotoRotation(scaledWMBitmap,
                     (int) watermarkText.getPosition().getRotation());
             watermarkCanvas.drawBitmap(scaledWMBitmap,
@@ -167,6 +182,19 @@ public class Watermark {
                     watermarkPaint);
             canvasBitmap = newBitmap;
             outputImage = newBitmap;
+        }
+    }
+
+    /**
+     * Creating the composite image with {@link WatermarkText}.
+     * The input of the method is a set of {@link WatermarkText}s.
+     */
+
+    private void createWatermarkTexts(List<WatermarkText> watermarkTexts) {
+        if (watermarkTexts != null) {
+            for (int i = 0; i < watermarkTexts.size(); i++) {
+                createWatermarkText(watermarkTexts.get(i));
+            }
         }
     }
 
@@ -248,12 +276,12 @@ public class Watermark {
      *
      * @return {@link Bitmap} the bitmap return.
      */
-    private Bitmap textAsBitmap() {
+    private Bitmap textAsBitmap(WatermarkText watermarkText) {
         TextPaint watermarkPaint = new TextPaint();
-        watermarkPaint.setColor(watermarkText.getColor());
-        watermarkPaint.setStyle(watermarkText.getStyle());
-        watermarkPaint.setAlpha(watermarkText.getAlpha());
-        watermarkPaint.setTextSize((float) watermarkText.getSize() *
+        watermarkPaint.setColor(watermarkText.getTextColor());
+        watermarkPaint.setStyle(watermarkText.getTextStyle());
+        watermarkPaint.setAlpha(watermarkText.getTextAlpha());
+        watermarkPaint.setTextSize((float) watermarkText.getTextSize() *
                 context.getResources().getDisplayMetrics().density
                 * (backgroundImg.getWidth() / getScreenWidth()));
         watermarkPaint.setAntiAlias(true);

@@ -3,4 +3,5 @@
     <string name="btn_add_text">create text</string>
     <string name="btn_add_image">create image</string>
     <string name="btn_add_all">create both</string>
+    <string name="btn_add_list">create list</string>
 </resources>

@@ -20,7 +20,7 @@ public class WatermarkText {
     private int alpha = 50;
     private double size = 20;
     private int color = Color.BLACK;
-    private int backgroundColor = Color.WHITE;
+    private int backgroundColor = Color.TRANSPARENT;
     private Paint.Style style = Paint.Style.FILL;
     // set the default values for the position.
     private WatermarkPosition position = new WatermarkPosition(0, 0, 0);
@@ -52,7 +52,7 @@ public class WatermarkText {
         return isVisible;
     }
 
-    public int getAlpha() {
+    public int getTextAlpha() {
         return alpha;
     }
 
@@ -60,15 +60,15 @@ public class WatermarkText {
         return position;
     }
 
-    public double getSize() {
+    public double getTextSize() {
         return size;
     }
 
-    public int getColor() {
+    public int getTextColor() {
         return color;
     }
 
-    public Paint.Style getStyle() {
+    public Paint.Style getTextStyle() {
         return style;
     }
 
@@ -100,12 +100,12 @@ public class WatermarkText {
         return this;
     }
 
-    public WatermarkText setColor(int color) {
+    public WatermarkText setTextColor(int color) {
         this.color = color;
         return this;
     }
 
-    public WatermarkText setStyle(Paint.Style style) {
+    public WatermarkText setTextStyle(Paint.Style style) {
         this.style = style;
         return this;
     }
@@ -126,7 +126,7 @@ public class WatermarkText {
     /**
      * @param size can be set to normal text size.
      */
-    public WatermarkText setSize(double size) {
+    public WatermarkText setTextSize(double size) {
         this.size = size;
         return this;
     }

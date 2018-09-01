@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button btnAddText;
     private Button btnAddImg;
+    private Button btnAddAll;
 
     private ImageView backgroundView;
     private Bitmap watermarkBitmap;
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private void initViews() {
         btnAddImg = findViewById(R.id.btn_add_image);
         btnAddText = findViewById(R.id.btn_add_text);
+        btnAddAll = findViewById(R.id.btn_add_all);
         editText = findViewById(R.id.editText);
         backgroundView = findViewById(R.id.imageView);
 
@@ -100,6 +102,31 @@ public class MainActivity extends AppCompatActivity {
             WatermarkBuilder
                     .create(this, backgroundView)
                     .loadWatermarkImage(watermarkImage)
+                    .getWatermark()
+                    .setToImageView(backgroundView);
+        });
+
+        // The sample method of adding both image and text watermark.
+        btnAddAll.setOnClickListener((View v) -> {
+            WatermarkImage watermarkImage = new WatermarkImage(watermarkBitmap)
+                    .setImageAlpha(150)
+                    .setPositionX(Math.random())
+                    .setPositionY(Math.random())
+                    .setSize(0.1);
+
+            WatermarkText watermarkText = new WatermarkText("FFF")
+                    .setPositionX(Math.random())
+                    .setPositionY(Math.random())
+                    .setColor(Color.WHITE)
+                    .setTextAlpha(150)
+                    .setRotation(90)
+                    .setBackgroundColor(Color.GREEN)
+                    .setSize(30);
+
+            WatermarkBuilder
+                    .create(this, backgroundView)
+                    .loadWatermarkImage(watermarkImage)
+                    .loadWatermarkText(watermarkText)
                     .getWatermark()
                     .setToImageView(backgroundView);
         });

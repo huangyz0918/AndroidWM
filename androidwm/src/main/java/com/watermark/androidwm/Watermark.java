@@ -46,6 +46,7 @@ public class Watermark {
     private List<WatermarkImage> wmBitmapList;
     private List<WatermarkText> wmTextList;
     private Bitmap outputImage;
+    private Bitmap canvasBitmap;
 
     /**
      * Constructors for WatermarkImage
@@ -63,6 +64,8 @@ public class Watermark {
         this.backgroundImg = backgroundImg;
         this.wmTextList = wmTextList;
         this.watermarkText = inputText;
+
+        canvasBitmap = backgroundImg;
 
         createWatermarkImage();
         createWatermarkText();
@@ -107,7 +110,7 @@ public class Watermark {
             Bitmap newBitmap = Bitmap.createBitmap(backgroundImg.getWidth(),
                     backgroundImg.getHeight(), backgroundImg.getConfig());
             Canvas watermarkCanvas = new Canvas(newBitmap);
-            watermarkCanvas.drawBitmap(backgroundImg, 0, 0, null);
+            watermarkCanvas.drawBitmap(canvasBitmap, 0, 0, null);
             Bitmap scaledWMBitmap = resizeBitmap(watermarkImg.getImage(), (float) watermarkImg.getSize());
             scaledWMBitmap = adjustPhotoRotation(scaledWMBitmap,
                     (int) watermarkImg.getPosition().getRotation());
@@ -115,6 +118,7 @@ public class Watermark {
                     (float) watermarkImg.getPosition().getPositionX() * backgroundImg.getWidth(),
                     (float) watermarkImg.getPosition().getPositionY() * backgroundImg.getHeight(),
                     watermarkPaint);
+            canvasBitmap = newBitmap;
             outputImage = newBitmap;
         }
 
@@ -131,7 +135,7 @@ public class Watermark {
             Bitmap newBitmap = Bitmap.createBitmap(backgroundImg.getWidth(),
                     backgroundImg.getHeight(), backgroundImg.getConfig());
             Canvas watermarkCanvas = new Canvas(newBitmap);
-            watermarkCanvas.drawBitmap(backgroundImg, 0, 0, null);
+            watermarkCanvas.drawBitmap(canvasBitmap, 0, 0, null);
 
             Bitmap scaledWMBitmap = textAsBitmap();
             scaledWMBitmap = adjustPhotoRotation(scaledWMBitmap,
@@ -140,6 +144,7 @@ public class Watermark {
                     (float) watermarkText.getPosition().getPositionX() * backgroundImg.getWidth(),
                     (float) watermarkText.getPosition().getPositionY() * backgroundImg.getHeight(),
                     watermarkPaint);
+            canvasBitmap = newBitmap;
             outputImage = newBitmap;
         }
     }

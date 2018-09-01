@@ -41,6 +41,14 @@
             android:layout_weight="1"
             android:text="@string/btn_add_image" />
 
+
+        <Button
+            android:id="@+id/btn_add_all"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/btn_add_all" />
+
     </LinearLayout>
 
 </RelativeLayout>

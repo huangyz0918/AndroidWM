@@ -81,7 +81,7 @@ And if you want to add many watermarks at the same time, you can use a `List<>` 
 
 Enjoy yourself!
 
-## Detailed usages
+## Detailed Usages
 
 Here is a table of attributes in `WatermarkText` that you can custom:
 

@@ -9,13 +9,13 @@
 
 使用 gradle 下载框架:
 
-```groovy
+```gradle
 implementation 'com.huangyz0918:androidwm:v0.1.5'
 ```
 
 使用 maven 下载框架:
 
-```maven
+```xml
 <dependency>
   <groupId>com.huangyz0918</groupId>
   <artifactId>androidwm</artifactId>
@@ -26,7 +26,7 @@ implementation 'com.huangyz0918:androidwm:v0.1.5'
 
 使用 lvy 下载框架:
 
-```lvy
+```xml
 <dependency org='com.huangyz0918' name='androidwm' rev='v0.1.5'>
   <artifact name='androidwm' ext='pom' ></artifact>
 </dependency>

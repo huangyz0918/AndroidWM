@@ -59,11 +59,11 @@ After the preparation is complete, you need a `WatermarkBuilder` to create a wat
             .setToImageView(imageView);
 ```
 
-You can select normal mode (default) or tile mode in `WatermarkBuilder`:
+You can select normal mode (default) or tile mode in `WatermarkBuilder.setTileMode()`:
 
 ```java
     WatermarkBuilder
-            .create(this, backgroundView)
+            .create(this, backgroundBitmap)
             .loadWatermarkText(watermarkText)
             .setTileMode(true) // select different drawing mode.
             .getWatermark()

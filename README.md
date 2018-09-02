@@ -1,5 +1,5 @@
 # AndroidWM
- [ ![Download](https://api.bintray.com/packages/galaxyrockets/AndroidWM/androidwm/images/download.svg) ](https://bintray.com/galaxyrockets/AndroidWM/androidwm/_latestVersion) [![build Status](https://travis-ci.org/GalaxyRockets/AndroidWM.svg?branch=master)](https://travis-ci.org/GalaxyRockets/AndroidWM) [![principal](https://img.shields.io/badge/principal-huangyz0918-yellow.svg)](https://github.com/huangyz0918) [![contributions](https://img.shields.io/badge/contributions-welcome-green.svg)](https://github.com/GalaxyRockets/AndroidWM)
+[ ![Download](https://api.bintray.com/packages/huangyz0918/androidwm/androidwm/images/download.svg) ](https://bintray.com/huangyz0918/androidwm/androidwm/_latestVersion) [![build Status](https://travis-ci.org/GalaxyRockets/AndroidWM.svg?branch=master)](https://travis-ci.org/GalaxyRockets/AndroidWM) [![principal](https://img.shields.io/badge/principal-huangyz0918-yellow.svg)](https://github.com/huangyz0918) [![contributions](https://img.shields.io/badge/contributions-welcome-green.svg)](https://github.com/GalaxyRockets/AndroidWM)
 
 A lightweight android image watermark library that supports encrypted watermarks. [中文版本](./README-CN.md)
 
@@ -9,26 +9,26 @@ A lightweight android image watermark library that supports encrypted watermarks
 
 To use this library by gradle:
 
-```java
-implementation 'com.watermark:androidwm:0.1.5'
+```groovy
+implementation 'com.huangyz0918:androidwm:v0.1.5'
 ```
 
 For maven:
 
-```java
+```maven
 <dependency>
-  <groupId>com.watermark</groupId>
+  <groupId>com.huangyz0918</groupId>
   <artifactId>androidwm</artifactId>
-  <version>0.1.5</version>
+  <version>v0.1.5</version>
   <type>pom</type>
 </dependency>
 ```
 
 For lvy:
 
-```java
-<dependency org='com.watermark' name='androidwm' rev='0.1.5'>
-  <artifact name='androidwm' ext='pom' />
+```lvy
+<dependency org='com.huangyz0918' name='androidwm' rev='v0.1.5'>
+  <artifact name='androidwm' ext='pom' ></artifact>
 </dependency>
 ```
 

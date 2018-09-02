@@ -17,18 +17,17 @@ bintray {
     key = properties.getProperty("bintray.apikey")
 
     pkg {
-        repo = 'AndroidWM'
+        repo = 'androidwm'
         name = 'androidwm'
-        userOrg = 'galaxyrockets'
 
         version {
             name = 'v0.1.5'
-            desc = "A lightweight image watermark library that supports encrypted watermarks, android"
+            desc = "A lightweight android image watermark library that supports encrypted watermarks."
             vcsTag = version
         }
 
         licenses = ['Apache-2.0']
-        vcsUrl = 'https://github.com/GalaxyRockets/AndroidWM'
+        vcsUrl = 'https://github.com/huangyz0918/AndroidWM'
         websiteUrl = 'http://mywm.ml/'
     }
 

@@ -1,5 +1,5 @@
 # AndroidWM 
- [ ![Download](https://api.bintray.com/packages/galaxyrockets/AndroidWM/androidwm/images/download.svg) ](https://bintray.com/galaxyrockets/AndroidWM/androidwm/_latestVersion) [![build Status](https://travis-ci.org/GalaxyRockets/AndroidWM.svg?branch=master)](https://travis-ci.org/GalaxyRockets/AndroidWM) [![principal](https://img.shields.io/badge/principal-huangyz0918-yellow.svg)](https://github.com/huangyz0918) [![contributions](https://img.shields.io/badge/contributions-welcome-green.svg)](https://github.com/GalaxyRockets/AndroidWM)
+ [ ![Download](https://api.bintray.com/packages/huangyz0918/androidwm/androidwm/images/download.svg) ](https://bintray.com/huangyz0918/androidwm/androidwm/_latestVersion) [![build Status](https://travis-ci.org/GalaxyRockets/AndroidWM.svg?branch=master)](https://travis-ci.org/GalaxyRockets/AndroidWM) [![principal](https://img.shields.io/badge/principal-huangyz0918-yellow.svg)](https://github.com/huangyz0918) [![contributions](https://img.shields.io/badge/contributions-welcome-green.svg)](https://github.com/GalaxyRockets/AndroidWM)
 
 一个轻量级的 Android 图片水印框架，支持隐形水印和加密水印。 [English version](./README.md)
 
@@ -9,55 +9,80 @@
 
 使用 gradle 下载框架:
 
-```java
-implementation 'com.watermark:androidwm:0.1.5'
+```groovy
+implementation 'com.huangyz0918:androidwm:v0.1.5'
 ```
 
 使用 maven 下载框架:
 
-```java
+```maven
 <dependency>
-  <groupId>com.watermark</groupId>
+  <groupId>com.huangyz0918</groupId>
   <artifactId>androidwm</artifactId>
-  <version>0.1.5</version>
+  <version>v0.1.5</version>
   <type>pom</type>
 </dependency>
 ```
 
 使用 lvy 下载框架:
 
-```java
-<dependency org='com.watermark' name='androidwm' rev='0.1.5'>
-  <artifact name='androidwm' ext='pom' />
+```lvy
+<dependency org='com.huangyz0918' name='androidwm' rev='v0.1.5'>
+  <artifact name='androidwm' ext='pom' ></artifact>
 </dependency>
 ```
 
 ## 快速入门
-在下载并且在您的项目内配置好 androidwm 之后, 您可以使用 `WatermarkBuilder` 快速地获取到一个水印的实例 (`Watermark`).
-同时，您可以使用 `loadWatermarkImage(Bitmap)` 或者 `loadWatermarkText(String)` 方法为背景图片添加一个图片水印或者是文字水印:
+
+在下载并且配置好 androidwm 之后，你可以创建一个 `WatermarkImage` 或者是 `WatermarkText` 的实例，并且使用内置的诸多`Set`方法为创建一个水印做好准备。
 
 ```java
-    WatermarkBuilder
-            .create(context, backgroundBitmap)
-            .loadWatermarkImage(watermarkBitmap)
-            .loadWatermarkText(watermarkText)
-            .getWatermark();
+    WatermarkText watermarkText = new WatermarkText(editText)
+            .setPositionX(0.5)
+            .setPositionY(0.5)
+            .setTextColor(Color.WHITE)
+            .setTextFont(R.font.champagne)
+            .setTextShadow(0.1f, 5, 5, Color.BLUE)
+            .setTextAlpha(150)
+            .setRotation(30)
+            .setTextSize(20);
 ```
 
-androidwm 里面有封装好的 `WatermarkImage` 和 `WatermarkText` 类，它们可以帮助您灵活定制一个水印。在构建完成水印之后，您可以选择把新建的带水印图片放置到 ImageView 中:
+对于具体定制一个文字水印或者是图片水印， 我们在接下来的文档中会仔细介绍。
+
+当你的水印（文字或图片水印）已经准备就绪的时候，你需要一个 `WatermarkBuilder`来把水印画到你希望的背景图片上。 你可以通过 `create` 方法获取一个 `WatermarkBuilder` 的实例，注意，在创建这个实例的时候你需要先传入一个 `Bitmap` 或者是一个 `Drawable` 的资源 id。
 
 ```java
-    WatermarkImage watermarkImage = new WatermarkImage(watermarkBitmap)
-            .setRotation(45)
-            .setPositionX(10.5)
-            .setPositionY(20.1);
-            
     WatermarkBuilder
             .create(context, backgroundBitmap)
+            .loadWatermarkText(watermarkText)
             .loadWatermarkImage(watermarkImage)
             .getWatermark()
             .setToImageView(imageView);
 ```
+
+你可以通过`loadxxx()`方法将你定制好的水印加载到 `WatermarkBuilder`里。 如果你想获得最终绘制的图片，你可以在`.getWatermark()`之后调用 `.getOutputImage()`方法，它将返回一个 `Bitmap`：
+
+```java
+    Bitmap bitmap = WatermarkBuilder
+            .create(this, backgroundBitmap)
+            .getWatermark()
+            .getOutputImage();
+```
+
+如果你想在一个`WatermarkBuilder` 里面同时创建多个水印，你可以使用一个链表 `List<>` 来放置你想绘制的水印对象， 并且使用方法： ` .loadWatermarkTexts(watermarkTexts)`加载文字水印到背景图片中，图片水印同理：
+
+```java
+    WatermarkBuilder
+            .create(this, backgroundBitmap)
+            .loadWatermarkTexts(watermarkTexts)
+            .loadWatermarkImages(watermarkImages)
+            .getWatermark();
+```
+
+好啦，到这里你已经掌握了 androidwm 最基础的用法，enjoy yourself!
+
+## 使用说明
 
 对于 `WatermarkText` 的定制化，我们提供了一些常用的方法:
 
@@ -82,34 +107,14 @@ androidwm 里面有封装好的 `WatermarkImage` 和 `WatermarkText` 类，它�
 WatermarkText watermarkText = new WatermarkText(editText); // EditText.
 WatermarkText watermarkText = new WatermarkText(textView); // TextView.
 WatermarkImage watermarkImage = new WatermarkImage(imageView); // ImageView.
+WatermarkImage watermarkImage = new WatermarkImage(this, R.drawable.image); // for an image from Resource.
 ```
-同理，你也可以从 `ImageView` 中加载图片作为水印图片:
+类 `WatermarkBuilder` 初始化背景图片的时候也可以从系统的资源中添加（如：R.drawable.background） 。如果你想要从一个 `ImageView` 加载图片作为底图，也是可以的：
 
 ```java
     WatermarkBuilder
             .create(this, backgroundImageView)
             .getWatermark()
-
-```
-
-如果你想要一次性添加多个不同的文字水印，你可以使用一个线性表 `List<>` 来放置你的水印， 你可以把放有你水印的 `List<>` 通过方法： ` .loadWatermarkTexts(watermarkTexts)` 加载到水印构建器中，添加图片类型的水印同理：
-
-```java
-    WatermarkBuilder
-            .create(this, backgroundImageView)
-            .loadWatermarkTexts(watermarkTexts)
-            .loadWatermarkImages(watermarkImages)
-            .getWatermark()
-```
-
-如果你想要获得处理后的图片，你可以使用方法 `.getOutputImage()` ，就像这样：
-
-```java
-    Bitmap bitmap = WatermarkBuilder
-            .create(this, backgroundImageView)
-            .getWatermark()
-            .getOutputImage();
-
 ```
 
 如果在水印构建器中你既没有加载文字水印也没有加载图片水印，那么处理过后的图片将保持原样，毕竟你啥也没干 :)。

@@ -50,18 +50,33 @@ implementation 'com.huangyz0918:androidwm:v0.1.5'
 
 对于具体定制一个文字水印或者是图片水印， 我们在接下来的文档中会仔细介绍。
 
-当你的水印（文字或图片水印）已经准备就绪的时候，你需要一个 `WatermarkBuilder`来把水印画到你希望的背景图片上。 你可以通过 `create` 方法获取一个 `WatermarkBuilder` 的实例，注意，在创建这个实例的时候你需要先传入一个 `Bitmap` 或者是一个 `Drawable` 的资源 id。
+当你的水印（文字或图片水印）已经准备就绪的时候，你需要一个 `WatermarkBuilder`来把水印画到你希望的背景图片上。 你可以通过 `create` 方法获取一个 `WatermarkBuilder` 的实例，注意，在创建这个实例的时候你需要先传入一个 `Bitmap` 或者是一个 `Drawable` 的资源 id 来获取背景图。
 
 ```java
     WatermarkBuilder
             .create(context, backgroundBitmap)
-            .loadWatermarkText(watermarkText)
-            .loadWatermarkImage(watermarkImage)
+            .loadWatermarkText(watermarkText) // use .loadWatermarkImage(watermarkImage) to load an image.
             .getWatermark()
             .setToImageView(imageView);
 ```
 
-你可以通过`loadxxx()`方法将你定制好的水印加载到 `WatermarkBuilder`里。 如果你想获得最终绘制的图片，你可以在`.getWatermark()`之后调用 `.getOutputImage()`方法，它将返回一个 `Bitmap`：
+你可以在  `WatermarkBuilder.setTileMode()` 中选择是否使用铺满整图模式，默认情况下我们只会添加一个水印。
+
+```java
+    WatermarkBuilder
+            .create(this, backgroundBitmap)
+            .loadWatermarkText(watermarkText)
+            .setTileMode(true) // select different drawing mode.
+            .getWatermark()
+            .setToImageView(backgroundView);
+```
+
+咚! 带水印的图片已经绘制好啦：
+
+![](https://i.loli.net/2018/09/02/5b8b6617aa33a.png)
+
+
+你可以在 `WatermarkBuilder` 中同时加载文字水印和图片水印。 如果你想在绘制完成之后获得带水印的结果图片，可以使用 `Watermark` 的 `.getOutputImage()` 方法：
 
 ```java
     Bitmap bitmap = WatermarkBuilder
@@ -70,7 +85,7 @@ implementation 'com.huangyz0918:androidwm:v0.1.5'
             .getOutputImage();
 ```
 
-如果你想在一个`WatermarkBuilder` 里面同时创建多个水印，你可以使用一个链表 `List<>` 来放置你想绘制的水印对象， 并且使用方法： ` .loadWatermarkTexts(watermarkTexts)`加载文字水印到背景图片中，图片水印同理：
+你还可以一次性添加多个水印图片，通过创建一个`WatermarkText` 的列表 `List<>` 并且在水印构建器的方法 ` .loadWatermarkTexts(watermarkTexts)`中把列表传入进去（图片类型水印同理）：
 
 ```java
     WatermarkBuilder
@@ -80,42 +95,53 @@ implementation 'com.huangyz0918:androidwm:v0.1.5'
             .getWatermark();
 ```
 
-好啦，到这里你已经掌握了 androidwm 最基础的用法，enjoy yourself!
+你还可以从系统的控件和资源中装载图片或者是文字资源，从而创建一个水印对象：
+
+```java
+WatermarkText watermarkText = new WatermarkText(editText); // for a text from EditText.
+WatermarkText watermarkText = new WatermarkText(textView); // for a text from TextView.
+WatermarkImage watermarkImage = new WatermarkImage(imageView); // for an image from ImageView.
+WatermarkImage watermarkImage = new WatermarkImage(this, R.drawable.image); // for an image from Resource.
+```
+
+`WatermarkBuilder`里面的背景图片同样可以从系统资源或者是 `ImageView` 中装载：
+
+```java
+    WatermarkBuilder
+            .create(this, backgroundImageView) // .create(this, R.drawable.background)
+            .getWatermark()
+```
+
+如果在水印构建器中你既没有加载文字水印也没有加载图片水印，那么处理过后的图片将保持原样，毕竟你啥也没干 :)
+
+
+好啦！请尽情使用吧 :kissing_heart:
+
 
 ## 使用说明
 
-对于 `WatermarkText` 的定制化，我们提供了一些常用的方法:
+对于 `WatermarkText` 和 `WatermarkImage` 的定制化，我们提供了一些常用的方法:
 
 
 |   __方法名称__  | __备注__ | __默认值__ |
 | ------------- | ------------- | ------------- |
-| setPosition  |    `WatermarkText` 的 `WatermarkPosition` | _null_ |
-| setPositionX  |  `WatermarkText` 绘制的横轴坐标  | _0_  |
-| setPositionY  |  `WatermarkText` 绘制的纵轴坐标 | _0_ |
-| setRotation  |  `WatermarkText` 的旋转角度, 从 0 到 360 | _0_  |
-| setTextColor   |   `WatermarkText` 的字体颜色 | _`Color.BLACK`_  |
-| setTextStyle    |   `WatermarkText` 的字体风格 | _`Paint.Style.FILL`_  |
-| setBackgroundColor   |  `WatermarkText` 水印文字的背景颜色 | _null_  |
-| setTextAlpha   |   `WatermarkText` 的透明度, 从 0 到 255 | _50_  |
-| setTextSize  |  `WatermarkText` 的字体大小 | _20_   |
-| setWatermarkVisibility  |  `WatermarkText` 水印是否是可见水印 | _true_   |
-| setWatermarkEncrypted  | `WatermarkText` 是否对水印进行加密| _false_   |
+| setPosition  | 水印的位置类 `WatermarkPosition` | _null_ |
+| setPositionX  |  水印的横轴坐标，从背景图片左上角为(0,0)  | _0_  |
+| setPositionY  |  水印的纵轴坐标，从背景图片左上角为(0,0)  | _0_ |
+| setRotation  |  水印的旋转角度| _0_  |
+| setTextColor  (`WatermarkText`)  |  `WatermarkText` 的文字颜色 | _`Color.BLACK`_  |
+| setTextStyle  (`WatermarkText`)  |  `WatermarkText` 的文字样式| _`Paint.Style.FILL`_  |
+| setBackgroundColor  (`WatermarkText`) |  `WatermarkText` 的背景颜色 | _null_  |
+| setTextAlpha  (`WatermarkText`) | `WatermarkText` 文字的透明度， 从 0 到 255 | _50_  |
+| setImageAlpha  (`WatermarkImage`) | `WatermarkImage` 图片的透明度， 从 0 到 255 | _50_  |
+| setTextSize (`WatermarkText`) | `WatermarkText` 字体的大小，单位与系统 layout 相同 | _20_   |
+| setSize  (`WatermarkImage`)|  `WatermarkImage` 水印图片的大小，从 0 到 1 (背景图片大小的比例) | _0.2_   |
+| setWatermarkVisibility (`WatermarkText`) | `WatermarkText` 是否是可见的文字水印 | _true_   |
+| setWatermarkEncrypted  (`WatermarkText`)|  `WatermarkText` 是否是加密的文字水印 | _false_   |
+| setTextFont (`WatermarkText`) | `WatermarkText` 的字体| _default_  |
+| setTextShadow  (`WatermarkText`)| `WatermarkText` 字体的阴影与圆角 | _(0, 0, 0)_  |
+| setImageDrawable  (`WatermarkImage`)| `WatermarkImage`的图片资源 | _null_ |
 
-`WatermarkImage` 的一些基本属性和`WatermarkText` 的相同, 但是对于图片水印来说, 没有文字样式和背景（所以也就不存在什么背景颜色）. 如果你要从一个视图中加载字符串作为水印文字, 你可以使用下面的方法:
+`WatermarkImage` 的一些基本属性和`WatermarkText` 的相同。
 
-```java
-WatermarkText watermarkText = new WatermarkText(editText); // EditText.
-WatermarkText watermarkText = new WatermarkText(textView); // TextView.
-WatermarkImage watermarkImage = new WatermarkImage(imageView); // ImageView.
-WatermarkImage watermarkImage = new WatermarkImage(this, R.drawable.image); // for an image from Resource.
-```
-类 `WatermarkBuilder` 初始化背景图片的时候也可以从系统的资源中添加（如：R.drawable.background） 。如果你想要从一个 `ImageView` 加载图片作为底图，也是可以的：
-
-```java
-    WatermarkBuilder
-            .create(this, backgroundImageView)
-            .getWatermark()
-```
-
-如果在水印构建器中你既没有加载文字水印也没有加载图片水印，那么处理过后的图片将保持原样，毕竟你啥也没干 :)。
 

@@ -9,13 +9,13 @@ A lightweight android image watermark library that supports encrypted watermarks
 
 To use this library by gradle:
 
-```groovy
+```gradle
 implementation 'com.huangyz0918:androidwm:v0.1.5'
 ```
 
 For maven:
 
-```maven
+```xml
 <dependency>
   <groupId>com.huangyz0918</groupId>
   <artifactId>androidwm</artifactId>
@@ -26,7 +26,7 @@ For maven:
 
 For lvy:
 
-```lvy
+```xml
 <dependency org='com.huangyz0918' name='androidwm' rev='v0.1.5'>
   <artifact name='androidwm' ext='pom' ></artifact>
 </dependency>

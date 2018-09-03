@@ -21,12 +21,15 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.watermark.androidwm.BuildFinishListener;
 import com.watermark.androidwm.WatermarkBuilder;
 import com.watermark.androidwm.bean.WatermarkImage;
 import com.watermark.androidwm.bean.WatermarkText;
@@ -85,9 +88,11 @@ public class MainActivity extends AppCompatActivity {
         // The sample method of adding a text watermark.
         btnAddText.setOnClickListener((View v) -> {
             WatermarkText watermarkText = new WatermarkText(editText)
-                    .setPositionX(Math.random())
-                    .setPositionY(Math.random())
-                    .setTextColor(Color.BLACK)
+                    .setPositionX(0.5)
+                    .setPositionY(0.5)
+                    .setTextColor(Color.WHITE)
+                    .setTextFont(R.font.champagne)
+                    .setTextShadow(0.1f, 5, 5, Color.BLUE)
                     .setTextAlpha(150)
                     .setRotation(30)
                     .setTextSize(20);
@@ -114,9 +119,20 @@ public class MainActivity extends AppCompatActivity {
             WatermarkBuilder
                     .create(this, backgroundView)
                     .loadWatermarkImage(watermarkImage)
-                    .setTileMode(true)
-                    .getWatermark()
-                    .setToImageView(backgroundView);
+                    .setInvisibleWMListener(new BuildFinishListener<Bitmap>() {
+                        @Override
+                        public void onSuccess(Bitmap object) {
+                            Log.d("===>", "onSuccess: ");
+                            Toast.makeText(MainActivity.this, "Successfully create invisible watermark!", Toast.LENGTH_SHORT).show();
+                            backgroundView.setImageBitmap(object);
+                        }
+
+                        @Override
+                        public void onFailure(String message) {
+                            Log.d("===>", "onFailure: " + message);
+                        }
+                    });
+
         });
 
         // The sample method of adding both image and text watermark.

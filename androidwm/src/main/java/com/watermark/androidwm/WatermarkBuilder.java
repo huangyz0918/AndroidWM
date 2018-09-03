@@ -40,6 +40,7 @@ public final class WatermarkBuilder {
     private Context context;
     private Bitmap backgroundImg;
     private boolean isTileMode = false;
+    private BuildFinishListener<Bitmap> buildFinishListener = null;
 
     private WatermarkImage watermarkImage;
     private WatermarkText watermarkText;
@@ -207,8 +208,26 @@ public final class WatermarkBuilder {
      * whole background.
      */
     public WatermarkBuilder setTileMode(boolean tileMode) {
-        isTileMode = tileMode;
+        this.isTileMode = tileMode;
         return this;
+    }
+
+    /**
+     * set a listener for building progress.
+     */
+    public void setInvisibleWMListener(BuildFinishListener<Bitmap> listener) {
+        this.buildFinishListener = listener;
+        new Watermark(
+                context,
+                backgroundImg,
+                watermarkImage,
+                watermarkBitmaps,
+                watermarkText,
+                watermarkTexts,
+                isTileMode,
+                true,
+                buildFinishListener
+        );
     }
 
     /**
@@ -238,7 +257,9 @@ public final class WatermarkBuilder {
                 watermarkBitmaps,
                 watermarkText,
                 watermarkTexts,
-                isTileMode
+                isTileMode,
+                false,
+                buildFinishListener
         );
     }
 }

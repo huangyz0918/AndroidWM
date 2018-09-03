@@ -33,8 +33,6 @@ public class WatermarkImage {
     private Bitmap image;
     @DrawableRes
     private int imageDrawable;
-    private boolean isEncrypted = false;
-    private boolean isVisible = true;
     private int alpha = 50;
     private Context context;
     private double size = 0.2;
@@ -75,14 +73,6 @@ public class WatermarkImage {
      */
     public Bitmap getImage() {
         return image;
-    }
-
-    public boolean isEncrypted() {
-        return isEncrypted;
-    }
-
-    public boolean isVisible() {
-        return isVisible;
     }
 
     public int getAlpha() {
@@ -143,22 +133,6 @@ public class WatermarkImage {
      */
     public WatermarkImage setSize(double size) {
         this.size = size;
-        return this;
-    }
-
-    /**
-     * @param isVisible whether to set this watermark invisible.
-     */
-    public WatermarkImage setWatermarkVisibility(boolean isVisible) {
-        this.isVisible = isVisible;
-        return this;
-    }
-
-    /**
-     * @param isEncrypted whether to encrypted this watermark.
-     */
-    public WatermarkImage setWatermarkEncrypted(boolean isEncrypted) {
-        this.isEncrypted = isEncrypted;
         return this;
     }
 

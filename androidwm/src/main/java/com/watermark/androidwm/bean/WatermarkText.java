@@ -33,8 +33,6 @@ import android.widget.TextView;
 public class WatermarkText {
 
     private String text;
-    private boolean isEncrypted = false;
-    private boolean isVisible = true;
     private int alpha = 50;
     private double size = 20;
     @ColorInt
@@ -75,14 +73,6 @@ public class WatermarkText {
      */
     public String getText() {
         return text;
-    }
-
-    public boolean isEncrypted() {
-        return isEncrypted;
-    }
-
-    public boolean isVisible() {
-        return isVisible;
     }
 
     public int getTextAlpha() {
@@ -200,22 +190,6 @@ public class WatermarkText {
      */
     public WatermarkText setTextSize(double size) {
         this.size = size;
-        return this;
-    }
-
-    /**
-     * @param isVisible whether to set this watermark invisible.
-     */
-    public WatermarkText setWatermarkVisibility(boolean isVisible) {
-        this.isVisible = isVisible;
-        return this;
-    }
-
-    /**
-     * @param isEncrypted whether to encrypted this watermark.
-     */
-    public WatermarkText setWatermarkEncrypted(boolean isEncrypted) {
-        this.isEncrypted = isEncrypted;
         return this;
     }
 

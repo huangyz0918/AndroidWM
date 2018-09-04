@@ -19,13 +19,13 @@ package com.watermark.androidwm.task;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.util.Log;
 
-import com.watermark.androidwm.BuildFinishListener;
+import com.watermark.androidwm.listener.BuildFinishListener;
 import com.watermark.androidwm.bean.AsyncTaskParams;
+import com.watermark.androidwm.utils.BitmapUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+import static com.watermark.androidwm.utils.Constant.LSB_PREFIX_FLAG;
+import static com.watermark.androidwm.utils.Constant.LSB_SUFFIX_FLAG;
 
 /**
  * This is a background task for adding the specific invisible text
@@ -34,7 +34,6 @@ import java.util.List;
  * text in.
  * <p>
  * TODO: build another AsyncTask that used for reverting the text.
- * TODO: build RGBConvertTask that can read the pixel in the background image.
  *
  * @author huangyz0918 (huangyz0918@gmail.com)
  */
@@ -50,26 +49,83 @@ public class LSBWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
     protected Bitmap doInBackground(AsyncTaskParams... params) {
         Bitmap backgroundBitmap = params[0].getBackgroundImg();
         String watermarkString = params[0].getWatermarkText();
+        Bitmap watermarkBitmap = params[0].getWatermarkImg();
+        int[] backgroundColorArray;
 
-        int length = watermarkString.getBytes().length;
-        Log.d("====>", "doInBackground: text length: " + length);
-        int pixelNumber = length * 8 / 3;
-        int colorR, colorG, colorB;
-        List<Integer> colorList = new ArrayList<>();
-        for (int i = 0; i < pixelNumber; i++) {
-            int color = backgroundBitmap.getPixel(0, i);
-            colorR = Color.red(color);
-            colorG = Color.green(color);
-            colorB = Color.blue(color);
-            colorList.add(colorR);
-            colorList.add(colorG);
-            colorList.add(colorB);
+        if (backgroundBitmap == null) {
+            listener.onFailure("No background image! please load an image in your WatermarkBuilder!");
+            return null;
         }
 
-        Log.d("====>", "doInBackground: color list length: " + colorList.size());
+        // resize the watermark bitmap.
+        // convert the watermark bitmap into a String.
+        if (watermarkBitmap != null) {
+            if (params[0].getMaxImageSize() > 0) {
+                watermarkBitmap = BitmapUtils.resizeBitmap(watermarkBitmap, params[0].getMaxImageSize());
+            }
+            watermarkString = BitmapUtils.BitmapToString(watermarkBitmap);
+        }
 
-        // TODO: change to resultBitmap
-        return backgroundBitmap;
+        if (watermarkString == null) {
+            listener.onFailure("No input text or image! please load an " +
+                    "image or a text in your WatermarkBuilder!");
+            return null;
+        }
+
+        // resize the background bitmap and create the empty output bitmap.
+        if (params[0].getMaxImageSize() > 0) {
+            backgroundBitmap = BitmapUtils.resizeBitmap(backgroundBitmap, params[0].getMaxImageSize());
+        }
+        Bitmap outputBitmap = Bitmap.createBitmap(backgroundBitmap.getWidth(), backgroundBitmap.getHeight(),
+                backgroundBitmap.getConfig());
+
+        // convert the background bitmap into pixel array.
+        int[] backgroundPixels = new int[backgroundBitmap.getWidth() * backgroundBitmap.getHeight()];
+        backgroundBitmap.getPixels(backgroundPixels, 0, backgroundBitmap.getWidth(), 0, 0,
+                backgroundBitmap.getWidth(), backgroundBitmap.getHeight());
+
+        backgroundColorArray = new int[4 * backgroundPixels.length];
+
+        for (int i = 0; i < backgroundPixels.length; i++) {
+            backgroundColorArray[4 * i] = Color.alpha(backgroundPixels[i]);
+            backgroundColorArray[4 * i + 1] = Color.red(backgroundPixels[i]);
+            backgroundColorArray[4 * i + 2] = Color.green(backgroundPixels[i]);
+            backgroundColorArray[4 * i + 3] = Color.blue(backgroundPixels[i]);
+        }
+
+        // convert the Sting into a binary string, and, replace the single digit number.
+        // using the rebuilt pixels to create a new watermarked image.
+        String watermarkBinary = stringToBinary(watermarkString);
+        watermarkBinary = LSB_PREFIX_FLAG + watermarkBinary + LSB_SUFFIX_FLAG; // add the flag.
+
+        int[] watermarkColorArray = stringToIntArray(watermarkBinary);
+        if (watermarkColorArray.length > backgroundColorArray.length) {
+            listener.onFailure("The Pixels in background are too small to put the watermark in, " +
+                    "the data has been lost! Please make sure the maxImageSize is bigger enough!");
+        } else {
+            for (int i = 0; i < watermarkColorArray.length; i++) {
+                backgroundColorArray[i] = replaceSingleDigit(backgroundColorArray[i]
+                        , watermarkColorArray[i]);
+            }
+
+            int[] rebuiltPixels = new int[backgroundPixels.length];
+            for (int i = 0; i < rebuiltPixels.length; i++) {
+                int color = Color.argb(
+                        backgroundColorArray[4 * i],
+                        backgroundColorArray[4 * i + 1],
+                        backgroundColorArray[4 * i + 2],
+                        backgroundColorArray[4 * i + 3]
+                );
+                rebuiltPixels[i] = color;
+            }
+
+            outputBitmap.setPixels(rebuiltPixels, 0, backgroundBitmap.getWidth(), 0, 0,
+                    backgroundBitmap.getWidth(), backgroundBitmap.getHeight());
+
+            return outputBitmap;
+
+        }
+        return null;
     }
 
     @Override
@@ -87,10 +143,9 @@ public class LSBWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
     /**
      * Converting a {@link String} text into a binary text.
      */
-    public String stringToBinary(String inputText) {
+    private String stringToBinary(String inputText) {
         byte[] bytes = inputText.getBytes();
         StringBuilder binary = new StringBuilder();
-        // append 125 zeros as a flag
         for (byte b : bytes) {
             int val = b;
             for (int i = 0; i < 8; i++) {
@@ -98,31 +153,26 @@ public class LSBWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
                 val <<= 1;
             }
         }
-
         return binary.toString();
     }
 
     /**
-     * Converting a binary string to a ASCII string.
-     * TODO: This method should be placed in another AsyncTask
+     * String to integer array.
      */
-    public String binaryToString(String inputText) {
-        StringBuilder sb = new StringBuilder();
-        char[] chars = inputText.replaceAll("\\s", "").toCharArray();
-        int[] mapping = {1, 2, 4, 8, 16, 32, 64, 128};
-
-        for (int j = 0; j < chars.length; j += 8) {
-            int idx = 0;
-            int sum = 0;
-            for (int i = 7; i >= 0; i--) {
-                if (chars[i + j] == '1') {
-                    sum += mapping[idx];
-                }
-                idx++;
-            }
-            sb.append(Character.toChars(sum));
+    private int[] stringToIntArray(String inputString) {
+        char[] strArray = inputString.toCharArray();
+        int[] num = new int[strArray.length];
+        for (int i = 0; i < strArray.length; i++) {
+            num[i] = strArray[i] - '0';
         }
-        return sb.toString();
+        return num;
+    }
+
+    /**
+     * get the single digit number and set it to the target one.
+     */
+    private int replaceSingleDigit(int target, int singleDigit) {
+        return (target / 10) * 10 + singleDigit;
     }
 
 }

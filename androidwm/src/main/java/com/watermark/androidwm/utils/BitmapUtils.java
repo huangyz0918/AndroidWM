@@ -18,6 +18,7 @@ package com.watermark.androidwm.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
@@ -27,11 +28,17 @@ import android.graphics.Typeface;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.StaticLayout;
 import android.text.TextPaint;
+import android.util.Base64;
+import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 
 import com.watermark.androidwm.bean.WatermarkImage;
 import com.watermark.androidwm.bean.WatermarkText;
+
+import java.io.ByteArrayOutputStream;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Util class for operations with {@link Bitmap}.
@@ -129,15 +136,39 @@ public class BitmapUtils {
      * @return {@link Bitmap} the new bitmap.
      */
     public static Bitmap resizeBitmap(Bitmap watermarkImg, float size, Bitmap backgroundImg) {
-        int bitmapWidth = watermarkImg.getWidth();
-        int bitmapHeight = watermarkImg.getHeight();
-        float scaleWidth = (backgroundImg.getWidth() * size) / bitmapWidth;
-        float scaleHeight = (float) (watermarkImg.getHeight() / watermarkImg.getWidth()) * scaleWidth;
+        if (size > 0 && size < 1) {
+            int bitmapWidth = watermarkImg.getWidth();
+            int bitmapHeight = watermarkImg.getHeight();
+            float scaleWidth = (backgroundImg.getWidth() * size) / bitmapWidth;
+            float scaleHeight = (float) (watermarkImg.getHeight() / watermarkImg.getWidth()) * scaleWidth;
 
-        Matrix matrix = new Matrix();
-        matrix.postScale(scaleWidth, scaleHeight);
-        return Bitmap.createBitmap(watermarkImg, 0, 0,
-                bitmapWidth, bitmapHeight, matrix, true);
+            Matrix matrix = new Matrix();
+            matrix.postScale(scaleWidth, scaleHeight);
+            return Bitmap.createBitmap(watermarkImg, 0, 0,
+                    bitmapWidth, bitmapHeight, matrix, true);
+        } else {
+            return watermarkImg;
+        }
+    }
+
+    /**
+     * this method is for image resizing, used in invisible watermark
+     * creating progress. To make the progress faster, we should do
+     * some pre-settings, user can set whether to do this part.
+     * <p>
+     * We set the new {@link Bitmap} to a fixed width = 512 pixels.
+     *
+     * @return {@link Bitmap} the new bitmap.
+     */
+    public static Bitmap resizeBitmap(Bitmap inputBitmap, int maxImageSize) {
+        float ratio = Math.min(
+                (float) maxImageSize / inputBitmap.getWidth(),
+                (float) maxImageSize / inputBitmap.getHeight());
+        int width = Math.round(ratio * inputBitmap.getWidth());
+        int height = Math.round(ratio * inputBitmap.getHeight());
+
+        return Bitmap.createScaledBitmap(inputBitmap, width,
+                height, true);
     }
 
     /**
@@ -145,7 +176,7 @@ public class BitmapUtils {
      *
      * @param rgb the color's RGB values as an integer (0xRRGGBB)
      */
-    static float getBrightness(int rgb) {
+    public static float getBrightness(int rgb) {
         int red = (rgb >> 16) & 0xff;
         int green = (rgb >> 8) & 0xff;
         int blue = (rgb) & 0xff;
@@ -194,5 +225,31 @@ public class BitmapUtils {
         B = B & 0x000000FF;
 
         return 0xFF000000 | R | G | B;
+    }
+
+    /**
+     * Convert a Bitmap to a String.
+     */
+    public static String BitmapToString(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] b = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(b, Base64.DEFAULT);
+    }
+
+    /**
+     * Convert a String to a Bitmap.
+     *
+     * @param encodedString
+     * @return bitmap (from given string)
+     */
+    public static Bitmap StringToBitmap(String encodedString) {
+        try {
+            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+        } catch (Exception e) {
+            Log.e(TAG, "StringToBitmap: ", e);
+            return null;
+        }
     }
 }

@@ -1,8 +1,8 @@
-package com.watermark.androidwm;
+package com.watermark.androidwm.listener;
 
 
 /**
- * This method is for listening if the operation of
+ * This interface is for listening if the task of
  * creating invisible watermark is finished.
  *
  * @author huangyz0918 (huangyz0918@gmail.com)

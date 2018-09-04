@@ -29,13 +29,12 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.watermark.androidwm.BuildFinishListener;
+import com.watermark.androidwm.WatermarkDetector;
+import com.watermark.androidwm.listener.BuildFinishListener;
 import com.watermark.androidwm.WatermarkBuilder;
 import com.watermark.androidwm.bean.WatermarkImage;
 import com.watermark.androidwm.bean.WatermarkText;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.watermark.androidwm.listener.DetectFinishListener;
 
 /**
  * This is the sample for library: androidwm.
@@ -47,8 +46,10 @@ public class MainActivity extends AppCompatActivity {
 
     private Button btnAddText;
     private Button btnAddImg;
-    private Button btnAddAll;
-    private Button btnAddList;
+    private Button btnAddInVisibleImage;
+    private Button btnAddInvisibleText;
+    private Button btnDetectImage;
+    private Button btnDetectText;
     private Button btnClear;
 
     private ImageView backgroundView;
@@ -68,9 +69,12 @@ public class MainActivity extends AppCompatActivity {
     private void initViews() {
         btnAddImg = findViewById(R.id.btn_add_image);
         btnAddText = findViewById(R.id.btn_add_text);
-        btnAddAll = findViewById(R.id.btn_add_all);
-        btnAddList = findViewById(R.id.btn_add_list);
+        btnAddInVisibleImage = findViewById(R.id.btn_add_invisible_image);
+        btnAddInvisibleText = findViewById(R.id.btn_add_invisible_text);
+        btnDetectImage = findViewById(R.id.btn_detect_image);
+        btnDetectText = findViewById(R.id.btn_detect_text);
         btnClear = findViewById(R.id.btn_clear_watermark);
+
 
         editText = findViewById(R.id.editText);
         backgroundView = findViewById(R.id.imageView);
@@ -90,108 +94,125 @@ public class MainActivity extends AppCompatActivity {
             WatermarkText watermarkText = new WatermarkText(editText)
                     .setPositionX(0.5)
                     .setPositionY(0.5)
+                    .setTextAlpha(100)
                     .setTextColor(Color.WHITE)
                     .setTextFont(R.font.champagne)
-                    .setTextShadow(0.1f, 5, 5, Color.BLUE)
-                    .setTextAlpha(150)
-                    .setRotation(30)
-                    .setTextSize(20);
+                    .setTextShadow(0.1f, 5, 5, Color.BLUE);
 
-            WatermarkBuilder
-                    .create(this, backgroundView)
-                    .loadWatermarkText(watermarkText)
+            WatermarkBuilder.create(this, backgroundView)
                     .setTileMode(true)
+                    .loadWatermarkText(watermarkText)
                     .getWatermark()
                     .setToImageView(backgroundView);
         });
 
-        // The sample method of adding a image watermark.
+        // The sample method of adding an image watermark.
         btnAddImg.setOnClickListener((View v) -> {
 
             // Math.random()
             WatermarkImage watermarkImage = new WatermarkImage(watermarkBitmap)
-                    .setImageAlpha(100)
+                    .setImageAlpha(80)
                     .setPositionX(Math.random())
                     .setPositionY(Math.random())
                     .setRotation(15)
-                    .setSize(0.2);
+                    .setSize(0.1);
 
             WatermarkBuilder
                     .create(this, backgroundView)
                     .loadWatermarkImage(watermarkImage)
-                    .setInvisibleWMListener(new BuildFinishListener<Bitmap>() {
+                    .setTileMode(true)
+                    .getWatermark()
+                    .setToImageView(backgroundView);
+
+        });
+
+        // The sample method of adding an invisible image watermark.
+        btnAddInVisibleImage.setOnClickListener((View v) -> {
+            WatermarkBuilder
+                    .create(this, backgroundView)
+                    .loadWatermarkImage(watermarkBitmap)
+                    .setInvisibleWMListener(true, new BuildFinishListener<Bitmap>() {
                         @Override
                         public void onSuccess(Bitmap object) {
-                            Log.d("===>", "onSuccess: ");
-                            Toast.makeText(MainActivity.this, "Successfully create invisible watermark!", Toast.LENGTH_SHORT).show();
-                            backgroundView.setImageBitmap(object);
+                            Toast.makeText(MainActivity.this,
+                                    "Successfully create invisible watermark!", Toast.LENGTH_SHORT).show();
+                            if (object != null) {
+                                backgroundView.setImageBitmap(object);
+                            }
                         }
 
                         @Override
                         public void onFailure(String message) {
-                            Log.d("===>", "onFailure: " + message);
+                            Log.e("===>", "onFailure: " + message);
+                        }
+                    });
+        });
+
+        // The sample method of adding an invisible text watermark.
+        btnAddInvisibleText.setOnClickListener((View v) -> {
+            WatermarkText watermarkText = new WatermarkText(editText);
+            WatermarkBuilder
+                    .create(this, backgroundView)
+                    .loadWatermarkText(watermarkText)
+                    .setInvisibleWMListener(true, new BuildFinishListener<Bitmap>() {
+                        @Override
+                        public void onSuccess(Bitmap object) {
+                            Toast.makeText(MainActivity.this,
+                                    "Successfully create invisible watermark!", Toast.LENGTH_SHORT).show();
+                            if (object != null) {
+                                backgroundView.setImageBitmap(object);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(String message) {
+                            Log.e("===>", "onFailure: " + message);
+                        }
+                    });
+        });
+
+        // detect the text watermark.
+        btnDetectText.setOnClickListener((View v) -> {
+            WatermarkDetector.create(backgroundView, true)
+                    .detect(true, new DetectFinishListener() {
+                        @Override
+                        public void onSuccess(Bitmap watermark) {
+                            Toast.makeText(MainActivity.this,
+                                    "Successfully detected invisible watermark!", Toast.LENGTH_SHORT).show();
+                            if (watermark != null) {
+                                backgroundView.setImageBitmap(watermark);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(String message) {
+                            Log.e("===>", "onFailure: " + message);
+                        }
+                    });
+        });
+
+        // detect the image watermark.
+        btnDetectImage.setOnClickListener((View v) -> {
+            WatermarkDetector.create(backgroundView, true)
+                    .detect(false, new DetectFinishListener() {
+                        @Override
+                        public void onSuccess(Bitmap watermark) {
+                            Toast.makeText(MainActivity.this,
+                                    "Successfully detected invisible watermark!", Toast.LENGTH_SHORT).show();
+                            if (watermark != null) {
+                                backgroundView.setImageBitmap(watermark);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(String message) {
+                            Log.e("===>", "onFailure: " + message);
                         }
                     });
 
         });
 
-        // The sample method of adding both image and text watermark.
-        btnAddAll.setOnClickListener((View v) -> {
-            WatermarkImage watermarkImage = new WatermarkImage(watermarkBitmap)
-                    .setImageAlpha(150)
-                    .setPositionX(Math.random())
-                    .setPositionY(Math.random())
-                    .setSize(0.1);
-
-            WatermarkText watermarkText = new WatermarkText("FFF")
-                    .setPositionX(Math.random())
-                    .setPositionY(Math.random())
-                    .setTextColor(Color.WHITE)
-                    .setTextAlpha(150)
-                    .setBackgroundColor(Color.GREEN)
-                    .setTextSize(50);
-
-
-            Bitmap outputBitmap = WatermarkBuilder
-                    .create(this, backgroundView)
-                    .loadWatermarkImage(watermarkImage)
-                    .loadWatermarkText(watermarkText)
-                    .getWatermark().getOutputImage();
-
-            backgroundView.setImageBitmap(outputBitmap);
-        });
-
-        // The sample method of adding a list of watermarks.
-        btnAddList.setOnClickListener((View v) -> {
-            List<WatermarkText> watermarkTexts = new ArrayList<>();
-            List<WatermarkImage> watermarkImages = new ArrayList<>();
-            for (int i = 0; i < 3; i++) {
-                WatermarkText watermarkText = new WatermarkText("FBI Warning: " + i)
-                        .setPositionX(Math.random())
-                        .setPositionY(Math.random())
-                        .setTextColor(Color.WHITE)
-                        .setTextAlpha(150)
-                        .setBackgroundColor(Color.RED)
-                        .setTextSize(20);
-
-                WatermarkImage watermarkImage = new WatermarkImage(watermarkBitmap)
-                        .setImageAlpha(150)
-                        .setPositionX(Math.random())
-                        .setPositionY(Math.random())
-                        .setSize(0.1);
-
-                watermarkTexts.add(watermarkText);
-                watermarkImages.add(watermarkImage);
-            }
-
-            WatermarkBuilder
-                    .create(this, backgroundView)
-                    .loadWatermarkTexts(watermarkTexts)
-                    .loadWatermarkImages(watermarkImages)
-                    .getWatermark()
-                    .setToImageView(backgroundView);
-        });
-
+        // reload the background.
         btnClear.setOnClickListener((View v) -> {
             Glide.with(this).load(R.drawable.test)
                     .into(backgroundView);

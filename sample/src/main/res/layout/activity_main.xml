@@ -22,9 +22,7 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginBottom="1dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="40dp"
         android:orientation="horizontal">
 
         <Button
@@ -46,24 +44,44 @@
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="1dp"
+        android:layout_height="40dp"
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btn_add_all"
+            android:id="@+id/btn_add_invisible_image"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/btn_add_all" />
+            android:text="@string/btn_add_invisible_image" />
 
         <Button
-            android:id="@+id/btn_add_list"
+            android:id="@+id/btn_add_invisible_text"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/btn_add_list" />
+            android:text="@string/btn_add_invisible_text" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_detect_image"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/btn_detect_image" />
+
+        <Button
+            android:id="@+id/btn_detect_text"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/btn_detect_text" />
 
     </LinearLayout>
 

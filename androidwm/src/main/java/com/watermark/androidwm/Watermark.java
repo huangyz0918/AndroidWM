@@ -31,6 +31,7 @@ import android.widget.ImageView;
 import com.watermark.androidwm.bean.AsyncTaskParams;
 import com.watermark.androidwm.bean.WatermarkImage;
 import com.watermark.androidwm.bean.WatermarkText;
+import com.watermark.androidwm.listener.BuildFinishListener;
 import com.watermark.androidwm.task.FDWatermarkTask;
 import com.watermark.androidwm.task.LSBWatermarkTask;
 
@@ -55,11 +56,14 @@ public class Watermark {
     private Bitmap canvasBitmap;
     private boolean isTileMode;
     private boolean isInvisible;
+    private boolean isLSB;
+    private int maxImageSize;
     private BuildFinishListener<Bitmap> buildFinishListener;
 
     /**
      * Constructors for WatermarkImage
      */
+    @SuppressWarnings("PMD")
     Watermark(@NonNull Context context,
               @NonNull Bitmap backgroundImg,
               @Nullable WatermarkImage watermarkImg,
@@ -68,6 +72,8 @@ public class Watermark {
               @Nullable List<WatermarkText> wmTextList,
               boolean isTileMode,
               boolean isInvisible,
+              boolean isLSB,
+              int maxImageSize,
               @Nullable BuildFinishListener<Bitmap> buildFinishListener) {
 
         this.context = context;
@@ -79,6 +85,8 @@ public class Watermark {
         this.watermarkText = inputText;
         this.isInvisible = isInvisible;
         this.buildFinishListener = buildFinishListener;
+        this.maxImageSize = maxImageSize;
+        this.isLSB = isLSB;
 
         canvasBitmap = backgroundImg;
         outputImage = backgroundImg;
@@ -142,9 +150,16 @@ public class Watermark {
     private void createWatermarkImage(WatermarkImage watermarkImg) {
         if (watermarkImg != null && backgroundImg != null) {
             if (isInvisible) {
-                new FDWatermarkTask(buildFinishListener).execute(
-                        new AsyncTaskParams(backgroundImg, watermarkImg.getImage())
-                );
+                Bitmap scaledWMBitmap = resizeBitmap(watermarkImg.getImage(), (float) watermarkImg.getSize(), backgroundImg);
+                if (isLSB) {
+                    new LSBWatermarkTask(buildFinishListener).execute(
+                            new AsyncTaskParams(backgroundImg, scaledWMBitmap, maxImageSize)
+                    );
+                } else {
+                    new FDWatermarkTask(buildFinishListener).execute(
+                            new AsyncTaskParams(backgroundImg, scaledWMBitmap, maxImageSize)
+                    );
+                }
             } else {
                 Paint watermarkPaint = new Paint();
                 watermarkPaint.setAlpha(watermarkImg.getAlpha());
@@ -197,9 +212,15 @@ public class Watermark {
 
         if (watermarkText != null && backgroundImg != null) {
             if (isInvisible) {
-                new LSBWatermarkTask(buildFinishListener).execute(
-                        new AsyncTaskParams(backgroundImg, watermarkText.getText())
-                );
+                if (isLSB) {
+                    new LSBWatermarkTask(buildFinishListener).execute(
+                            new AsyncTaskParams(backgroundImg, watermarkText.getText(), maxImageSize)
+                    );
+                } else {
+                    new FDWatermarkTask(buildFinishListener).execute(
+                            new AsyncTaskParams(backgroundImg, watermarkText.getText(), maxImageSize)
+                    );
+                }
             } else {
                 Paint watermarkPaint = new Paint();
                 watermarkPaint.setAlpha(watermarkText.getTextAlpha());

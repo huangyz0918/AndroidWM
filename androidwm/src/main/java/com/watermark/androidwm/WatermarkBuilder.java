@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import com.watermark.androidwm.bean.WatermarkImage;
 import com.watermark.androidwm.bean.WatermarkPosition;
 import com.watermark.androidwm.bean.WatermarkText;
+import com.watermark.androidwm.listener.BuildFinishListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,8 @@ public final class WatermarkBuilder {
     private Context context;
     private Bitmap backgroundImg;
     private boolean isTileMode = false;
+    private int maxImageSize = 0;
+    private boolean isLSB = false;
     private BuildFinishListener<Bitmap> buildFinishListener = null;
 
     private WatermarkImage watermarkImage;
@@ -215,8 +218,14 @@ public final class WatermarkBuilder {
     /**
      * set a listener for building progress.
      */
-    public void setInvisibleWMListener(BuildFinishListener<Bitmap> listener) {
+    public void setInvisibleWMListener(
+            boolean isLSB,
+            int maxImageSize,
+            BuildFinishListener<Bitmap> listener
+    ) {
         this.buildFinishListener = listener;
+        this.maxImageSize = maxImageSize;
+        this.isLSB = isLSB;
         new Watermark(
                 context,
                 backgroundImg,
@@ -226,16 +235,43 @@ public final class WatermarkBuilder {
                 watermarkTexts,
                 isTileMode,
                 true,
+                isLSB,
+                maxImageSize,
                 buildFinishListener
         );
     }
+
+    /**
+     * set a listener for building progress.
+     */
+    public void setInvisibleWMListener(
+            boolean isLSB,
+            BuildFinishListener<Bitmap> listener
+    ) {
+        this.buildFinishListener = listener;
+        this.isLSB = isLSB;
+        new Watermark(
+                context,
+                backgroundImg,
+                watermarkImage,
+                watermarkBitmaps,
+                watermarkText,
+                watermarkTexts,
+                isTileMode,
+                true,
+                isLSB,
+                maxImageSize,
+                buildFinishListener
+        );
+    }
+
 
     /**
      * load a bitmap as background image from a ImageView.
      *
      * @param imageView the {@link ImageView} we need to use.
      */
-    public WatermarkBuilder backgroundFromImageView(ImageView imageView) {
+    private WatermarkBuilder backgroundFromImageView(ImageView imageView) {
         imageView.invalidate();
         if (imageView.getDrawable() != null) {
             BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
@@ -259,6 +295,8 @@ public final class WatermarkBuilder {
                 watermarkTexts,
                 isTileMode,
                 false,
+                isLSB,
+                maxImageSize,
                 buildFinishListener
         );
     }

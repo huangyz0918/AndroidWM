@@ -197,7 +197,7 @@ WatermarkImage watermarkImage = new WatermarkImage(this, R.drawable.image); // f
 |   image size = 0.3 | text size = 40  | 
 
 
-### 方法列表
+## 方法列表
 对于 `WatermarkText` 和 `WatermarkImage` 的定制化，我们提供了一些常用的方法:
 
 

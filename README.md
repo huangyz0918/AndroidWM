@@ -116,6 +116,58 @@ The background loaded in `WatermarkBuilder` can be created from resources or `Im
 
 If you didn't load a watermark ,the default value is as the same as background, nothing will be changed.
 
+### Invisible Watermarks
+
+In this library, we also support the invisible watermark and the detection of them. We can use two ways to build a invisible watermark: the LSB (spatial domain) and the wavelet transform (Frequency domain). All you need to do is to use a boolean (isLSB) to distinguish them.
+
+You can create a new invisible watermark by the `WatermarkBuilder`'s `.setInvisibleWMListener`:
+
+```java
+     WatermarkBuilder
+            .create(this, backgroundBitmap)
+            .loadWatermarkImage(watermarkBitmap)
+            .setInvisibleWMListener(true, 512, new BuildFinishListener<Bitmap>() {
+                @Override
+                public void onSuccess(Bitmap object) {
+                    if (object != null) {
+                       // do something...
+                    }
+                }
+
+                @Override
+                public void onFailure(String message) {
+                   // do something...
+                }
+            });
+```
+The first paramter of `setInvisibleWMListener` is `isLSB`, if false, the invisible algorithm will change to the frequency domain. The second parameter is an int which is the max image size, if you are using a really big image, the progress may be slow, so you can use this paramter to resize the input image, but remember: the size must be enough for the watermark to put in, or it will throw an exception.
+
+To detect the invisible watermark, you can use `WatermarkDetector`, the first paramter is the kind of watermark, if you want to detect the image watermark, the paramter is false, if it's a text, then true. The input bitmap is a image with invisible watermarks.
+
+```java
+     WatermarkDetector
+            .create(inputBitmap, true)
+            .detect(false, new DetectFinishListener() {
+                @Override
+                public void onImage(Bitmap watermark) {
+                    if (watermark != null) {
+                         // do something...
+                    }
+                }
+
+                @Override
+                public void onText(String watermark) {
+                    if (watermark != null) {
+                        // do something...
+                    }
+                }
+
+                @Override
+                public void onFailure(String message) {
+                       // do something...
+                }
+            });
+```
 
 Enjoy yourself! :kissing_heart:
 

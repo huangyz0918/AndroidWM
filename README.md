@@ -170,6 +170,17 @@ You can set the text color and background color in `WatermarkText`:
 ## Text Shadow and Font
 You can set the text font by loading a local resource, besides, you can also set the shadow by `setTextShadow`.
 
+```java
+    WatermarkText watermarkText = new WatermarkText(editText)
+            .setPositionX(0.5)
+            .setPositionY(0.5)
+            .setTextSize(40)
+            .setTextAlpha(200)
+            .setTextColor(Color.GREEN)
+            .setTextFont(R.font.champagne)
+            .setTextShadow(0.1f, 5, 5, Color.BLUE);
+```
+
 |  ![](https://i.loli.net/2018/09/05/5b8f5c48e2631.png)   | ![](https://i.loli.net/2018/09/05/5b8f5c48e081c.png) | 
 | :-------------: | :-------------: | 
 |   font = champagne | shadow = (0.1f, 5, 5, BLUE)  | 
@@ -181,17 +192,6 @@ the four parameters of text shadow is: `(blur radius, x offset, y offset, color)
 The text font size unit and the image size unit are different:
 - Text size is as the same unit as the android layout. (will auto adjust with the screen density and background pixels)
 - The image size is from 0 to 1, which is the width of the background image percentage.
-
-```java
-    WatermarkText watermarkText = new WatermarkText(editText)
-            .setPositionX(0.5)
-            .setPositionY(0.5)
-            .setTextSize(40)
-            .setTextAlpha(200)
-            .setTextColor(Color.GREEN)
-            .setTextFont(R.font.champagne)
-            .setTextShadow(0.1f, 5, 5, Color.BLUE);
-```
 
 |  ![](https://i.loli.net/2018/09/05/5b8f5eb1a7fb0.png)   | ![](https://i.loli.net/2018/09/05/5b8f5eb24d0fd.png) | 
 | :-------------: | :-------------: | 

@@ -32,7 +32,7 @@ implementation 'com.huangyz0918:androidwm:v0.1.5'
 ```
 
 # Quick Start
-### Build a watermark
+### Build a Watermark
 After downloading the library and adding it into your project, You can create a `WatermarkImage` or `WatermarkText` and do some pre-settings with their instance.
 
 ```java

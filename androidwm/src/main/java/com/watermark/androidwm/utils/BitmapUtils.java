@@ -236,7 +236,6 @@ public class BitmapUtils {
     /**
      * Convert a String to a Bitmap.
      *
-     * @param encodedString
      * @return bitmap (from given string)
      */
     public static Bitmap StringToBitmap(String encodedString) {

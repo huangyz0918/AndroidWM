@@ -32,8 +32,6 @@ import static com.watermark.androidwm.utils.Constant.LSB_SUFFIX_FLAG;
  * into the background image. We don't need to read every pixel's
  * RGB value, we just read the length values that can put our encrypted
  * text in.
- * <p>
- * TODO: build another AsyncTask that used for reverting the text.
  *
  * @author huangyz0918 (huangyz0918@gmail.com)
  */

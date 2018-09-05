@@ -12,7 +12,9 @@ import android.graphics.Bitmap;
  */
 public interface DetectFinishListener {
 
-    void onSuccess(Bitmap watermark);
+    void onImage(Bitmap watermark);
+
+    void onText(String watermark);
 
     void onFailure(String message);
 }

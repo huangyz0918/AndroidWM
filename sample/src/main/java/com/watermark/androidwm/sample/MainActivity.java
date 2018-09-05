@@ -176,11 +176,20 @@ public class MainActivity extends AppCompatActivity {
             WatermarkDetector.create(backgroundView, true)
                     .detect(true, new DetectFinishListener() {
                         @Override
-                        public void onSuccess(Bitmap watermark) {
+                        public void onImage(Bitmap watermark) {
                             Toast.makeText(MainActivity.this,
                                     "Successfully detected invisible watermark!", Toast.LENGTH_SHORT).show();
                             if (watermark != null) {
                                 backgroundView.setImageBitmap(watermark);
+                            }
+                        }
+
+                        @Override
+                        public void onText(String watermark) {
+                            Toast.makeText(MainActivity.this,
+                                    "Successfully detected invisible watermark!", Toast.LENGTH_SHORT).show();
+                            if (watermark != null) {
+                                editText.setText(watermark);
                             }
                         }
 
@@ -196,11 +205,20 @@ public class MainActivity extends AppCompatActivity {
             WatermarkDetector.create(backgroundView, true)
                     .detect(false, new DetectFinishListener() {
                         @Override
-                        public void onSuccess(Bitmap watermark) {
+                        public void onImage(Bitmap watermark) {
                             Toast.makeText(MainActivity.this,
                                     "Successfully detected invisible watermark!", Toast.LENGTH_SHORT).show();
                             if (watermark != null) {
                                 backgroundView.setImageBitmap(watermark);
+                            }
+                        }
+
+                        @Override
+                        public void onText(String watermark) {
+                            Toast.makeText(MainActivity.this,
+                                    "Successfully detected invisible watermark!", Toast.LENGTH_SHORT).show();
+                            if (watermark != null) {
+                                editText.setText(watermark);
                             }
                         }
 

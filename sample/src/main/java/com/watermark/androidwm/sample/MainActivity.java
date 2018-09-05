@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
             WatermarkBuilder
                     .create(this, backgroundView)
                     .loadWatermarkImage(watermarkBitmap)
-                    .setInvisibleWMListener(true, new BuildFinishListener<Bitmap>() {
+                    .setInvisibleWMListener(true, 900, new BuildFinishListener<Bitmap>() {
                         @Override
                         public void onSuccess(Bitmap object) {
                             Toast.makeText(MainActivity.this,
@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(MainActivity.this,
                                     "Successfully detected invisible watermark!", Toast.LENGTH_SHORT).show();
                             if (watermark != null) {
-                                editText.setText(watermark);
+                                Toast.makeText(MainActivity.this, "The invisible watermark is: " + watermark, Toast.LENGTH_SHORT).show();
                             }
                         }
 
@@ -215,10 +215,8 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onText(String watermark) {
-                            Toast.makeText(MainActivity.this,
-                                    "Successfully detected invisible watermark!", Toast.LENGTH_SHORT).show();
                             if (watermark != null) {
-                                editText.setText(watermark);
+                                Toast.makeText(MainActivity.this, "The invisible watermark is: " + watermark, Toast.LENGTH_SHORT).show();
                             }
                         }
 

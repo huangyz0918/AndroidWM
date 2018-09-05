@@ -74,6 +74,7 @@ public class LSBWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
         if (params[0].getMaxImageSize() > 0) {
             backgroundBitmap = BitmapUtils.resizeBitmap(backgroundBitmap, params[0].getMaxImageSize());
         }
+
         Bitmap outputBitmap = Bitmap.createBitmap(backgroundBitmap.getWidth(), backgroundBitmap.getHeight(),
                 backgroundBitmap.getConfig());
 

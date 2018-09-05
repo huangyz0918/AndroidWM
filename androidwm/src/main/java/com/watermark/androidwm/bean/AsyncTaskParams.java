@@ -28,7 +28,7 @@ public class AsyncTaskParams {
     private Bitmap backgroundImg;
     private String watermarkText;
     private Bitmap watermarkImg;
-    private int maxImageSize = 0;
+    private int maxImageSize;
 
     public AsyncTaskParams(Bitmap backgroundImg, String watermarkText, Bitmap watermarkImg, int maxImageSize) {
         this.backgroundImg = backgroundImg;

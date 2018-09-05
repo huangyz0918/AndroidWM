@@ -136,19 +136,15 @@ public class BitmapUtils {
      * @return {@link Bitmap} the new bitmap.
      */
     public static Bitmap resizeBitmap(Bitmap watermarkImg, float size, Bitmap backgroundImg) {
-        if (size > 0 && size < 1) {
-            int bitmapWidth = watermarkImg.getWidth();
-            int bitmapHeight = watermarkImg.getHeight();
-            float scaleWidth = (backgroundImg.getWidth() * size) / bitmapWidth;
-            float scaleHeight = (float) (watermarkImg.getHeight() / watermarkImg.getWidth()) * scaleWidth;
+        int bitmapWidth = watermarkImg.getWidth();
+        int bitmapHeight = watermarkImg.getHeight();
+        float scaleWidth = (backgroundImg.getWidth() * size) / bitmapWidth;
+        float scaleHeight = (float) (watermarkImg.getHeight() / watermarkImg.getWidth()) * scaleWidth;
 
-            Matrix matrix = new Matrix();
-            matrix.postScale(scaleWidth, scaleHeight);
-            return Bitmap.createBitmap(watermarkImg, 0, 0,
-                    bitmapWidth, bitmapHeight, matrix, true);
-        } else {
-            return watermarkImg;
-        }
+        Matrix matrix = new Matrix();
+        matrix.postScale(scaleWidth, scaleHeight);
+        return Bitmap.createBitmap(watermarkImg, 0, 0,
+                bitmapWidth, bitmapHeight, matrix, true);
     }
 
     /**

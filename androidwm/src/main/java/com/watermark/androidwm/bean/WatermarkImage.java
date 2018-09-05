@@ -21,6 +21,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.FloatRange;
 import android.widget.ImageView;
 
 /**
@@ -99,12 +100,12 @@ public class WatermarkImage {
         return this;
     }
 
-    public WatermarkImage setPositionX(double x) {
+    public WatermarkImage setPositionX(@FloatRange(from = 0, to = 1) double x) {
         this.position.setPositionX(x);
         return this;
     }
 
-    public WatermarkImage setPositionY(double y) {
+    public WatermarkImage setPositionY(@FloatRange(from = 0, to = 1) double y) {
         this.position.setPositionY(y);
         return this;
     }
@@ -131,7 +132,7 @@ public class WatermarkImage {
      * @param size can be set to 0-1 as the proportion of
      *             background image.
      */
-    public WatermarkImage setSize(double size) {
+    public WatermarkImage setSize(@FloatRange(from = 0, to = 1) double size) {
         this.size = size;
         return this;
     }

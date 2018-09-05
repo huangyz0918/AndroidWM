@@ -16,6 +16,8 @@
  */
 package com.watermark.androidwm.bean;
 
+import android.support.annotation.FloatRange;
+
 /**
  * It's a class for saving the position of watermark.
  * Can be used for a single image/text or a set of
@@ -33,12 +35,15 @@ public class WatermarkPosition {
     /**
      * Constructors for WatermarkImage
      */
-    public WatermarkPosition(double positionX, double positionY) {
+    public WatermarkPosition(@FloatRange(from = 0, to = 1) double positionX,
+                             @FloatRange(from = 0, to = 1) double positionY) {
         this.positionX = positionX;
         this.positionY = positionY;
     }
 
-    public WatermarkPosition(double positionX, double positionY, double rotation) {
+    public WatermarkPosition(@FloatRange(from = 0, to = 1) double positionX,
+                             @FloatRange(from = 0, to = 1) double positionY,
+                             double rotation) {
         this.positionX = positionX;
         this.positionY = positionY;
         this.rotation = rotation;
@@ -62,15 +67,18 @@ public class WatermarkPosition {
     /**
      * Setters for those attrs.
      */
-    public void setRotation(double rotation) {
+    public WatermarkPosition setRotation(double rotation) {
         this.rotation = rotation;
+        return this;
     }
 
-    public void setPositionX(double positionX) {
+    public WatermarkPosition setPositionX(double positionX) {
         this.positionX = positionX;
+        return this;
     }
 
-    public void setPositionY(double positionY) {
+    public WatermarkPosition setPositionY(double positionY) {
         this.positionY = positionY;
+        return this;
     }
 }

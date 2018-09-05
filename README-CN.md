@@ -169,6 +169,17 @@ WatermarkImage watermarkImage = new WatermarkImage(this, R.drawable.image); // f
 ## 字体颜色的阴影和字体
 你可以从软件资源中加载一种字体，也可以通过方法 `setTextShadow` 设置字体的阴影。
 
+```java
+    WatermarkText watermarkText = new WatermarkText(editText)
+            .setPositionX(0.5)
+            .setPositionY(0.5)
+            .setTextSize(40)
+            .setTextAlpha(200)
+            .setTextColor(Color.GREEN)
+            .setTextFont(R.font.champagne)
+            .setTextShadow(0.1f, 5, 5, Color.BLUE);
+```
+
 |  ![](https://i.loli.net/2018/09/05/5b8f5c48e2631.png)   | ![](https://i.loli.net/2018/09/05/5b8f5c48e081c.png) | 
 | :-------------: | :-------------: | 
 |   font = champagne | shadow = (0.1f, 5, 5, BLUE)  | 
@@ -180,17 +191,6 @@ WatermarkImage watermarkImage = new WatermarkImage(this, R.drawable.image); // f
 水印字体和水印图片大小的单位是不同的：
 - 字体大小和系统布局中字体大小是类似的，取决于屏幕的分辨率和背景图片的像素，您可能需要动态调整。
 - 图片大小是一个从 0 到 1 的浮点数，是水印图片的宽度占背景图片宽度的比例。
-
-```java
-    WatermarkText watermarkText = new WatermarkText(editText)
-            .setPositionX(0.5)
-            .setPositionY(0.5)
-            .setTextSize(40)
-            .setTextAlpha(200)
-            .setTextColor(Color.GREEN)
-            .setTextFont(R.font.champagne)
-            .setTextShadow(0.1f, 5, 5, Color.BLUE);
-```
 
 |  ![](https://i.loli.net/2018/09/05/5b8f5eb1a7fb0.png)   | ![](https://i.loli.net/2018/09/05/5b8f5eb24d0fd.png) | 
 | :-------------: | :-------------: | 

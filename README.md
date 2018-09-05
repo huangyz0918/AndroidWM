@@ -7,12 +7,12 @@ A lightweight android image watermark library that supports encrypted watermarks
 
 # Download Library 
 
-### Download by Gradle
+### Gradle:
 
 ```gradle
 implementation 'com.huangyz0918:androidwm:v0.1.5'
 ```
-### Download by Maven
+### Maven:
 
 ```xml
 <dependency>
@@ -23,7 +23,7 @@ implementation 'com.huangyz0918:androidwm:v0.1.5'
 </dependency>
 ```
 
-### Download by Lvy
+### Lvy:
 
 ```xml
 <dependency org='com.huangyz0918' name='androidwm' rev='v0.1.5'>

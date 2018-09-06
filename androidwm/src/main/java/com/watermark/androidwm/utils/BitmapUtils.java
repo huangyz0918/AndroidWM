@@ -16,6 +16,7 @@
  */
 package com.watermark.androidwm.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -25,6 +26,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.os.Environment;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.StaticLayout;
 import android.text.TextPaint;
@@ -37,6 +39,11 @@ import com.watermark.androidwm.bean.WatermarkImage;
 import com.watermark.androidwm.bean.WatermarkText;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 import static android.content.ContentValues.TAG;
 
@@ -168,49 +175,9 @@ public class BitmapUtils {
     }
 
     /**
-     * Compute a color's brightness value.
-     *
-     * @param rgb the color's RGB values as an integer (0xRRGGBB)
-     */
-    public static float getBrightness(int rgb) {
-        int red = (rgb >> 16) & 0xff;
-        int green = (rgb >> 8) & 0xff;
-        int blue = (rgb) & 0xff;
-        return (float) ((.2126 * red + .7152 * green + .0722 * blue) / 255);
-    }
-
-    /**
-     * Converting the color form HSV to RGB.
-     */
-    public static int hsvToRgb(float hue, float saturation, float value) {
-
-        int h = (int) (hue * 6);
-        float f = hue * 6 - h;
-        float p = value * (1 - saturation);
-        float q = value * (1 - f * saturation);
-        float t = value * (1 - (1 - f) * saturation);
-
-        switch (h) {
-            case 0:
-                return rgbToInteger(value, t, p);
-            case 1:
-                return rgbToInteger(q, value, p);
-            case 2:
-                return rgbToInteger(p, value, t);
-            case 3:
-                return rgbToInteger(p, q, value);
-            case 4:
-                return rgbToInteger(t, p, value);
-            case 5:
-                return rgbToInteger(value, p, q);
-            default:
-                throw new RuntimeException("Something went wrong when converting from HSV to RGB. Input was " + hue + ", " + saturation + ", " + value);
-        }
-    }
-
-    /**
      * Converting the RGB value to a String.
      */
+    @SuppressWarnings("PMD")
     private static int rgbToInteger(float r, float g, float b) {
         int R = Math.round(255 * r);
         int G = Math.round(255 * g);
@@ -245,6 +212,36 @@ public class BitmapUtils {
         } catch (Exception e) {
             Log.e(TAG, "StringToBitmap: ", e);
             return null;
+        }
+    }
+
+    /**
+     * Saving a bitmap instance into local PNG.
+     */
+    public static void saveAsPNG(Bitmap inputBitmap, String filePath) {
+        String sdStatus = Environment.getExternalStorageState();
+        if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) {
+            Log.e("Error: ", "SD card is not available/writable right now.");
+        }
+
+        @SuppressLint("SimpleDateFormat") String timeStamp =
+                new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.US).format(Calendar.getInstance().getTime());
+
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(filePath + timeStamp + ".png");
+            inputBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            // PNG is a lossless format, the compression factor (100) is ignored
+        } catch (Exception e) {
+            Log.e(TAG, "saveAsPNG: ", e);
+        } finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+            } catch (IOException e) {
+                Log.e(TAG, "saveAsPNG: ", e);
+            }
         }
     }
 }

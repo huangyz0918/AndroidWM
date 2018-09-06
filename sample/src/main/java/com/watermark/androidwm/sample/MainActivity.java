@@ -35,6 +35,7 @@ import com.watermark.androidwm.WatermarkBuilder;
 import com.watermark.androidwm.bean.WatermarkImage;
 import com.watermark.androidwm.bean.WatermarkText;
 import com.watermark.androidwm.listener.DetectFinishListener;
+import com.watermark.androidwm.utils.BitmapUtils;
 
 /**
  * This is the sample for library: androidwm.
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         editText = findViewById(R.id.editText);
         backgroundView = findViewById(R.id.imageView);
 
-        Glide.with(this).load(R.drawable.test)
+        Glide.with(this).load(R.drawable.test1)
                 .into(backgroundView);
 
 //        watermarkBackground = BitmapFactory.decodeResource(getResources(), R.drawable.test);
@@ -131,13 +132,14 @@ public class MainActivity extends AppCompatActivity {
             WatermarkBuilder
                     .create(this, backgroundView)
                     .loadWatermarkImage(watermarkBitmap)
-                    .setInvisibleWMListener(true, 900, new BuildFinishListener<Bitmap>() {
+                    .setInvisibleWMListener(true,  new BuildFinishListener<Bitmap>() {
                         @Override
                         public void onSuccess(Bitmap object) {
                             Toast.makeText(MainActivity.this,
                                     "Successfully create invisible watermark!", Toast.LENGTH_SHORT).show();
                             if (object != null) {
                                 backgroundView.setImageBitmap(object);
+                                BitmapUtils.saveAsPNG(object, "sdcard/DCIM/");
                             }
                         }
 
@@ -230,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
 
         // reload the background.
         btnClear.setOnClickListener((View v) -> {
-            Glide.with(this).load(R.drawable.test)
+            Glide.with(this).load(R.drawable.test1)
                     .into(backgroundView);
         });
 

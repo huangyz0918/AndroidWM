@@ -26,6 +26,9 @@ import com.watermark.androidwm.bean.DetectionReturnValue;
 import com.watermark.androidwm.listener.DetectFinishListener;
 import com.watermark.androidwm.utils.BitmapUtils;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static com.watermark.androidwm.utils.Constant.LSB_PREFIX_FLAG;
 import static com.watermark.androidwm.utils.Constant.LSB_SUFFIX_FLAG;
 
@@ -74,6 +77,7 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
         }
 
         replaceNines(outputBinary);
+//        String binaryString = combineArrayToString(outputBinary, 500);
         String binaryString = intArrayToString(outputBinary);
         binaryString = getBetweenStrings(binaryString, listener);
         // To make sure there has no redundancy.
@@ -151,7 +155,40 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
 
     /**
      * Int array to string.
+     * In order to avoid the OOM of large image, we need to break the
+     * input array into several small ones and combine them in building
+     * a new string.
+     * <p>
+     * TODO: handle the OOM in {@link StringBuilder}.
      */
+    @SuppressWarnings("PMD")
+    private String combineArrayToString(int[] inputArray, int minSize) {
+        int multiple = inputArray.length / minSize;
+        int mod = inputArray.length % minSize;
+        StringBuilder[] builders = new StringBuilder[multiple + 1];
+        builders[builders.length - 1] = new StringBuilder();
+        StringBuilder resultBuilder = new StringBuilder();
+
+        int[] lastArray = Arrays.copyOfRange(inputArray, multiple * minSize, inputArray.length);
+
+        for (int i : lastArray) {
+            builders[builders.length - 1].append(i);
+        }
+
+        for (int i = 0; i < multiple; i++) {
+            builders[i] = new StringBuilder();
+            for (int j = 0; j < minSize; j++) {
+                builders[i].append(multiple * minSize + j);
+            }
+        }
+
+        for (StringBuilder builder : builders) {
+            resultBuilder.append(builder.toString());
+        }
+
+        return resultBuilder.toString();
+    }
+
     private String intArrayToString(int[] inputArray) {
         StringBuilder binary = new StringBuilder();
         for (int num : inputArray) {
@@ -177,5 +214,18 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
                     "the data has been lost! Please make sure the maxImageSize is bigger enough!");
         }
         return result;
+    }
+
+    /**
+     * convert a {@link List<Integer>} to an int array.
+     */
+    int[] toIntArray(List<Integer> list) {
+        int[] ret = new int[list.size()];
+        int i = 0;
+        for (Integer e : list) {
+            ret[i++] = e;
+        }
+        
+        return ret;
     }
 }

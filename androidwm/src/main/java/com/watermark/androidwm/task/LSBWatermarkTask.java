@@ -102,9 +102,14 @@ public class LSBWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
             listener.onFailure("The Pixels in background are too small to put the watermark in, " +
                     "the data has been lost! Please make sure the maxImageSize is bigger enough!");
         } else {
-            for (int i = 0; i < watermarkColorArray.length; i++) {
-                backgroundColorArray[i] = replaceSingleDigit(backgroundColorArray[i]
-                        , watermarkColorArray[i]);
+            int chunkSize = watermarkColorArray.length;
+            int numOfChunks = (int) Math.ceil((double) backgroundColorArray.length / chunkSize);
+            for (int i = 0; i < numOfChunks - 1; i++) {
+                int start = i * chunkSize;
+                for (int j = 0; j < chunkSize; j++) {
+                    backgroundColorArray[start + j] = replaceSingleDigit(backgroundColorArray[start + j]
+                            , watermarkColorArray[j]);
+                }
             }
 
             int[] rebuiltPixels = new int[backgroundPixels.length];
@@ -172,6 +177,26 @@ public class LSBWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
      */
     private int replaceSingleDigit(int target, int singleDigit) {
         return (target / 10) * 10 + singleDigit;
+    }
+
+    /**
+     * to split an array into chunks of equal size. The last chunk
+     * may be smaller than the rest.
+     */
+    public static int[][] chunkArray(int[] array, int chunkSize) {
+        int numOfChunks = (int) Math.ceil((double) array.length / chunkSize);
+        int[][] output = new int[numOfChunks][];
+
+        for (int i = 0; i < numOfChunks; ++i) {
+            int start = i * chunkSize;
+            int length = Math.min(array.length - start, chunkSize);
+
+            int[] temp = new int[length];
+            System.arraycopy(array, start, temp, 0, length);
+            output[i] = temp;
+        }
+
+        return output;
     }
 
 }

@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         editText = findViewById(R.id.editText);
         backgroundView = findViewById(R.id.imageView);
 
-        Glide.with(this).load(R.drawable.test1)
+        Glide.with(this).load(R.drawable.test)
                 .into(backgroundView);
 
 //        watermarkBackground = BitmapFactory.decodeResource(getResources(), R.drawable.test);
@@ -232,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
 
         // reload the background.
         btnClear.setOnClickListener((View v) -> {
-            Glide.with(this).load(R.drawable.test1)
+            Glide.with(this).load(R.drawable.test)
                     .into(backgroundView);
         });
 

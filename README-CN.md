@@ -1,6 +1,6 @@
 # AndroidWM 
- [ ![Download](https://api.bintray.com/packages/huangyz0918/androidwm/androidwm/images/download.svg) ](https://bintray.com/huangyz0918/androidwm/androidwm/_latestVersion) [![Build Status](https://travis-ci.org/huangyz0918/AndroidWM.svg?branch=master)](https://travis-ci.org/huangyz0918/AndroidWM) [![contributions](https://img.shields.io/badge/contributions-welcome-green.svg)](https://github.com/GalaxyRockets/AndroidWM)
-
+ [ ![Download](https://api.bintray.com/packages/huangyz0918/androidwm/androidwm/images/download.svg) ](https://bintray.com/huangyz0918/androidwm/androidwm/_latestVersion) [![Build Status](https://travis-ci.org/huangyz0918/AndroidWM.svg?branch=master)](https://travis-ci.org/huangyz0918/AndroidWM) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/7f8e55520309410a95f71b54cfe8c381)](https://app.codacy.com/app/huangyz0918/AndroidWM?utm_source=github.com&utm_medium=referral&utm_content=huangyz0918/AndroidWM&utm_campaign=Badge_Grade_Dashboard)
+ 
 一个轻量级的 Android 图片水印框架，支持隐形水印和加密水印。 [English version](./README.md)
 
 ![](https://i.loli.net/2018/09/01/5b8aa948a8935.png)
@@ -114,6 +114,62 @@ WatermarkImage watermarkImage = new WatermarkImage(this, R.drawable.image); // f
 ```
 
 如果在水印构建器中你既没有加载文字水印也没有加载图片水印，那么处理过后的图片将保持原样，毕竟你啥也没干 :)
+
+### 隐形水印
+
+androidwm 支持两种模式的隐形水印：
+
+- 空域 LSB 水印
+- 频域叠加水印
+
+你可以通过`WatermarkBuilder` 直接构造一个隐形水印，为了选择不同的隐形方式，可以使用布尔参数 `isLSB` 来区分它们，而想要获取到构建成功的水印图片，你需要添加一个监听器：
+
+```java
+     WatermarkBuilder
+            .create(this, backgroundBitmap)
+            .loadWatermarkImage(watermarkBitmap)
+            .setInvisibleWMListener(true, 512, new BuildFinishListener<Bitmap>() {
+                @Override
+                public void onSuccess(Bitmap object) {
+                    if (object != null) {
+                       // do something...
+                    }
+                }
+
+                @Override
+                public void onFailure(String message) {
+                   // do something...
+                }
+            });
+```
+`setInvisibleWMListener` 方法的第二个参数是一个整数，表示输入图片最大尺寸，有的时候，你输入的可能是一个巨大的图片，为了使计算算法更加快速，你可以选择在构建图片之前是否对图片进行缩放，如果你让这个参数为空，那么图片将以原图形式进行添加水印操作。无论如何，注意一定要保持背景图片的大小足以放得下水印图片中的信息，否则会抛出异常。
+
+同理，检测隐形水印可以使用类`WatermarkDetector`，通过一个`create`方法获取到实例，同时传进去一张加过水印的图片，第一个布尔参数代表着水印的种类，true 代表着检测文字水印，反之则检测图形水印。
+
+```java
+     WatermarkDetector
+            .create(inputBitmap, true)
+            .detect(false, new DetectFinishListener() {
+                @Override
+                public void onImage(Bitmap watermark) {
+                    if (watermark != null) {
+                         // do something...
+                    }
+                }
+
+                @Override
+                public void onText(String watermark) {
+                    if (watermark != null) {
+                        // do something...
+                    }
+                }
+
+                @Override
+                public void onFailure(String message) {
+                       // do something...
+                }
+            });
+```
 
 
 好啦！请尽情使用吧 :kissing_heart:

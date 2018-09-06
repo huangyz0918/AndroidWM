@@ -1,5 +1,5 @@
 # AndroidWM
-[ ![Download](https://api.bintray.com/packages/huangyz0918/androidwm/androidwm/images/download.svg) ](https://bintray.com/huangyz0918/androidwm/androidwm/_latestVersion) [![Build Status](https://travis-ci.org/huangyz0918/AndroidWM.svg?branch=master)](https://travis-ci.org/huangyz0918/AndroidWM) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/7f8e55520309410a95f71b54cfe8c381)](https://app.codacy.com/app/huangyz0918/AndroidWM?utm_source=github.com&utm_medium=referral&utm_content=huangyz0918/AndroidWM&utm_campaign=Badge_Grade_Dashboard)
+[ ![Download](https://api.bintray.com/packages/huangyz0918/androidwm/androidwm/images/download.svg) ](https://bintray.com/huangyz0918/androidwm/androidwm/_latestVersion) [![Build Status](https://travis-ci.org/huangyz0918/AndroidWM.svg?branch=master)](https://travis-ci.org/huangyz0918/AndroidWM) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/7f8e55520309410a95f71b54cfe8c381)](https://app.codacy.com/app/huangyz0918/AndroidWM?utm_source=github.com&utm_medium=referral&utm_content=huangyz0918/AndroidWM&utm_campaign=Badge_Grade_Dashboard) ![progress](https://img.shields.io/badge/progress-developing-yellow.svg)
 
 A lightweight android image watermark library that supports encrypted watermarks. [中文版本](./README-CN.md)
 
@@ -118,7 +118,7 @@ If you didn't load a watermark ,the default value is as the same as background, 
 
 ### Invisible Watermarks
 
-In this library, we also support the invisible watermark and the detection of them. We can use two ways to build a invisible watermark: the LSB (spatial domain) and the wavelet transform (Frequency domain). All you need to do is to use a boolean (isLSB) to distinguish them.
+In this library, we also support the invisible watermark and the detection of them. We can use two ways to build a invisible watermark: the LSB (spatial domain) and the wavelet transform (Frequency domain). All you need to do is to use a boolean (isLSB) to distinguish them. __(PS. the watermark in frequency domain is under developing)__
 
 You can create a new invisible watermark by the `WatermarkBuilder`'s `.setInvisibleWMListener`:
 

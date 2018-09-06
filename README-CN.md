@@ -117,7 +117,7 @@ WatermarkImage watermarkImage = new WatermarkImage(this, R.drawable.image); // f
 
 如果在水印构建器中你既没有加载文字水印也没有加载图片水印，那么处理过后的图片将保持原样，毕竟你啥也没干 :)
 
-### 隐形水印
+### 隐形水印 (测试版)
 
 androidwm 支持两种模式的隐形水印：
 

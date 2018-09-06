@@ -169,6 +169,11 @@ To detect the invisible watermark, you can use `WatermarkDetector`, the first pa
             });
 ```
 
+|  ![](https://i.loli.net/2018/09/06/5b90f8d80402b.gif)   | ![](https://i.loli.net/2018/09/06/5b90f8d7936f9.gif) | 
+| :-------------: | :-------------: | 
+|   ------------------- Invisible Text (LSB) -----------------  | -----------------  Invisible Image (LSB) -----------------   | 
+
+
 Enjoy yourself! :kissing_heart:
 
 # Detailed Usages

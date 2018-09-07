@@ -22,6 +22,8 @@ package com.watermark.androidwm.utils;
  * @author huangyz0918 (huangyz0918@gmail.com)
  */
 public class Constant {
-    public static final String LSB_PREFIX_FLAG = "222222";
-    public static final String LSB_SUFFIX_FLAG = "333333";
+    public static final String LSB_IMG_PREFIX_FLAG = "222222";
+    public static final String LSB_TEXT_PREFIX_FLAG = "444444";
+    public static final String LSB_IMG_SUFFIX_FLAG = "333333";
+    public static final String LSB_TEXT_SUFFIX_FLAG = "555555";
 }

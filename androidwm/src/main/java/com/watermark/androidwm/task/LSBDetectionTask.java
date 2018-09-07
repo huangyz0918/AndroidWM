@@ -26,11 +26,13 @@ import com.watermark.androidwm.bean.DetectionReturnValue;
 import com.watermark.androidwm.listener.DetectFinishListener;
 import com.watermark.androidwm.utils.BitmapUtils;
 
-import java.util.Arrays;
 import java.util.List;
 
-import static com.watermark.androidwm.utils.Constant.LSB_PREFIX_FLAG;
-import static com.watermark.androidwm.utils.Constant.LSB_SUFFIX_FLAG;
+import static com.watermark.androidwm.task.LSBWatermarkTask.chunkArray;
+import static com.watermark.androidwm.utils.Constant.LSB_IMG_PREFIX_FLAG;
+import static com.watermark.androidwm.utils.Constant.LSB_IMG_SUFFIX_FLAG;
+import static com.watermark.androidwm.utils.Constant.LSB_TEXT_PREFIX_FLAG;
+import static com.watermark.androidwm.utils.Constant.LSB_TEXT_SUFFIX_FLAG;
 
 /**
  * This is a task for watermark image detection.
@@ -77,14 +79,16 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
         }
 
         replaceNines(outputBinary);
-//        String binaryString = combineArrayToString(outputBinary, 500);
+//        String binaryString = combineArrayToString(outputBinary, 10000);
         String binaryString = intArrayToString(outputBinary);
-        binaryString = getBetweenStrings(binaryString, listener);
-        // To make sure there has no redundancy.
-        String resultString = binaryToString(binaryString);
+        String resultString;
         if (isText) {
+            binaryString = getBetweenStrings(binaryString, true, listener);
+            resultString = binaryToString(binaryString);
             resultValue.setWatermarkString(resultString);
         } else {
+            binaryString = getBetweenStrings(binaryString, false, listener);
+            resultString = binaryToString(binaryString);
             resultValue.setWatermarkBitmap(BitmapUtils.StringToBitmap(resultString));
         }
 
@@ -110,7 +114,6 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
     /**
      * Converting a binary string to a ASCII string.
      * <p>
-     * TODO: this method needs performance optimization.
      */
     private String binaryToString(String inputText) {
         if (inputText != null) {
@@ -160,26 +163,23 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
      * a new string.
      * <p>
      * TODO: handle the OOM in {@link StringBuilder}.
+     * TODO: find out the differences between image loaded by Glide and system resource.
      */
-    @SuppressWarnings("PMD")
-    private String combineArrayToString(int[] inputArray, int minSize) {
-        int multiple = inputArray.length / minSize;
-        int mod = inputArray.length % minSize;
-        StringBuilder[] builders = new StringBuilder[multiple + 1];
-        builders[builders.length - 1] = new StringBuilder();
+    String combineArrayToString(int[] inputArray, int minSize) {
+        int[][] resultDeepArray = chunkArray(inputArray, minSize);
+        StringBuilder[] builders = new StringBuilder[resultDeepArray.length];
         StringBuilder resultBuilder = new StringBuilder();
 
-        int[] lastArray = Arrays.copyOfRange(inputArray, multiple * minSize, inputArray.length);
-
-        for (int i : lastArray) {
-            builders[builders.length - 1].append(i);
-        }
-
-        for (int i = 0; i < multiple; i++) {
+        for (int i = 0; i < resultDeepArray.length - 1; i++) {
             builders[i] = new StringBuilder();
             for (int j = 0; j < minSize; j++) {
-                builders[i].append(multiple * minSize + j);
+                builders[i].append(resultDeepArray[i][j]);
             }
+        }
+
+        builders[builders.length - 1] = new StringBuilder();
+        for (int i : resultDeepArray[resultDeepArray.length - 1]) {
+            builders[builders.length - 1].append(i);
         }
 
         for (StringBuilder builder : builders) {
@@ -203,16 +203,26 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
      *
      * @param text Text to search in.
      */
-    private String getBetweenStrings(String text, DetectFinishListener listener) {
+    private String getBetweenStrings(String text, boolean isText, DetectFinishListener listener) {
         String result = null;
-        try {
-            result = text.substring(text.indexOf(LSB_PREFIX_FLAG) + LSB_SUFFIX_FLAG.length(),
-                    text.length());
-            result = result.substring(0, result.indexOf(LSB_SUFFIX_FLAG));
-        } catch (StringIndexOutOfBoundsException e) {
-            listener.onFailure("The Pixels in background are too small to put the watermark in, " +
-                    "the data has been lost! Please make sure the maxImageSize is bigger enough!");
+        if (isText) {
+            try {
+                result = text.substring(text.indexOf(LSB_TEXT_PREFIX_FLAG) + LSB_TEXT_SUFFIX_FLAG.length(),
+                        text.length());
+                result = result.substring(0, result.indexOf(LSB_TEXT_SUFFIX_FLAG));
+            } catch (StringIndexOutOfBoundsException e) {
+                listener.onFailure("No watermarks found in this image!");
+            }
+        } else {
+            try {
+                result = text.substring(text.indexOf(LSB_IMG_PREFIX_FLAG) + LSB_IMG_SUFFIX_FLAG.length(),
+                        text.length());
+                result = result.substring(0, result.indexOf(LSB_IMG_SUFFIX_FLAG));
+            } catch (StringIndexOutOfBoundsException e) {
+                listener.onFailure("No watermarks found in this image!");
+            }
         }
+
         return result;
     }
 
@@ -225,7 +235,7 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
         for (Integer e : list) {
             ret[i++] = e;
         }
-        
+
         return ret;
     }
 }

@@ -7,4 +7,5 @@
     <string name="btn_detect_image">detect image</string>
     <string name="btn_detect_text">detect text</string>
     <string name="btn_clear_watermark">Clear watermarks</string>
+    <string name="btn_load_marked">Load picture</string>
 </resources>

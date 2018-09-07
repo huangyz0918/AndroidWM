@@ -218,7 +218,7 @@ public class BitmapUtils {
     /**
      * Saving a bitmap instance into local PNG.
      */
-    public static void saveAsPNG(Bitmap inputBitmap, String filePath) {
+    public static void saveAsPNG(Bitmap inputBitmap, String filePath, boolean withTime) {
         String sdStatus = Environment.getExternalStorageState();
         if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) {
             Log.e("Error: ", "SD card is not available/writable right now.");
@@ -229,7 +229,11 @@ public class BitmapUtils {
 
         FileOutputStream out = null;
         try {
-            out = new FileOutputStream(filePath + timeStamp + ".png");
+            if (withTime) {
+                out = new FileOutputStream(filePath + timeStamp + ".png");
+            } else {
+                out = new FileOutputStream(filePath + "watermarked" + ".png");
+            }
             inputBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
             // PNG is a lossless format, the compression factor (100) is ignored
         } catch (Exception e) {

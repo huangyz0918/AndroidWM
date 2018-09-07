@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnDetectImage;
     private Button btnDetectText;
     private Button btnClear;
+    private Button btnLoad;
 
     private ImageView backgroundView;
     private Bitmap watermarkBitmap;
@@ -75,13 +76,14 @@ public class MainActivity extends AppCompatActivity {
         btnDetectImage = findViewById(R.id.btn_detect_image);
         btnDetectText = findViewById(R.id.btn_detect_text);
         btnClear = findViewById(R.id.btn_clear_watermark);
+        btnLoad = findViewById(R.id.btn_load_marked);
 
 
         editText = findViewById(R.id.editText);
         backgroundView = findViewById(R.id.imageView);
 
-        Glide.with(this).load(R.drawable.test)
-                .into(backgroundView);
+//        Glide.with(this).load(R.drawable.test)
+//                .into(backgroundView);
 
 //        watermarkBackground = BitmapFactory.decodeResource(getResources(), R.drawable.test);
 
@@ -132,14 +134,14 @@ public class MainActivity extends AppCompatActivity {
             WatermarkBuilder
                     .create(this, backgroundView)
                     .loadWatermarkImage(watermarkBitmap)
-                    .setInvisibleWMListener(true,  new BuildFinishListener<Bitmap>() {
+                    .setInvisibleWMListener(true, new BuildFinishListener<Bitmap>() {
                         @Override
                         public void onSuccess(Bitmap object) {
                             Toast.makeText(MainActivity.this,
                                     "Successfully create invisible watermark!", Toast.LENGTH_SHORT).show();
                             if (object != null) {
                                 backgroundView.setImageBitmap(object);
-                                BitmapUtils.saveAsPNG(object, "sdcard/DCIM/");
+                                BitmapUtils.saveAsPNG(object, "sdcard/DCIM/", false);
                             }
                         }
 
@@ -227,12 +229,17 @@ public class MainActivity extends AppCompatActivity {
                             Log.e("===>", "onFailure: " + message);
                         }
                     });
-
         });
 
         // reload the background.
         btnClear.setOnClickListener((View v) -> {
             Glide.with(this).load(R.drawable.test)
+                    .into(backgroundView);
+        });
+
+        // load the invisible watermarked image from local devices.
+        btnLoad.setOnClickListener((View v) -> {
+            Glide.with(this).load(R.drawable.built)
                     .into(backgroundView);
         });
 

@@ -24,8 +24,10 @@ import com.watermark.androidwm.listener.BuildFinishListener;
 import com.watermark.androidwm.bean.AsyncTaskParams;
 import com.watermark.androidwm.utils.BitmapUtils;
 
-import static com.watermark.androidwm.utils.Constant.LSB_PREFIX_FLAG;
-import static com.watermark.androidwm.utils.Constant.LSB_SUFFIX_FLAG;
+import static com.watermark.androidwm.utils.Constant.LSB_IMG_PREFIX_FLAG;
+import static com.watermark.androidwm.utils.Constant.LSB_IMG_SUFFIX_FLAG;
+import static com.watermark.androidwm.utils.Constant.LSB_TEXT_PREFIX_FLAG;
+import static com.watermark.androidwm.utils.Constant.LSB_TEXT_SUFFIX_FLAG;
 
 /**
  * This is a background task for adding the specific invisible text
@@ -95,7 +97,12 @@ public class LSBWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
         // convert the Sting into a binary string, and, replace the single digit number.
         // using the rebuilt pixels to create a new watermarked image.
         String watermarkBinary = stringToBinary(watermarkString);
-        watermarkBinary = LSB_PREFIX_FLAG + watermarkBinary + LSB_SUFFIX_FLAG; // add the flag.
+
+        if (watermarkBitmap != null) {
+            watermarkBinary = LSB_IMG_PREFIX_FLAG + watermarkBinary + LSB_IMG_SUFFIX_FLAG;
+        } else {
+            watermarkBinary = LSB_TEXT_PREFIX_FLAG + watermarkBinary + LSB_TEXT_SUFFIX_FLAG;
+        }
 
         int[] watermarkColorArray = stringToIntArray(watermarkBinary);
         if (watermarkColorArray.length > backgroundColorArray.length) {
@@ -183,7 +190,7 @@ public class LSBWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
      * to split an array into chunks of equal size. The last chunk
      * may be smaller than the rest.
      */
-    public static int[][] chunkArray(int[] array, int chunkSize) {
+    static int[][] chunkArray(int[] array, int chunkSize) {
         int numOfChunks = (int) Math.ceil((double) array.length / chunkSize);
         int[][] output = new int[numOfChunks][];
 

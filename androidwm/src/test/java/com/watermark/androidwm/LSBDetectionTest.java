@@ -43,4 +43,52 @@ public class LSBDetectionTest {
         assertEquals(mod, arrayWithout.length);
     }
 
+    @Test
+    public void chunkArrayTest() {
+        int[] inputArray = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
+        int chunkSize = 3;
+        int[][] result = chunkArray(inputArray, chunkSize);
+        StringBuilder[] builders = new StringBuilder[result.length];
+        StringBuilder resultBuilder = new StringBuilder();
+
+        for (int i = 0; i < result.length - 1; i++) {
+            builders[i] = new StringBuilder();
+            for (int j = 0; j < chunkSize; j++) {
+                builders[i].append(result[i][j]);
+            }
+        }
+
+        builders[builders.length - 1] = new StringBuilder();
+        for (int i : result[result.length - 1]) {
+            builders[builders.length - 1].append(i);
+        }
+
+        for (StringBuilder builder : builders) {
+            resultBuilder.append(builder.toString());
+        }
+
+        assertEquals(resultBuilder.toString(), "1234567891011121314");
+        assertEquals(Arrays.toString(result[0]), "[1, 2, 3]");
+        assertEquals(Arrays.toString(result[3]), "[10, 11, 12]");
+        assertEquals(Arrays.toString(result[result.length - 1]), "[13, 14]");
+        assertEquals(result.length, 5);
+
+    }
+
+    private static int[][] chunkArray(int[] array, int chunkSize) {
+        int numOfChunks = (int) Math.ceil((double) array.length / chunkSize);
+        int[][] output = new int[numOfChunks][];
+
+        for (int i = 0; i < numOfChunks; ++i) {
+            int start = i * chunkSize;
+            int length = Math.min(array.length - start, chunkSize);
+
+            int[] temp = new int[length];
+            System.arraycopy(array, start, temp, 0, length);
+            output[i] = temp;
+        }
+
+        return output;
+    }
+
 }

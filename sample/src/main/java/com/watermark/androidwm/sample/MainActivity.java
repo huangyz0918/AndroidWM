@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnLoad;
 
     private ImageView backgroundView;
+    private ImageView watermarkView;
     private Bitmap watermarkBitmap;
 //    private Bitmap watermarkBackground;
 
@@ -78,17 +79,19 @@ public class MainActivity extends AppCompatActivity {
         btnClear = findViewById(R.id.btn_clear_watermark);
         btnLoad = findViewById(R.id.btn_load_marked);
 
-
         editText = findViewById(R.id.editText);
         backgroundView = findViewById(R.id.imageView);
+        watermarkView = findViewById(R.id.imageView_watermark);
 
-//        Glide.with(this).load(R.drawable.test)
-//                .into(backgroundView);
+        Glide.with(this).load(R.drawable.built1)
+                .into(backgroundView);
 
 //        watermarkBackground = BitmapFactory.decodeResource(getResources(), R.drawable.test);
 
         watermarkBitmap = BitmapFactory.decodeResource(getResources(),
                 R.drawable.test_watermark);
+
+        watermarkView.setVisibility(View.GONE);
     }
 
     private void initEvents() {
@@ -213,7 +216,8 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(MainActivity.this,
                                     "Successfully detected invisible watermark!", Toast.LENGTH_SHORT).show();
                             if (watermark != null) {
-                                backgroundView.setImageBitmap(watermark);
+                                watermarkView.setVisibility(View.VISIBLE);
+                                watermarkView.setImageBitmap(watermark);
                             }
                         }
 
@@ -235,12 +239,14 @@ public class MainActivity extends AppCompatActivity {
         btnClear.setOnClickListener((View v) -> {
             Glide.with(this).load(R.drawable.test)
                     .into(backgroundView);
+            watermarkView.setVisibility(View.GONE);
         });
 
         // load the invisible watermarked image from local devices.
         btnLoad.setOnClickListener((View v) -> {
             Glide.with(this).load(R.drawable.built)
                     .into(backgroundView);
+            watermarkView.setVisibility(View.GONE);
         });
 
     }

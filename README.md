@@ -10,7 +10,7 @@ A lightweight android image watermark library that supports encrypted watermarks
 ### Gradle:
 
 ```gradle
-implementation 'com.huangyz0918:androidwm:v0.1.6'
+implementation 'com.huangyz0918:androidwm:v0.1.7'
 ```
 ### Maven:
 
@@ -18,7 +18,7 @@ implementation 'com.huangyz0918:androidwm:v0.1.6'
 <dependency>
   <groupId>com.huangyz0918</groupId>
   <artifactId>androidwm</artifactId>
-  <version>v0.1.6</version>
+  <version>v0.1.7</version>
   <type>pom</type>
 </dependency>
 ```
@@ -26,7 +26,7 @@ implementation 'com.huangyz0918:androidwm:v0.1.6'
 ### Lvy:
 
 ```xml
-<dependency org='com.huangyz0918' name='androidwm' rev='v0.1.6'>
+<dependency org='com.huangyz0918' name='androidwm' rev='v0.1.7'>
   <artifact name='androidwm' ext='pom' ></artifact>
 </dependency>
 ```

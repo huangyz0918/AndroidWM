@@ -10,14 +10,21 @@
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="6"
-        android:src="@drawable/built" />
+        android:layout_weight="5" />
+
+    <ImageView
+        android:id="@+id/imageView_watermark"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:visibility="gone" />
 
     <EditText
         android:id="@+id/editText"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:hint="@string/et_hint" />
 
     <LinearLayout
         android:id="@+id/linearLayout"

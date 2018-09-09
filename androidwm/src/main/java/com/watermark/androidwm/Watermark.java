@@ -51,8 +51,6 @@ public class Watermark {
     private WatermarkImage watermarkImg;
     private Bitmap backgroundImg;
     private Context context;
-    private List<WatermarkImage> wmBitmapList;
-    private List<WatermarkText> wmTextList;
     private Bitmap outputImage;
     private Bitmap canvasBitmap;
     private boolean isTileMode;
@@ -80,9 +78,7 @@ public class Watermark {
         this.context = context;
         this.isTileMode = isTileMode;
         this.watermarkImg = watermarkImg;
-        this.wmBitmapList = wmBitmapList;
         this.backgroundImg = backgroundImg;
-        this.wmTextList = wmTextList;
         this.watermarkText = inputText;
         this.isInvisible = isInvisible;
         this.buildFinishListener = buildFinishListener;
@@ -96,35 +92,8 @@ public class Watermark {
         createWatermarkImages(wmBitmapList);
         createWatermarkText(watermarkText);
         createWatermarkTexts(wmTextList);
-
     }
 
-    /**
-     * Getters for those attrs.
-     */
-    public Context getContext() {
-        return context;
-    }
-
-    public WatermarkText getInputText() {
-        return watermarkText;
-    }
-
-    public Bitmap getBackgroundImg() {
-        return backgroundImg;
-    }
-
-    public WatermarkImage getWatermarkImg() {
-        return watermarkImg;
-    }
-
-    public List<WatermarkImage> getWmBitmapList() {
-        return wmBitmapList;
-    }
-
-    public List<WatermarkText> getWmTextList() {
-        return wmTextList;
-    }
 
     /**
      * interface for getting the watermark bitmap.

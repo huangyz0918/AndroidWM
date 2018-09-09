@@ -145,11 +145,9 @@ public class BitmapUtils {
     public static Bitmap resizeBitmap(Bitmap watermarkImg, float size, Bitmap backgroundImg) {
         int bitmapWidth = watermarkImg.getWidth();
         int bitmapHeight = watermarkImg.getHeight();
-        float scaleWidth = (backgroundImg.getWidth() * size) / bitmapWidth;
-        float scaleHeight = (float) (watermarkImg.getHeight() / watermarkImg.getWidth()) * scaleWidth;
-
+        float scale = (backgroundImg.getWidth() * size) / bitmapWidth;
         Matrix matrix = new Matrix();
-        matrix.postScale(scaleWidth, scaleHeight);
+        matrix.postScale(scale, scale);
         return Bitmap.createBitmap(watermarkImg, 0, 0,
                 bitmapWidth, bitmapHeight, matrix, true);
     }

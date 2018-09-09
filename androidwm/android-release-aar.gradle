@@ -28,7 +28,7 @@ bintray {
 
         licenses = ['Apache-2.0']
         vcsUrl = 'https://github.com/huangyz0918/AndroidWM'
-        websiteUrl = 'http://mywm.ml/'
+        websiteUrl = 'http://huangyz.name/AndroidWM/'
     }
 
     configurations = ['archives']

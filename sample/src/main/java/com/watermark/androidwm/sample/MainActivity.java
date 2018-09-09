@@ -116,12 +116,12 @@ public class MainActivity extends AppCompatActivity {
         btnAddImg.setOnClickListener((View v) -> {
 
             // Math.random()
-            WatermarkImage watermarkImage = new WatermarkImage(watermarkBitmap)
-                    .setImageAlpha(80)
-                    .setPositionX(Math.random())
-                    .setPositionY(Math.random())
-                    .setRotation(15)
-                    .setSize(0.1);
+            WatermarkImage watermarkImage = new WatermarkImage(this,  R.drawable.watermark);
+//                    .setImageAlpha(80)
+//                    .setPositionX(Math.random())
+//                    .setPositionY(Math.random())
+//                    .setRotation(15)
+//                    .setSize(0.1);
 
             WatermarkBuilder
                     .create(this, backgroundView)

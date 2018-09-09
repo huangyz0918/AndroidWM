@@ -57,7 +57,7 @@ subprojects { project ->
 }
 
 buildscript {
-    
+
     repositories {
         mavenCentral()
         google()
@@ -82,4 +82,12 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+task check(type: GradleBuild) {
+    tasks = ['test', 'pmd', 'checkstyle']
+}
+
+task publish(type: GradleBuild) {
+    tasks = ['clean', 'bintrayUpload']
 }

@@ -26,4 +26,4 @@ android:
     - android-28
     - extra-android-m2repository
 
-script: ./gradlew checkstyle pmd
+script: ./gradlew check

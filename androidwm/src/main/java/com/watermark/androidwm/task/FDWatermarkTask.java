@@ -23,8 +23,7 @@ import android.util.Log;
 
 import com.watermark.androidwm.listener.BuildFinishListener;
 import com.watermark.androidwm.bean.AsyncTaskParams;
-import com.watermark.androidwm.utils.ComplexNumber;
-import com.watermark.androidwm.utils.FFTUtils;
+//import com.watermark.androidwm.utils.ComplexNumber;
 
 /**
  * This is a tack that use Fast Fourier Transform for an image, to
@@ -37,6 +36,10 @@ import com.watermark.androidwm.utils.FFTUtils;
  */
 public class FDWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
 
+    static {
+        System.loadLibrary("native-lib");
+    }
+
     private BuildFinishListener<Bitmap> listener;
 
     public FDWatermarkTask(BuildFinishListener<Bitmap> callback) {
@@ -45,17 +48,8 @@ public class FDWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
 
     @Override
     protected Bitmap doInBackground(AsyncTaskParams... params) {
-        Bitmap backgroundImg = params[0].getBackgroundImg();
-        Bitmap watermarkImg = params[0].getWatermarkImg();
-        Log.d("===>", "doInBackground: start");
-        ComplexNumber[][] bgColorArray = getColorArray(backgroundImg);
-        Log.d("===>", "doInBackground: bgColorArray");
-        ComplexNumber[][] wmColorArray = getColorArray(watermarkImg);
-        Log.d("===>", "doInBackground: wmColorArray");
-        ComplexNumber[][] wmResult = FFTUtils.fft2d(wmColorArray);
-        Log.d("===>", "doInBackground: wmResult");
-        ComplexNumber[][] bgResult = FFTUtils.fft2d(bgColorArray);
-        Log.d("===>", "doInBackground: bgResult");
+//        Bitmap backgroundImg = params[0].getBackgroundImg();
+//        Bitmap watermarkImg = params[0].getWatermarkImg();
 
         //TODO: change the return value.
         return params[0].getWatermarkImg();
@@ -74,14 +68,16 @@ public class FDWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
         super.onPostExecute(bitmap);
     }
 
-    private ComplexNumber[][] getColorArray(Bitmap bitmap) {
-        ComplexNumber[][] color = new ComplexNumber[bitmap.getWidth()][bitmap.getHeight()];
-        for (int i = 0; i < bitmap.getWidth(); i++) {
-            for (int j = 0; j < bitmap.getHeight(); j++) {
-                color[i][j] = ComplexNumber.getComplexNumber(bitmap.getPixel(i, j));
-            }
-        }
-        return color;
-    }
+//    private ComplexNumber[][] getColorArray(Bitmap bitmap) {
+//        ComplexNumber[][] color = new ComplexNumber[bitmap.getWidth()][bitmap.getHeight()];
+//        for (int i = 0; i < bitmap.getWidth(); i++) {
+//            for (int j = 0; j < bitmap.getHeight(); j++) {
+//                color[i][j] = ComplexNumber.getComplexNumber(bitmap.getPixel(i, j));
+//            }
+//        }
+//        return color;
+//    }
+
+    public native String stringFromJNI();
 
 }

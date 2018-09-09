@@ -34,6 +34,7 @@ import com.watermark.androidwm.bean.WatermarkText;
 import com.watermark.androidwm.listener.BuildFinishListener;
 import com.watermark.androidwm.task.FDWatermarkTask;
 import com.watermark.androidwm.task.LSBWatermarkTask;
+import com.watermark.androidwm.utils.BitmapUtils;
 
 import java.util.List;
 
@@ -271,6 +272,15 @@ public class Watermark {
      */
     public Bitmap getOutputImage() {
         return outputImage;
+    }
+
+    /**
+     * Save output png image to local.
+     *
+     * @param path the output path of image.
+     */
+    public void saveToLocalPng(String path) {
+        BitmapUtils.saveAsPNG(outputImage, path, true);
     }
 
     /**

@@ -83,8 +83,8 @@ public class MainActivity extends AppCompatActivity {
         backgroundView = findViewById(R.id.imageView);
         watermarkView = findViewById(R.id.imageView_watermark);
 
-        Glide.with(this).load(R.drawable.built1)
-                .into(backgroundView);
+//        Glide.with(this).load(R.drawable.built1)
+//                .into(backgroundView);
 
 //        watermarkBackground = BitmapFactory.decodeResource(getResources(), R.drawable.test);
 
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
             WatermarkText watermarkText = new WatermarkText(editText)
                     .setPositionX(0.5)
                     .setPositionY(0.5)
-                    .setTextAlpha(100)
+                    .setTextAlpha(255)
                     .setTextColor(Color.WHITE)
                     .setTextFont(R.font.champagne)
                     .setTextShadow(0.1f, 5, 5, Color.BLUE);

@@ -53,11 +53,11 @@ public class WatermarkDetector {
 
     /**
      * to get an instance form class.
+     * If the imageView has no src or bitmap image, it will throws a {@link NullPointerException}.
      *
      * @return instance of {@link WatermarkDetector}
      */
     public static WatermarkDetector create(ImageView imageView, boolean isLSB) {
-        imageView.invalidate();
         BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
         return new WatermarkDetector(drawable.getBitmap(), isLSB);
     }

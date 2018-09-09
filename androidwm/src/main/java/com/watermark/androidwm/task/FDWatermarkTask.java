@@ -23,7 +23,6 @@ import android.util.Log;
 
 import com.watermark.androidwm.listener.BuildFinishListener;
 import com.watermark.androidwm.bean.AsyncTaskParams;
-//import com.watermark.androidwm.utils.ComplexNumber;
 
 /**
  * This is a tack that use Fast Fourier Transform for an image, to
@@ -51,13 +50,14 @@ public class FDWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
 //        Bitmap backgroundImg = params[0].getBackgroundImg();
 //        Bitmap watermarkImg = params[0].getWatermarkImg();
 
+        Log.d("===>", "string from naive: " + stringFromJNI());
+
         //TODO: change the return value.
         return params[0].getWatermarkImg();
     }
 
     @Override
     protected void onPostExecute(Bitmap bitmap) {
-        Log.d("===>", "onPostExecute: ");
         if (listener != null) {
             if (bitmap != null) {
                 listener.onSuccess(bitmap);
@@ -67,16 +67,6 @@ public class FDWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
         }
         super.onPostExecute(bitmap);
     }
-
-//    private ComplexNumber[][] getColorArray(Bitmap bitmap) {
-//        ComplexNumber[][] color = new ComplexNumber[bitmap.getWidth()][bitmap.getHeight()];
-//        for (int i = 0; i < bitmap.getWidth(); i++) {
-//            for (int j = 0; j < bitmap.getHeight(); j++) {
-//                color[i][j] = ComplexNumber.getComplexNumber(bitmap.getPixel(i, j));
-//            }
-//        }
-//        return color;
-//    }
 
     public native String stringFromJNI();
 

@@ -3,7 +3,9 @@
 
 A lightweight android image watermark library that supports encrypted watermarks. [中文版本](./README-CN.md)
 
-![](https://i.loli.net/2018/09/01/5b8aa948a2020.png)
+<!--- ![](https://i.loli.net/2018/09/01/5b8aa948a2020.png) -->
+
+![](https://i.loli.net/2018/09/11/5b97dddb4e407.png)
 
 # Download Library 
 
@@ -58,6 +60,8 @@ After the preparation is complete, you need a `WatermarkBuilder` to create a wat
             .getWatermark()
             .setToImageView(imageView);
 ```
+
+![](https://i.loli.net/2018/09/01/5b8aa948a2020.png)
 
 ### Select the Drawing Mode
 You can select normal mode (default) or tile mode in `WatermarkBuilder.setTileMode()`:

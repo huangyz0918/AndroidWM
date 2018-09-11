@@ -19,7 +19,6 @@ package com.watermark.androidwm.task;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.watermark.androidwm.listener.BuildFinishListener;
 import com.watermark.androidwm.bean.AsyncTaskParams;
@@ -86,9 +85,7 @@ public class LSBWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
         backgroundBitmap.getPixels(backgroundPixels, 0, backgroundBitmap.getWidth(), 0, 0,
                 backgroundBitmap.getWidth(), backgroundBitmap.getHeight());
 
-        // TODO: resolve the OOM here [large array]
-        backgroundColorArray = new int[4 * backgroundPixels.length];
-        Log.d("----->", "backgroundColorArray.length: " + backgroundColorArray.length);
+        backgroundColorArray = new int[4 * backgroundPixels.length]; // TODO: Can improve memory leaks from here.
 
         for (int i = 0; i < backgroundPixels.length; i++) {
             backgroundColorArray[4 * i] = Color.alpha(backgroundPixels[i]);

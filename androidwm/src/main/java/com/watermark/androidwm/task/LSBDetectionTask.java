@@ -63,7 +63,7 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
         markedBitmap.getPixels(Pixels, 0, markedBitmap.getWidth(), 0, 0,
                 markedBitmap.getWidth(), markedBitmap.getHeight());
 
-        int[] colorArray = new int[4 * Pixels.length];
+        int[] colorArray = new int[4 * Pixels.length]; // TODO: Can improve memory leaks from here.
 
         for (int i = 0; i < Pixels.length; i++) {
             colorArray[4 * i] = Color.alpha(Pixels[i]);
@@ -78,7 +78,7 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
 
         replaceNines(colorArray);
 //        String binaryString = combineArrayToString(outputBinary, 10000);
-        String binaryString = intArrayToString(colorArray);
+        String binaryString = intArrayToString(colorArray); // TODO: Can improve memory leaks from here.
         String resultString;
         if (isText) {
             binaryString = getBetweenStrings(binaryString, true, listener);
@@ -161,7 +161,6 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
      * a new string.
      * <p>
      * TODO: handle the OOM in {@link StringBuilder}.
-     * TODO: find out the differences between image loaded by Glide and system resource.
      */
     String combineArrayToString(int[] inputArray, int minSize) {
         int[][] resultDeepArray = chunkArray(inputArray, minSize);

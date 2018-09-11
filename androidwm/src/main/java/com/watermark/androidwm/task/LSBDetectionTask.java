@@ -63,7 +63,7 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
         markedBitmap.getPixels(Pixels, 0, markedBitmap.getWidth(), 0, 0,
                 markedBitmap.getWidth(), markedBitmap.getHeight());
 
-        int[] colorArray = new int[4 * Pixels.length]; // TODO: Can improve memory leaks from here.
+        int[] colorArray = new int[4 * Pixels.length];
 
         for (int i = 0; i < Pixels.length; i++) {
             colorArray[4 * i] = Color.alpha(Pixels[i]);
@@ -78,7 +78,7 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
 
         replaceNines(colorArray);
 //        String binaryString = combineArrayToString(outputBinary, 10000);
-        String binaryString = intArrayToString(colorArray); // TODO: Can improve memory leaks from here.
+        String binaryString = intArrayToString(colorArray);
         String resultString;
         if (isText) {
             binaryString = getBetweenStrings(binaryString, true, listener);

@@ -24,6 +24,9 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.FloatRange;
 import android.widget.ImageView;
 
+import static com.watermark.androidwm.utils.BitmapUtils.resizeBitmap;
+import static com.watermark.androidwm.utils.Constant.MAX_IMAGE_SIZE;
+
 /**
  * It's a wrapper of the watermark image.
  *
@@ -41,10 +44,12 @@ public class WatermarkImage {
     private WatermarkPosition position = new WatermarkPosition(0, 0, 0);
 
     /**
-     * Constructors for WatermarkImage
+     * Constructors for WatermarkImage.
+     * since we use the mobile to calculate the image, the image cannot be to large,
+     * we set the maxsize of an image to 1024x1024.
      */
     public WatermarkImage(Bitmap image) {
-        this.image = image;
+        this.image = resizeBitmap(image, MAX_IMAGE_SIZE);
     }
 
     public WatermarkImage(Context context, @DrawableRes int imageDrawable, WatermarkPosition position) {
@@ -61,7 +66,7 @@ public class WatermarkImage {
     }
 
     public WatermarkImage(Bitmap image, WatermarkPosition position) {
-        this.image = image;
+        this.image = resizeBitmap(image, MAX_IMAGE_SIZE);
         this.position = position;
     }
 
@@ -145,10 +150,12 @@ public class WatermarkImage {
     private void watermarkFromImageView(ImageView imageView) {
         imageView.invalidate();
         BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
-        this.image = drawable.getBitmap();
+        // set the limitation of input bitmap.
+        this.image = resizeBitmap(drawable.getBitmap(), MAX_IMAGE_SIZE);
     }
 
     private Bitmap getBitmapFromDrawable(@DrawableRes int imageDrawable) {
-        return BitmapFactory.decodeResource(context.getResources(), imageDrawable);
+        return resizeBitmap(BitmapFactory.decodeResource(context.getResources(),
+                imageDrawable), MAX_IMAGE_SIZE);
     }
 }

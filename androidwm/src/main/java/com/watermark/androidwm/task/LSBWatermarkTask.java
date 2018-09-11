@@ -85,7 +85,7 @@ public class LSBWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
         backgroundBitmap.getPixels(backgroundPixels, 0, backgroundBitmap.getWidth(), 0, 0,
                 backgroundBitmap.getWidth(), backgroundBitmap.getHeight());
 
-        backgroundColorArray = new int[4 * backgroundPixels.length]; // TODO: Can improve memory leaks from here.
+        backgroundColorArray = new int[4 * backgroundPixels.length];
 
         for (int i = 0; i < backgroundPixels.length; i++) {
             backgroundColorArray[4 * i] = Color.alpha(backgroundPixels[i]);

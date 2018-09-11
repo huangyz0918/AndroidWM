@@ -32,6 +32,9 @@ import com.watermark.androidwm.listener.BuildFinishListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.watermark.androidwm.utils.BitmapUtils.resizeBitmap;
+import static com.watermark.androidwm.utils.Constant.MAX_IMAGE_SIZE;
+
 /**
  * A builder class for setting default structural classes for watermark to use.
  *
@@ -55,7 +58,7 @@ public final class WatermarkBuilder {
      */
     private WatermarkBuilder(@NonNull Context context, @NonNull Bitmap backgroundImg) {
         this.context = context;
-        this.backgroundImg = backgroundImg;
+        this.backgroundImg = resizeBitmap(backgroundImg, MAX_IMAGE_SIZE);
     }
 
     private WatermarkBuilder(@NonNull Context context, @NonNull ImageView backgroundImageView) {
@@ -65,7 +68,8 @@ public final class WatermarkBuilder {
 
     private WatermarkBuilder(@NonNull Context context, @DrawableRes int backgroundDrawable) {
         this.context = context;
-        this.backgroundImg = BitmapFactory.decodeResource(context.getResources(), backgroundDrawable);
+        this.backgroundImg = resizeBitmap(BitmapFactory.decodeResource(context.getResources(),
+                backgroundDrawable), MAX_IMAGE_SIZE);
     }
 
     /**
@@ -271,13 +275,12 @@ public final class WatermarkBuilder {
      *
      * @param imageView the {@link ImageView} we need to use.
      */
-    private WatermarkBuilder backgroundFromImageView(ImageView imageView) {
+    private void backgroundFromImageView(ImageView imageView) {
         imageView.invalidate();
         if (imageView.getDrawable() != null) {
             BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
-            backgroundImg = drawable.getBitmap();
+            backgroundImg = resizeBitmap(drawable.getBitmap(), MAX_IMAGE_SIZE);
         }
-        return this;
     }
 
     /**

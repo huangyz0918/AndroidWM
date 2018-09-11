@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
     private ImageView backgroundView;
     private ImageView watermarkView;
     private Bitmap watermarkBitmap;
-    private Bitmap imageBitmap;
 
     private EditText editText;
 
@@ -86,31 +85,10 @@ public class MainActivity extends AppCompatActivity {
 //        Glide.with(this).load(R.drawable.built1)
 //                .into(backgroundView);
 
-        imageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.background);
-
         watermarkBitmap = BitmapFactory.decodeResource(getResources(),
                 R.drawable.test_watermark);
 
         watermarkView.setVisibility(View.GONE);
-//
-////        TODO: use this code to introduce the OOM
-        WatermarkImage watermarkImage = new WatermarkImage(this, R.drawable.watermark);
-
-        WatermarkBuilder.create(this, imageBitmap)
-                .loadWatermarkImage(watermarkImage)
-                .setInvisibleWMListener(true, new BuildFinishListener<Bitmap>() {
-                    @Override
-                    public void onSuccess(Bitmap object) {
-                        Toast.makeText(MainActivity.this, "success!", Toast.LENGTH_SHORT).show();
-                        backgroundView.setImageBitmap(object);
-                    }
-
-                    @Override
-                    public void onFailure(String message) {
-                        Log.e("--->", "onFailure: ");
-                    }
-                });
-
     }
 
     private void initEvents() {

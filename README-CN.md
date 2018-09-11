@@ -5,7 +5,7 @@
  
 一个轻量级的 Android 图片水印框架，支持隐形水印和加密水印。 [English version](./README.md)
 
-![](https://i.loli.net/2018/09/01/5b8aa948a8935.png)
+![](https://i.loli.net/2018/09/11/5b97dddb4e407.png)
 
 # 下载与安装 
 
@@ -60,6 +60,9 @@ implementation 'com.huangyz0918:androidwm:0.1.9'
             .getWatermark()
             .setToImageView(imageView);
 ```
+
+![](https://i.loli.net/2018/09/01/5b8aa948a8935.png)
+
 ### 选择绘制模式
 你可以在  `WatermarkBuilder.setTileMode()` 中选择是否使用铺满整图模式，默认情况下我们只会添加一个水印。
 

@@ -72,15 +72,13 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
             colorArray[4 * i + 3] = Color.blue(Pixels[i]);
         }
 
-        int[] outputBinary = new int[colorArray.length];
-
-        for (int i = 0; i < outputBinary.length; i++) {
-            outputBinary[i] = colorArray[i] % 10;
+        for (int i = 0; i < colorArray.length; i++) {
+            colorArray[i] = colorArray[i] % 10;
         }
 
-        replaceNines(outputBinary);
+        replaceNines(colorArray);
 //        String binaryString = combineArrayToString(outputBinary, 10000);
-        String binaryString = intArrayToString(outputBinary);
+        String binaryString = intArrayToString(colorArray);
         String resultString;
         if (isText) {
             binaryString = getBetweenStrings(binaryString, true, listener);

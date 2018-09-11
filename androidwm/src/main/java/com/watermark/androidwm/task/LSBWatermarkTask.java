@@ -19,6 +19,7 @@ package com.watermark.androidwm.task;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.watermark.androidwm.listener.BuildFinishListener;
 import com.watermark.androidwm.bean.AsyncTaskParams;
@@ -85,7 +86,9 @@ public class LSBWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
         backgroundBitmap.getPixels(backgroundPixels, 0, backgroundBitmap.getWidth(), 0, 0,
                 backgroundBitmap.getWidth(), backgroundBitmap.getHeight());
 
+        // TODO: resolve the OOM here [large array]
         backgroundColorArray = new int[4 * backgroundPixels.length];
+        Log.d("----->", "backgroundColorArray.length: " + backgroundColorArray.length);
 
         for (int i = 0; i < backgroundPixels.length; i++) {
             backgroundColorArray[4 * i] = Color.alpha(backgroundPixels[i]);
@@ -119,18 +122,17 @@ public class LSBWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
                 }
             }
 
-            int[] rebuiltPixels = new int[backgroundPixels.length];
-            for (int i = 0; i < rebuiltPixels.length; i++) {
+            for (int i = 0; i < backgroundPixels.length; i++) {
                 int color = Color.argb(
                         backgroundColorArray[4 * i],
                         backgroundColorArray[4 * i + 1],
                         backgroundColorArray[4 * i + 2],
                         backgroundColorArray[4 * i + 3]
                 );
-                rebuiltPixels[i] = color;
+                backgroundPixels[i] = color;
             }
 
-            outputBitmap.setPixels(rebuiltPixels, 0, backgroundBitmap.getWidth(), 0, 0,
+            outputBitmap.setPixels(backgroundPixels, 0, backgroundBitmap.getWidth(), 0, 0,
                     backgroundBitmap.getWidth(), backgroundBitmap.getHeight());
 
             return outputBitmap;

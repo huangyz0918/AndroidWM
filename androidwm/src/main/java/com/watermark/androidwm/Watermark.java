@@ -273,9 +273,8 @@ public class Watermark {
         Matrix matrix = new Matrix();
         matrix.setRotate(orientationAngle,
                 (float) bitmap.getWidth() / 2, (float) bitmap.getHeight() / 2);
-        bitmap = Bitmap.createBitmap(bitmap,
+        return Bitmap.createBitmap(bitmap,
                 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-        return bitmap;
     }
 
 }

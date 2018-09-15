@@ -189,7 +189,7 @@ public class LSBWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
      * to split an array into chunks of equal size. The last chunk
      * may be smaller than the rest.
      */
-    static int[][] chunkArray(int[] array, int chunkSize) {
+    public static int[][] chunkArray(int[] array, int chunkSize) {
         int numOfChunks = (int) Math.ceil((double) array.length / chunkSize);
         int[][] output = new int[numOfChunks][];
 

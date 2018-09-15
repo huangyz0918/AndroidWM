@@ -18,6 +18,11 @@ android {
                 cppFlags ""
             }
         }
+
+        ndk {
+            // Add libs for ndk, here is log.
+            ldLibs("log")
+        }
     }
 
     buildTypes {

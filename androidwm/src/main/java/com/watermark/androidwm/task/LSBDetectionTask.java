@@ -26,8 +26,6 @@ import com.watermark.androidwm.bean.DetectionReturnValue;
 import com.watermark.androidwm.listener.DetectFinishListener;
 import com.watermark.androidwm.utils.BitmapUtils;
 
-import java.util.List;
-
 import static com.watermark.androidwm.utils.Constant.LSB_IMG_PREFIX_FLAG;
 import static com.watermark.androidwm.utils.Constant.LSB_IMG_SUFFIX_FLAG;
 import static com.watermark.androidwm.utils.Constant.LSB_TEXT_PREFIX_FLAG;
@@ -84,11 +82,11 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
         String resultString;
         if (isText) {
             binaryString = getBetweenStrings(binaryString, true, listener);
-            resultString = binaryToString(binaryString);
+            resultString = binaryToStringJ(binaryString);
             resultValue.setWatermarkString(resultString);
         } else {
             binaryString = getBetweenStrings(binaryString, false, listener);
-            resultString = binaryToString(binaryString);
+            resultString = binaryToStringJ(binaryString);
             resultValue.setWatermarkBitmap(BitmapUtils.StringToBitmap(resultString));
         }
 
@@ -114,8 +112,14 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
     /**
      * Converting a binary string to a ASCII string.
      * <p>
+     * TODO: refactor using NDK (C++)
      */
-    private String binaryToString(String inputText) {
+//    private native String binaryToString(String inputText);
+
+    /**
+     * This is the Java version.
+     */
+    private String binaryToStringJ(String inputText) {
         if (inputText != null) {
             try {
                 StringBuilder sb = new StringBuilder();
@@ -148,7 +152,12 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
      * the only case is 0 - 1 = 9, so, we need to replace
      * all nines to zero.
      */
-    private void replaceNines(int[] inputArray) {
+    private native void replaceNines(int[] inputArray);
+
+    /**
+     * This is the Java version.
+     */
+    void replaceNinesJ(int[] inputArray) {
         for (int i = 0; i < inputArray.length; i++) {
             if (inputArray[i] == 9) {
                 inputArray[i] = 0;
@@ -194,18 +203,5 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
         }
 
         return result;
-    }
-
-    /**
-     * convert a {@link List<Integer>} to an int array.
-     */
-    public int[] toIntArray(List<Integer> list) {
-        int[] ret = new int[list.size()];
-        int i = 0;
-        for (Integer e : list) {
-            ret[i++] = e;
-        }
-
-        return ret;
     }
 }

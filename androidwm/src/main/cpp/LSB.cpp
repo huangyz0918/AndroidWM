@@ -18,6 +18,7 @@
 #include <jni.h>
 #include <string>
 #include <bitset>
+#include <sstream>
 #include <android/log.h>
 
 using namespace std;
@@ -29,7 +30,9 @@ using namespace std;
 #define  LOGF(...)  __android_log_print(ANDROID_LOG_FATAL, LOG_TAG, __VA_ARGS__)
 #define  LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
 
-
+/*
+ * Convent the Jstring to the C++ style string (std::string).
+ * */
 string jstring2string(JNIEnv *env, jstring jStr) {
     if (!jStr)
         return "";
@@ -55,8 +58,10 @@ JNIEXPORT jstring JNICALL
 Java_com_watermark_androidwm_task_LSBWatermarkTask_stringToBinary(JNIEnv *env, jobject instance,
                                                                   jstring inputText_) {
     const char *inputText = env->GetStringUTFChars(inputText_, 0);
+    if (inputText == NULL) {
+        return NULL;
+    }
 
-    int n = env->GetStringLength(inputText_);
     string input = jstring2string(env, inputText_);
     string result;
 
@@ -68,4 +73,58 @@ Java_com_watermark_androidwm_task_LSBWatermarkTask_stringToBinary(JNIEnv *env, j
     env->ReleaseStringUTFChars(inputText_, inputText);
 
     return env->NewStringUTF(result.c_str());
+}
+
+
+extern "C"
+JNIEXPORT jintArray JNICALL
+Java_com_watermark_androidwm_task_LSBWatermarkTask_stringToIntArray(JNIEnv *env, jobject instance,
+                                                                    jstring inputString_) {
+    const char *inputString = env->GetStringUTFChars(inputString_, 0);
+    string input = jstring2string(env, inputString_);
+
+    int result[input.length()];
+
+    jsize size = env->GetStringLength(inputString_);
+    jintArray resultArray = env->NewIntArray(size);
+
+    for (int i = 0; i < input.length(); ++i) {
+        result[i] = input[i] - '0';
+    }
+
+    env->SetIntArrayRegion(resultArray, 0, size, result);
+    env->ReleaseStringUTFChars(inputString_, inputString);
+
+    return resultArray;
+}
+
+
+//extern "C"
+//JNIEXPORT jstring JNICALL
+//Java_com_watermark_androidwm_task_LSBDetectionTask_binaryToString(JNIEnv *env, jobject instance,
+//                                                                  jstring inputText_) {
+//    const char *inputText = env->GetStringUTFChars(inputText_, 0);
+//
+//
+//
+//    env->ReleaseStringUTFChars(inputText_, inputText);
+//
+//    return env->NewStringUTF(returnValue);
+//}
+
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_watermark_androidwm_task_LSBDetectionTask_replaceNines(JNIEnv *env, jobject instance,
+                                                                jintArray inputArray_) {
+    jint *inputArray = env->GetIntArrayElements(inputArray_, NULL);
+    jsize size = env->GetArrayLength(inputArray_);
+
+    for (int i = 0; i < size; i++) {
+        if (inputArray[i] == 9) {
+            inputArray[i] = 0;
+        }
+    }
+
+    env->ReleaseIntArrayElements(inputArray_, inputArray, 0);
 }

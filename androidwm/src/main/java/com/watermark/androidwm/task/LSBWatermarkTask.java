@@ -156,14 +156,38 @@ public class LSBWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
 
     /**
      * Converting a {@link String} text into a binary text.
+     * <p>
+     * This is the native version.
      */
     private native String stringToBinary(String inputText);
 
     /**
-     * String to integer array.
-     * TODO: refactor as NDK (C++)
+     * This is the Java version.
      */
-    private int[] stringToIntArray(String inputString) {
+    String stringToBinaryJ(String inputText) {
+        byte[] bytes = inputText.getBytes();
+        StringBuilder binary = new StringBuilder();
+        for (byte b : bytes) {
+            int val = b;
+            for (int i = 0; i < 8; i++) {
+                binary.append((val & 128) == 0 ? 0 : 1);
+                val <<= 1;
+            }
+        }
+        return binary.toString();
+    }
+
+    /**
+     * String to integer array.
+     * <p>
+     * This is the native version.
+     */
+    private native int[] stringToIntArray(String inputString);
+
+    /**
+     * This is the Java version.
+     */
+    int[] stringToIntArrayJ(String inputString) {
         char[] strArray = inputString.toCharArray();
         int[] num = new int[strArray.length];
         for (int i = 0; i < strArray.length; i++) {

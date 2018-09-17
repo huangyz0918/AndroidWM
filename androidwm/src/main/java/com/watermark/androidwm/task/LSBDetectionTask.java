@@ -41,6 +41,10 @@ import static com.watermark.androidwm.utils.Constant.LSB_TEXT_SUFFIX_FLAG;
  */
 public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, DetectionReturnValue> {
 
+    static {
+        System.loadLibrary("LSB");
+    }
+
     private DetectFinishListener listener;
 
     public LSBDetectionTask(DetectFinishListener listener) {

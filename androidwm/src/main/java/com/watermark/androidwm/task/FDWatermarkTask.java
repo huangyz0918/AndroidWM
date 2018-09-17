@@ -36,7 +36,7 @@ import com.watermark.androidwm.bean.AsyncTaskParams;
 public class FDWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
 
     static {
-        System.loadLibrary("native-lib");
+        System.loadLibrary("FD");
     }
 
     private BuildFinishListener<Bitmap> listener;

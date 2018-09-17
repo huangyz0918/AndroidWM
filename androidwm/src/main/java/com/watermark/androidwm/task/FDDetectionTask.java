@@ -32,6 +32,10 @@ import com.watermark.androidwm.listener.DetectFinishListener;
 @SuppressWarnings("PMD")
 public class FDDetectionTask extends AsyncTask<DetectionParams, Void, Bitmap> {
 
+    static {
+        System.loadLibrary("FD");
+    }
+
     private DetectFinishListener listener;
 
     public FDDetectionTask(DetectFinishListener listener) {

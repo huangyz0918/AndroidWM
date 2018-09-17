@@ -39,6 +39,10 @@ import static com.watermark.androidwm.utils.Constant.LSB_TEXT_SUFFIX_FLAG;
  */
 public class LSBWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
 
+    static {
+        System.loadLibrary("LSB");
+    }
+
     private BuildFinishListener<Bitmap> listener;
 
     public LSBWatermarkTask(BuildFinishListener<Bitmap> callback) {

@@ -108,7 +108,7 @@ public class LSBWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
             watermarkBinary = LSB_TEXT_PREFIX_FLAG + watermarkBinary + LSB_TEXT_SUFFIX_FLAG;
         }
 
-        int[] watermarkColorArray = stringToIntArray(watermarkBinary);
+        int[] watermarkColorArray = stringToIntArrayJ(watermarkBinary);
         if (watermarkColorArray.length > backgroundColorArray.length) {
             listener.onFailure("The Pixels in background are too small to put the watermark in, " +
                     "the data has been lost! Please make sure the maxImageSize is bigger enough!");
@@ -182,7 +182,7 @@ public class LSBWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
      * <p>
      * This is the native version.
      */
-    private native int[] stringToIntArray(String inputString);
+    native int[] stringToIntArray(String inputString);
 
     /**
      * This is the Java version.

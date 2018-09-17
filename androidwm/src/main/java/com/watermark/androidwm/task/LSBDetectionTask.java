@@ -77,7 +77,7 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
             colorArray[i] = colorArray[i] % 10;
         }
 
-        replaceNines(colorArray);
+        replaceNinesJ(colorArray);
         String binaryString = intArrayToString(colorArray);
         String resultString;
         if (isText) {
@@ -118,6 +118,7 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
 
     /**
      * This is the Java version.
+     * TODO: fix the {@link ArrayIndexOutOfBoundsException} issue
      */
     private String binaryToStringJ(String inputText) {
         if (inputText != null) {
@@ -152,7 +153,7 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
      * the only case is 0 - 1 = 9, so, we need to replace
      * all nines to zero.
      */
-    private native void replaceNines(int[] inputArray);
+    native void replaceNines(int[] inputArray);
 
     /**
      * This is the Java version.

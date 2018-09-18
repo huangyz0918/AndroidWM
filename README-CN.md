@@ -12,7 +12,7 @@
 ### Gradle:
 
 ```gradle
-implementation 'com.huangyz0918:androidwm:0.1.9'
+implementation 'com.huangyz0918:androidwm:0.2.0'
 ```
 ### Maven:
 
@@ -20,7 +20,7 @@ implementation 'com.huangyz0918:androidwm:0.1.9'
 <dependency>
   <groupId>com.huangyz0918</groupId>
   <artifactId>androidwm</artifactId>
-  <version>0.1.9</version>
+  <version>0.2.0</version>
   <type>pom</type>
 </dependency>
 ```
@@ -28,7 +28,7 @@ implementation 'com.huangyz0918:androidwm:0.1.9'
 ### Lvy:
 
 ```xml
-<dependency org='com.huangyz0918' name='androidwm' rev='0.1.9'>
+<dependency org='com.huangyz0918' name='androidwm' rev='0.2.0'>
   <artifact name='androidwm' ext='pom' ></artifact>
 </dependency>
 ```

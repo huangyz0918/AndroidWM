@@ -162,39 +162,11 @@ public class LSBWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
     private native String stringToBinary(String inputText);
 
     /**
-     * This is the Java version.
-     */
-    String stringToBinaryJ(String inputText) {
-        byte[] bytes = inputText.getBytes();
-        StringBuilder binary = new StringBuilder();
-        for (byte b : bytes) {
-            int val = b;
-            for (int i = 0; i < 8; i++) {
-                binary.append((val & 128) == 0 ? 0 : 1);
-                val <<= 1;
-            }
-        }
-        return binary.toString();
-    }
-
-    /**
      * String to integer array.
      * <p>
      * This is the native version.
      */
     native int[] stringToIntArray(String inputString);
-
-    /**
-     * This is the Java version.
-     */
-    int[] stringToIntArrayJ(String inputString) {
-        char[] strArray = inputString.toCharArray();
-        int[] num = new int[strArray.length];
-        for (int i = 0; i < strArray.length; i++) {
-            num[i] = strArray[i] - '0';
-        }
-        return num;
-    }
 
     /**
      * get the single digit number and set it to the target one.

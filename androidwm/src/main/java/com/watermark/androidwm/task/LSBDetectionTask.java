@@ -19,7 +19,6 @@ package com.watermark.androidwm.task;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.watermark.androidwm.bean.DetectionParams;
 import com.watermark.androidwm.bean.DetectionReturnValue;
@@ -116,53 +115,12 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
     private native String binaryToString(String inputText);
 
     /**
-     * This is the Java version.
-     */
-    String binaryToStringJ(String inputText) {
-        if (inputText != null) {
-            try {
-                StringBuilder sb = new StringBuilder();
-                char[] chars = inputText.replaceAll("\\s", "").toCharArray();
-                int[] mapping = {1, 2, 4, 8, 16, 32, 64, 128};
-
-                for (int j = 0; j < chars.length; j += 8) {
-                    int idx = 0;
-                    int sum = 0;
-                    for (int i = 7; i >= 0; i--) {
-                        if (chars[i + j] == '1') {
-                            sum += mapping[idx];
-                        }
-                        idx++;
-                    }
-                    sb.append(Character.toChars(sum));
-                }
-                return sb.toString();
-            } catch (ArrayIndexOutOfBoundsException e) {
-                Log.e("Error: ", "The Pixels in background are too small to put the watermark in, " +
-                        "the data has been lost! Please make sure the maxImageSize is bigger enough!");
-            }
-        }
-
-        return null;
-    }
-
-    /**
      * Replace the wrong rgb number in a form of binary,
      * the only case is 0 - 1 = 9, so, we need to replace
      * all nines to zero.
      */
     native void replaceNines(int[] inputArray);
 
-    /**
-     * This is the Java version.
-     */
-    void replaceNinesJ(int[] inputArray) {
-        for (int i = 0; i < inputArray.length; i++) {
-            if (inputArray[i] == 9) {
-                inputArray[i] = 0;
-            }
-        }
-    }
 
     /**
      * Int array to string.

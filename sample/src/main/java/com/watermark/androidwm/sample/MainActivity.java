@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
     private void initEvents() {
         // The sample method of adding a text watermark.
         btnAddText.setOnClickListener((View v) -> {
-            WatermarkText watermarkText = new WatermarkText(editText)
+            WatermarkText watermarkText = new WatermarkText(editText.getText().toString())
                     .setPositionX(0.5)
                     .setPositionY(0.5)
                     .setTextAlpha(255)
@@ -141,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
                                     "Successfully create invisible watermark!", Toast.LENGTH_SHORT).show();
                             if (object != null) {
                                 backgroundView.setImageBitmap(object);
+                                // Save to local needs permission.
                                 BitmapUtils.saveAsPNG(object, "sdcard/DCIM/", true);
                             }
                         }
@@ -154,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
 
         // The sample method of adding an invisible text watermark.
         btnAddInvisibleText.setOnClickListener((View v) -> {
-            WatermarkText watermarkText = new WatermarkText(editText);
+            WatermarkText watermarkText = new WatermarkText(editText.getText().toString());
             WatermarkBuilder
                     .create(this, backgroundView)
                     .loadWatermarkText(watermarkText)
@@ -190,8 +191,6 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onText(String watermark) {
-                            Toast.makeText(MainActivity.this,
-                                    "Successfully detected invisible watermark!", Toast.LENGTH_SHORT).show();
                             if (watermark != null) {
                                 Toast.makeText(MainActivity.this, "The invisible watermark is: " + watermark, Toast.LENGTH_SHORT).show();
                             }
@@ -241,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
 
         // load the invisible watermarked image from local devices.
         btnLoad.setOnClickListener((View v) -> {
-            Glide.with(this).load(R.drawable.built)
+            Glide.with(this).load(R.drawable.built1)
                     .into(backgroundView);
             watermarkView.setVisibility(View.GONE);
         });

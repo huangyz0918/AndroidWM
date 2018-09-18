@@ -21,7 +21,7 @@ import android.app.Application;
 import com.squareup.leakcanary.LeakCanary;
 
 /**
- * Leaks to detect the memory leaks.
+ * To detect the memory leaks.
  */
 public class Leaks extends Application {
 

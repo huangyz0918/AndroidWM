@@ -137,3 +137,22 @@ Java_com_watermark_androidwm_task_LSBDetectionTask_replaceNines(JNIEnv *env, job
 
     env->ReleaseIntArrayElements(inputArray_, inputArray, 0);
 }
+
+
+extern "C"
+JNIEXPORT jstring JNICALL
+Java_com_watermark_androidwm_task_LSBDetectionTask_intArrayToString(JNIEnv *env, jobject instance,
+                                                                    jintArray inputArray_) {
+    jint *inputArray = env->GetIntArrayElements(inputArray_, NULL);
+    jsize size = env->GetArrayLength(inputArray_);
+    ostringstream oss("");
+
+    for (int i = 0; i < size; ++i) {
+        oss << inputArray[i];
+    }
+
+    string output = oss.str();
+
+    env->ReleaseIntArrayElements(inputArray_, inputArray, 0);
+    return env->NewStringUTF(output.c_str());
+}

@@ -121,17 +121,10 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
      */
     private native void replaceNines(int[] inputArray);
 
-
     /**
      * Int array to string.
      */
-    private String intArrayToString(int[] inputArray) {
-        StringBuilder binary = new StringBuilder();
-        for (int num : inputArray) {
-            binary.append(num);
-        }
-        return binary.toString();
-    }
+    private native String intArrayToString(int[] inputArray);
 
     /**
      * Get text between two strings. Passed limiting strings are not

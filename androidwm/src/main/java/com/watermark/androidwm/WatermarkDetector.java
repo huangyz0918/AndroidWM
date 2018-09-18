@@ -62,8 +62,6 @@ public class WatermarkDetector {
         return new WatermarkDetector(drawable.getBitmap(), isLSB);
     }
 
-    //TODO: Add more create methods which can load a Bitmap from a Resources and a View.
-
     /**
      * The method for watermark detecting.
      */

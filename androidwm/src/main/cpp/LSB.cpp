@@ -1,4 +1,4 @@
-/*
+/**
  *    Copyright 2018 huangyz0918
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
@@ -99,18 +99,27 @@ Java_com_watermark_androidwm_task_LSBWatermarkTask_stringToIntArray(JNIEnv *env,
 }
 
 
-//extern "C"
-//JNIEXPORT jstring JNICALL
-//Java_com_watermark_androidwm_task_LSBDetectionTask_binaryToString(JNIEnv *env, jobject instance,
-//                                                                  jstring inputText_) {
-//    const char *inputText = env->GetStringUTFChars(inputText_, 0);
-//
-//
-//
-//    env->ReleaseStringUTFChars(inputText_, inputText);
-//
-//    return env->NewStringUTF(returnValue);
-//}
+extern "C"
+JNIEXPORT jstring JNICALL
+Java_com_watermark_androidwm_task_LSBDetectionTask_binaryToString(JNIEnv *env, jobject instance,
+                                                                  jstring inputText_) {
+    const char *inputText = env->GetStringUTFChars(inputText_, 0);
+    string inputString = jstring2string(env, inputText_);
+
+    stringstream stream(inputString);
+    string output;
+
+    while (stream.good()) {
+        bitset<8> bits;
+        stream >> bits;
+        char c = char(bits.to_ulong());
+        output += c;
+    }
+
+    jstring outputString = env->NewStringUTF(output.c_str());
+    env->ReleaseStringUTFChars(inputText_, inputText);
+    return outputString;
+}
 
 
 extern "C"

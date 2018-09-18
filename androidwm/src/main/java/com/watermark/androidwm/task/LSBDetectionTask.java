@@ -77,16 +77,16 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
             colorArray[i] = colorArray[i] % 10;
         }
 
-        replaceNinesJ(colorArray);
+        replaceNines(colorArray);
         String binaryString = intArrayToString(colorArray);
         String resultString;
         if (isText) {
-            binaryString = getBetweenStrings(binaryString, true, listener);
-            resultString = binaryToStringJ(binaryString);
+            resultString = getBetweenStrings(binaryString, true, listener);
+            resultString = binaryToString(resultString);
             resultValue.setWatermarkString(resultString);
         } else {
             binaryString = getBetweenStrings(binaryString, false, listener);
-            resultString = binaryToStringJ(binaryString);
+            resultString = binaryToString(binaryString);
             resultValue.setWatermarkBitmap(BitmapUtils.StringToBitmap(resultString));
         }
 
@@ -111,16 +111,13 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
 
     /**
      * Converting a binary string to a ASCII string.
-     * <p>
-     * TODO: refactor using NDK (C++)
      */
-//    private native String binaryToString(String inputText);
+    private native String binaryToString(String inputText);
 
     /**
      * This is the Java version.
-     * TODO: fix the {@link ArrayIndexOutOfBoundsException} issue
      */
-    private String binaryToStringJ(String inputText) {
+    String binaryToStringJ(String inputText) {
         if (inputText != null) {
             try {
                 StringBuilder sb = new StringBuilder();

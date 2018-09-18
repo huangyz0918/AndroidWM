@@ -119,7 +119,7 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
      * the only case is 0 - 1 = 9, so, we need to replace
      * all nines to zero.
      */
-    native void replaceNines(int[] inputArray);
+    private native void replaceNines(int[] inputArray);
 
 
     /**

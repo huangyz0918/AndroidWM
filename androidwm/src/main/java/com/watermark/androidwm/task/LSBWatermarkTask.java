@@ -166,7 +166,7 @@ public class LSBWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
      * <p>
      * This is the native version.
      */
-    native int[] stringToIntArray(String inputString);
+    private native int[] stringToIntArray(String inputString);
 
     /**
      * get the single digit number and set it to the target one.

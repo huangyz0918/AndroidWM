@@ -174,25 +174,4 @@ public class LSBWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
     private int replaceSingleDigit(int target, int singleDigit) {
         return (target / 10) * 10 + singleDigit;
     }
-
-    /**
-     * to split an array into chunks of equal size. The last chunk
-     * may be smaller than the rest.
-     */
-    public static int[][] chunkArray(int[] array, int chunkSize) {
-        int numOfChunks = (int) Math.ceil((double) array.length / chunkSize);
-        int[][] output = new int[numOfChunks][];
-
-        for (int i = 0; i < numOfChunks; ++i) {
-            int start = i * chunkSize;
-            int length = Math.min(array.length - start, chunkSize);
-
-            int[] temp = new int[length];
-            System.arraycopy(array, start, temp, 0, length);
-            output[i] = temp;
-        }
-
-        return output;
-    }
-
 }

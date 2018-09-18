@@ -98,7 +98,8 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
         if (detectionReturnValue != null) {
             if (detectionReturnValue.getWatermarkBitmap() != null) {
                 listener.onImage(detectionReturnValue.getWatermarkBitmap());
-            } else if (detectionReturnValue.getWatermarkString() != null) {
+            } else if (detectionReturnValue.getWatermarkString() != null
+                    && !detectionReturnValue.getWatermarkString().equals("")) {
                 listener.onText(detectionReturnValue.getWatermarkString());
             } else {
                 listener.onFailure("Failed to detect the watermark!");

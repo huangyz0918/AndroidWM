@@ -66,9 +66,9 @@ public class BitmapUtils {
             watermarkPaint.setAlpha(watermarkText.getTextAlpha());
         }
 
-        float MY_DIP_VALUE = (float) watermarkText.getTextSize();
+        float value = (float) watermarkText.getTextSize();
         int pixel = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                MY_DIP_VALUE, context.getResources().getDisplayMetrics());
+                value, context.getResources().getDisplayMetrics());
         watermarkPaint.setTextSize(pixel);
 
         if (watermarkText.getTextShadowBlurRadius() != 0

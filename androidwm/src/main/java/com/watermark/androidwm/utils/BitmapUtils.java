@@ -23,7 +23,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Environment;
@@ -32,8 +31,7 @@ import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.Base64;
 import android.util.Log;
-import android.view.Display;
-import android.view.WindowManager;
+import android.util.TypedValue;
 
 import com.watermark.androidwm.bean.WatermarkImage;
 import com.watermark.androidwm.bean.WatermarkText;
@@ -55,28 +53,11 @@ import static android.content.ContentValues.TAG;
 public class BitmapUtils {
 
     /**
-     * Get screen width in pixel.
-     *
-     * @return the pixel in screen, if we cannot get the
-     * {@link WindowManager}, return 0.
-     */
-    private static int getScreenWidth(Context context) {
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        if (wm != null) {
-            Display display = wm.getDefaultDisplay();
-            Point size = new Point();
-            display.getSize(size);
-            return size.x;
-        }
-        return 0;
-    }
-
-    /**
      * build a bitmap from a text.
      *
      * @return {@link Bitmap} the bitmap return.
      */
-    public static Bitmap textAsBitmap(Context context, WatermarkText watermarkText, Bitmap backgroundImg) {
+    public static Bitmap textAsBitmap(Context context, WatermarkText watermarkText) {
         TextPaint watermarkPaint = new TextPaint();
         watermarkPaint.setColor(watermarkText.getTextColor());
         watermarkPaint.setStyle(watermarkText.getTextStyle());
@@ -85,9 +66,10 @@ public class BitmapUtils {
             watermarkPaint.setAlpha(watermarkText.getTextAlpha());
         }
 
-        watermarkPaint.setTextSize((float) watermarkText.getTextSize() *
-                context.getResources().getDisplayMetrics().density
-                * (backgroundImg.getWidth() / getScreenWidth(context)));
+        float MY_DIP_VALUE = (float) watermarkText.getTextSize();
+        int pixel = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                MY_DIP_VALUE, context.getResources().getDisplayMetrics());
+        watermarkPaint.setTextSize(pixel);
 
         if (watermarkText.getTextShadowBlurRadius() != 0
                 || watermarkText.getTextShadowXOffset() != 0
@@ -170,22 +152,6 @@ public class BitmapUtils {
 
         return Bitmap.createScaledBitmap(inputBitmap, width,
                 height, true);
-    }
-
-    /**
-     * Converting the RGB value to a String.
-     */
-    @SuppressWarnings("PMD")
-    private static int rgbToInteger(float r, float g, float b) {
-        int R = Math.round(255 * r);
-        int G = Math.round(255 * g);
-        int B = Math.round(255 * b);
-
-        R = (R << 16) & 0x00FF0000;
-        G = (G << 8) & 0x0000FF00;
-        B = B & 0x000000FF;
-
-        return 0xFF000000 | R | G | B;
     }
 
     /**

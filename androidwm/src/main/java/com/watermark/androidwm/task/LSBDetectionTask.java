@@ -76,8 +76,8 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
             colorArray[i] = colorArray[i] % 10;
         }
 
-        replaceNines(colorArray);
-        String binaryString = intArrayToString(colorArray);
+        replaceNinesJ(colorArray);
+        String binaryString = intArrayToStringJ(colorArray);
         String resultString;
         if (isText) {
             resultString = getBetweenStrings(binaryString, true, listener);
@@ -119,12 +119,29 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
      * the only case is 0 - 1 = 9, so, we need to replace
      * all nines to zero.
      */
-    private native void replaceNines(int[] inputArray);
+//    private native void replaceNines(int[] inputArray);
+
+    private void replaceNinesJ(int[] inputArray) {
+        for (int i = 0; i < inputArray.length; i++) {
+            if (inputArray[i] == 9) {
+                inputArray[i] = 0;
+            }
+        }
+    }
 
     /**
      * Int array to string.
      */
-    private native String intArrayToString(int[] inputArray);
+//    private native String intArrayToString(int[] inputArray);
+
+    private String intArrayToStringJ(int[] inputArray) {
+        StringBuilder binary = new StringBuilder();
+        for (int num : inputArray) {
+            binary.append(num);
+        }
+        return binary.toString();
+    }
+
 
     /**
      * Get text between two strings. Passed limiting strings are not

@@ -133,7 +133,7 @@ androidwm 支持两种模式的隐形水印：
      WatermarkBuilder
             .create(this, backgroundBitmap)
             .loadWatermarkImage(watermarkBitmap)
-            .setInvisibleWMListener(true, 512, new BuildFinishListener<Bitmap>() {
+            .setInvisibleWMListener(true, new BuildFinishListener<Bitmap>() {
                 @Override
                 public void onSuccess(Bitmap object) {
                     if (object != null) {
@@ -147,7 +147,6 @@ androidwm 支持两种模式的隐形水印：
                 }
             });
 ```
-`setInvisibleWMListener` 方法的第二个参数是一个整数，表示输入图片最大尺寸，有的时候，你输入的可能是一个巨大的图片，为了使计算算法更加快速，你可以选择在构建图片之前是否对图片进行缩放，如果你让这个参数为空，那么图片将以原图形式进行添加水印操作。无论如何，注意一定要保持背景图片的大小足以放得下水印图片中的信息，否则会抛出异常。
 
 同理，检测隐形水印可以使用类`WatermarkDetector`，通过一个`create`方法获取到实例，同时传进去一张加过水印的图片，第一个布尔参数代表着水印的种类，true 代表着检测文字水印，反之则检测图形水印。
 
@@ -159,13 +158,6 @@ androidwm 支持两种模式的隐形水印：
                 public void onImage(Bitmap watermark) {
                     if (watermark != null) {
                          // do something...
-                    }
-                }
-
-                @Override
-                public void onText(String watermark) {
-                    if (watermark != null) {
-                        // do something...
                     }
                 }
 

@@ -158,7 +158,7 @@ public class BitmapUtils {
     /**
      * Convert a Bitmap to a String.
      */
-    public static String BitmapToString(Bitmap bitmap) {
+    public static String Bitmap2String(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
         byte[] b = byteArrayOutputStream.toByteArray();
@@ -170,12 +170,12 @@ public class BitmapUtils {
      *
      * @return bitmap (from given string)
      */
-    public static Bitmap StringToBitmap(String encodedString) {
+    public static Bitmap String2Bitmap(String encodedString) {
         try {
             byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
             return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
         } catch (Exception e) {
-            Log.e(TAG, "StringToBitmap: ", e);
+            Log.e(TAG, "String2Bitmap: ", e);
             return null;
         }
     }

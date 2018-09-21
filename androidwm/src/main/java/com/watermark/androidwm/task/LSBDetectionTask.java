@@ -86,7 +86,7 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
         } else {
             binaryString = getBetweenStrings(binaryString, false, listener);
             resultString = binaryToString(binaryString);
-            resultValue.setWatermarkBitmap(BitmapUtils.StringToBitmap(resultString));
+            resultValue.setWatermarkBitmap(BitmapUtils.String2Bitmap(resultString));
         }
 
         return resultValue;

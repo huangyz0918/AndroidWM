@@ -67,7 +67,7 @@ public class LSBWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
 
         // convert the watermark bitmap into a String.
         if (watermarkBitmap != null) {
-            watermarkString = BitmapUtils.BitmapToString(watermarkBitmap);
+            watermarkString = BitmapUtils.Bitmap2String(watermarkBitmap);
         }
 
         if (watermarkString == null) {

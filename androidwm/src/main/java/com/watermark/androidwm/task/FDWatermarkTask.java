@@ -63,7 +63,7 @@ public class FDWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
         // checkout if the kind of input watermark is bitmap or a string text.
         // add convert them into an ascii string.
         if (watermarkBitmap != null) {
-            watermarkString = BitmapUtils.Bitmap2String(watermarkBitmap);
+            watermarkString = BitmapUtils.bitmapToString(watermarkBitmap);
         }
 
         if (watermarkString == null) {

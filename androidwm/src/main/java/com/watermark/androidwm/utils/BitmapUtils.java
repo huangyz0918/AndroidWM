@@ -21,6 +21,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -211,5 +212,31 @@ public class BitmapUtils {
                 Log.e(TAG, "saveAsPNG: ", e);
             }
         }
+    }
+
+    /**
+     * convert the background bitmap into pixel array.
+     */
+    public static int[] getBitmapPixels(Bitmap inputBitmap) {
+        int[] backgroundPixels = new int[inputBitmap.getWidth() * inputBitmap.getHeight()];
+        inputBitmap.getPixels(backgroundPixels, 0, inputBitmap.getWidth(), 0, 0,
+                inputBitmap.getWidth(), inputBitmap.getHeight());
+        return backgroundPixels;
+    }
+
+
+    /**
+     * Bitmap to Pixels then converting it to an ARGB int array.
+     */
+    public static int[] bitmap2ARGBArray(int[] inputPixels) {
+        int[] bitmapArray = new int[4 * inputPixels.length];
+        for (int i = 0; i < inputPixels.length; i++) {
+            bitmapArray[4 * i] = Color.alpha(inputPixels[i]);
+            bitmapArray[4 * i + 1] = Color.red(inputPixels[i]);
+            bitmapArray[4 * i + 2] = Color.green(inputPixels[i]);
+            bitmapArray[4 * i + 3] = Color.blue(inputPixels[i]);
+        }
+
+        return bitmapArray;
     }
 }

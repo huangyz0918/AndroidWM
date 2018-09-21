@@ -27,6 +27,8 @@ import com.watermark.androidwm.utils.BitmapUtils;
 
 import org.jtransforms.fft.DoubleFFT_1D;
 
+import static com.watermark.androidwm.utils.BitmapUtils.bitmap2ARGBArray;
+import static com.watermark.androidwm.utils.BitmapUtils.getBitmapPixels;
 import static com.watermark.androidwm.utils.Constant.ERROR_CREATE_FAILED;
 import static com.watermark.androidwm.utils.Constant.ERROR_NO_WATERMARKS;
 import static com.watermark.androidwm.utils.Constant.ERROR_PIXELS_NOT_ENOUGH;
@@ -57,7 +59,6 @@ public class FDWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
         Bitmap backgroundBitmap = params[0].getBackgroundImg();
         String watermarkString = params[0].getWatermarkText();
         Bitmap watermarkBitmap = params[0].getWatermarkImg();
-        int[] backgroundColorArray;
 
         // checkout if the kind of input watermark is bitmap or a string text.
         // add convert them into an ascii string.
@@ -83,17 +84,8 @@ public class FDWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
                 backgroundBitmap.getConfig());
 
         // convert the background bitmap into pixel array.
-        int[] backgroundPixels = new int[backgroundBitmap.getWidth() * backgroundBitmap.getHeight()];
-        backgroundBitmap.getPixels(backgroundPixels, 0, backgroundBitmap.getWidth(), 0, 0,
-                backgroundBitmap.getWidth(), backgroundBitmap.getHeight());
-
-        backgroundColorArray = new int[4 * backgroundPixels.length];
-        for (int i = 0; i < backgroundPixels.length; i++) {
-            backgroundColorArray[4 * i] = Color.alpha(backgroundPixels[i]);
-            backgroundColorArray[4 * i + 1] = Color.red(backgroundPixels[i]);
-            backgroundColorArray[4 * i + 2] = Color.green(backgroundPixels[i]);
-            backgroundColorArray[4 * i + 3] = Color.blue(backgroundPixels[i]);
-        }
+        int[] backgroundPixels = getBitmapPixels(backgroundBitmap);
+        int[] backgroundColorArray = bitmap2ARGBArray(backgroundPixels);
 
         double[] backgroundColorArrayD = copyFromIntArray(backgroundColorArray);
         DoubleFFT_1D backgroundFFT = new DoubleFFT_1D(backgroundColorArrayD.length);

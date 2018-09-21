@@ -24,6 +24,8 @@ import com.watermark.androidwm.listener.BuildFinishListener;
 import com.watermark.androidwm.bean.AsyncTaskParams;
 import com.watermark.androidwm.utils.BitmapUtils;
 
+import static com.watermark.androidwm.utils.BitmapUtils.bitmap2ARGBArray;
+import static com.watermark.androidwm.utils.BitmapUtils.getBitmapPixels;
 import static com.watermark.androidwm.utils.Constant.ERROR_CREATE_FAILED;
 import static com.watermark.androidwm.utils.Constant.ERROR_NO_BACKGROUND;
 import static com.watermark.androidwm.utils.Constant.ERROR_NO_WATERMARKS;
@@ -57,7 +59,6 @@ public class LSBWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
         Bitmap backgroundBitmap = params[0].getBackgroundImg();
         String watermarkString = params[0].getWatermarkText();
         Bitmap watermarkBitmap = params[0].getWatermarkImg();
-        int[] backgroundColorArray;
 
         if (backgroundBitmap == null) {
             listener.onFailure(ERROR_NO_BACKGROUND);
@@ -77,19 +78,8 @@ public class LSBWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
         Bitmap outputBitmap = Bitmap.createBitmap(backgroundBitmap.getWidth(), backgroundBitmap.getHeight(),
                 backgroundBitmap.getConfig());
 
-        // convert the background bitmap into pixel array.
-        int[] backgroundPixels = new int[backgroundBitmap.getWidth() * backgroundBitmap.getHeight()];
-        backgroundBitmap.getPixels(backgroundPixels, 0, backgroundBitmap.getWidth(), 0, 0,
-                backgroundBitmap.getWidth(), backgroundBitmap.getHeight());
-
-        backgroundColorArray = new int[4 * backgroundPixels.length];
-
-        for (int i = 0; i < backgroundPixels.length; i++) {
-            backgroundColorArray[4 * i] = Color.alpha(backgroundPixels[i]);
-            backgroundColorArray[4 * i + 1] = Color.red(backgroundPixels[i]);
-            backgroundColorArray[4 * i + 2] = Color.green(backgroundPixels[i]);
-            backgroundColorArray[4 * i + 3] = Color.blue(backgroundPixels[i]);
-        }
+        int[] backgroundPixels = getBitmapPixels(backgroundBitmap);
+        int[] backgroundColorArray = bitmap2ARGBArray(backgroundPixels);
 
         // convert the Sting into a binary string, and, replace the single digit number.
         // using the rebuilt pixels to create a new watermarked image.

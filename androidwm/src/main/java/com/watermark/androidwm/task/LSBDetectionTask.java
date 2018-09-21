@@ -59,17 +59,17 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
             return null;
         }
 
-        int[] Pixels = new int[markedBitmap.getWidth() * markedBitmap.getHeight()];
-        markedBitmap.getPixels(Pixels, 0, markedBitmap.getWidth(), 0, 0,
+        int[] pixels = new int[markedBitmap.getWidth() * markedBitmap.getHeight()];
+        markedBitmap.getPixels(pixels, 0, markedBitmap.getWidth(), 0, 0,
                 markedBitmap.getWidth(), markedBitmap.getHeight());
 
-        int[] colorArray = new int[4 * Pixels.length];
+        int[] colorArray = new int[4 * pixels.length];
 
-        for (int i = 0; i < Pixels.length; i++) {
-            colorArray[4 * i] = Color.alpha(Pixels[i]);
-            colorArray[4 * i + 1] = Color.red(Pixels[i]);
-            colorArray[4 * i + 2] = Color.green(Pixels[i]);
-            colorArray[4 * i + 3] = Color.blue(Pixels[i]);
+        for (int i = 0; i < pixels.length; i++) {
+            colorArray[4 * i] = Color.alpha(pixels[i]);
+            colorArray[4 * i + 1] = Color.red(pixels[i]);
+            colorArray[4 * i + 2] = Color.green(pixels[i]);
+            colorArray[4 * i + 3] = Color.blue(pixels[i]);
         }
 
         for (int i = 0; i < colorArray.length; i++) {

@@ -42,7 +42,9 @@ public class WatermarkText {
     private Paint.Style style = Paint.Style.FILL;
     @FontRes
     private int typeFaceId = 0;
-    private float textShadowBlurRadius, textShadowXOffset, textShadowYOffset;
+    private float textShadowBlurRadius;
+    private float textShadowXOffset;
+    private float textShadowYOffset;
     @ColorInt
     private int textShadowColor = Color.WHITE;
     // set the default values for the position.

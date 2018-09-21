@@ -18,26 +18,33 @@ package com.watermark.androidwm.task;
 
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.watermark.androidwm.listener.BuildFinishListener;
 import com.watermark.androidwm.bean.AsyncTaskParams;
+import com.watermark.androidwm.utils.BitmapUtils;
+
+import org.jtransforms.fft.DoubleFFT_1D;
+
+import static com.watermark.androidwm.utils.Constant.ERROR_CREATE_FAILED;
+import static com.watermark.androidwm.utils.Constant.ERROR_NO_WATERMARKS;
+import static com.watermark.androidwm.utils.Constant.ERROR_PIXELS_NOT_ENOUGH;
+import static com.watermark.androidwm.utils.Constant.FD_IMG_PREFIX_FLAG;
+import static com.watermark.androidwm.utils.Constant.FD_IMG_SUFFIX_FLAG;
+import static com.watermark.androidwm.utils.Constant.FD_TEXT_PREFIX_FLAG;
+import static com.watermark.androidwm.utils.Constant.FD_TEXT_SUFFIX_FLAG;
+import static com.watermark.androidwm.utils.StringUtils.replaceSingleDigit;
+import static com.watermark.androidwm.utils.StringUtils.stringToBinary;
+import static com.watermark.androidwm.utils.StringUtils.stringToIntArray;
 
 /**
  * This is a tack that use Fast Fourier Transform for an image, to
  * build the image and text watermark into a frequency domain.
- * <p>
- * TODO: build the class for FFTUtils and verify the methods and classes.
- * TODO: build another AsyncTask that can detect the watermark in the picture.
  *
  * @author huangyz0918 (huangyz0918@gmail.com)
  */
 public class FDWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
-
-    static {
-        System.loadLibrary("FD");
-    }
 
     private BuildFinishListener<Bitmap> listener;
 
@@ -47,13 +54,77 @@ public class FDWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
 
     @Override
     protected Bitmap doInBackground(AsyncTaskParams... params) {
-//        Bitmap backgroundImg = params[0].getBackgroundImg();
-//        Bitmap watermarkImg = params[0].getWatermarkImg();
+        Bitmap backgroundBitmap = params[0].getBackgroundImg();
+        String watermarkString = params[0].getWatermarkText();
+        Bitmap watermarkBitmap = params[0].getWatermarkImg();
+        int[] backgroundColorArray;
 
-        Log.d("===>", "string from naive: " + stringFromJNI());
+        // checkout if the kind of input watermark is bitmap or a string text.
+        // add convert them into an ascii string.
+        if (watermarkBitmap != null) {
+            watermarkString = BitmapUtils.BitmapToString(watermarkBitmap);
+        }
 
-        //TODO: change the return value.
-        return params[0].getWatermarkImg();
+        if (watermarkString == null) {
+            listener.onFailure(ERROR_NO_WATERMARKS);
+            return null;
+        }
+
+        String watermarkBinary = stringToBinary(watermarkString);
+        if (watermarkBitmap != null) {
+            watermarkBinary = FD_IMG_PREFIX_FLAG + watermarkBinary + FD_IMG_SUFFIX_FLAG;
+        } else {
+            watermarkBinary = FD_TEXT_PREFIX_FLAG + watermarkBinary + FD_TEXT_SUFFIX_FLAG;
+        }
+
+        int[] watermarkColorArray = stringToIntArray(watermarkBinary);
+
+        Bitmap outputBitmap = Bitmap.createBitmap(backgroundBitmap.getWidth(), backgroundBitmap.getHeight(),
+                backgroundBitmap.getConfig());
+
+        // convert the background bitmap into pixel array.
+        int[] backgroundPixels = new int[backgroundBitmap.getWidth() * backgroundBitmap.getHeight()];
+        backgroundBitmap.getPixels(backgroundPixels, 0, backgroundBitmap.getWidth(), 0, 0,
+                backgroundBitmap.getWidth(), backgroundBitmap.getHeight());
+
+        backgroundColorArray = new int[4 * backgroundPixels.length];
+        for (int i = 0; i < backgroundPixels.length; i++) {
+            backgroundColorArray[4 * i] = Color.alpha(backgroundPixels[i]);
+            backgroundColorArray[4 * i + 1] = Color.red(backgroundPixels[i]);
+            backgroundColorArray[4 * i + 2] = Color.green(backgroundPixels[i]);
+            backgroundColorArray[4 * i + 3] = Color.blue(backgroundPixels[i]);
+        }
+
+        double[] backgroundColorArrayD = copyFromIntArray(backgroundColorArray);
+        DoubleFFT_1D backgroundFFT = new DoubleFFT_1D(backgroundColorArrayD.length);
+        backgroundFFT.realForward(backgroundColorArrayD);
+
+        if (watermarkColorArray.length > backgroundColorArray.length) {
+            listener.onFailure(ERROR_PIXELS_NOT_ENOUGH);
+        } else {
+            for (int i = 0; i < watermarkColorArray.length; i++) {
+                backgroundColorArray[i] = replaceSingleDigit(backgroundColorArray[i]
+                        , watermarkColorArray[i]);
+            }
+
+            backgroundFFT.realInverse(backgroundColorArrayD, 0, true);
+
+            for (int i = 0; i < backgroundPixels.length; i++) {
+                int color = Color.argb(
+                        (int) backgroundColorArrayD[4 * i],
+                        (int) backgroundColorArrayD[4 * i + 1],
+                        (int) backgroundColorArrayD[4 * i + 2],
+                        (int) backgroundColorArrayD[4 * i + 3]
+                );
+                backgroundPixels[i] = color;
+            }
+
+            outputBitmap.setPixels(backgroundPixels, 0, backgroundBitmap.getWidth(), 0, 0,
+                    backgroundBitmap.getWidth(), backgroundBitmap.getHeight());
+            return outputBitmap;
+        }
+
+        return null;
     }
 
     @Override
@@ -62,12 +133,23 @@ public class FDWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
             if (bitmap != null) {
                 listener.onSuccess(bitmap);
             } else {
-                listener.onFailure("created watermark failed!");
+                listener.onFailure(ERROR_CREATE_FAILED);
             }
         }
         super.onPostExecute(bitmap);
     }
 
-    public native String stringFromJNI();
+    /**
+     * cast an int array to a double array.
+     * System.arrayCopy cannot cast the int array to a double one.
+     */
+    @SuppressWarnings("PMD")
+    private double[] copyFromIntArray(int[] source) {
+        double[] dest = new double[source.length];
+        for (int i = 0; i < source.length; i++) {
+            dest[i] = source[i];
+        }
+        return dest;
+    }
 
 }

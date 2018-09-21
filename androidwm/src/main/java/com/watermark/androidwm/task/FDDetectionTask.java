@@ -25,16 +25,11 @@ import com.watermark.androidwm.listener.DetectFinishListener;
 /**
  * This is a task for watermark image detection.
  * In FD mode, all the task will return a bitmap;
- * TODO: remove the annotation of SuppressWarnings after this class finished.
  *
  * @author huangyz0918 (huangyz0918@gmail.com)
  */
 @SuppressWarnings("PMD")
 public class FDDetectionTask extends AsyncTask<DetectionParams, Void, Bitmap> {
-
-    static {
-        System.loadLibrary("FD");
-    }
 
     private DetectFinishListener listener;
 

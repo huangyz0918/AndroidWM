@@ -35,7 +35,7 @@ import com.watermark.androidwm.WatermarkBuilder;
 import com.watermark.androidwm.bean.WatermarkImage;
 import com.watermark.androidwm.bean.WatermarkText;
 import com.watermark.androidwm.listener.DetectFinishListener;
-import com.watermark.androidwm.utils.BitmapUtils;
+//import com.watermark.androidwm.utils.BitmapUtils;
 
 /**
  * This is the sample for library: androidwm.
@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
     private Button btnDetectImage;
     private Button btnDetectText;
     private Button btnClear;
-    private Button btnLoad;
 
     private ImageView backgroundView;
     private ImageView watermarkView;
@@ -76,14 +75,10 @@ public class MainActivity extends AppCompatActivity {
         btnDetectImage = findViewById(R.id.btn_detect_image);
         btnDetectText = findViewById(R.id.btn_detect_text);
         btnClear = findViewById(R.id.btn_clear_watermark);
-        btnLoad = findViewById(R.id.btn_load_marked);
 
         editText = findViewById(R.id.editText);
         backgroundView = findViewById(R.id.imageView);
         watermarkView = findViewById(R.id.imageView_watermark);
-
-//        Glide.with(this).load(R.drawable.built1)
-//                .into(backgroundView);
 
         watermarkBitmap = BitmapFactory.decodeResource(getResources(),
                 R.drawable.test_watermark);
@@ -113,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         btnAddImg.setOnClickListener((View v) -> {
 
             // Math.random()
-            WatermarkImage watermarkImage = new WatermarkImage(this, R.drawable.watermark)
+            WatermarkImage watermarkImage = new WatermarkImage(watermarkBitmap)
                     .setImageAlpha(80)
                     .setPositionX(Math.random())
                     .setPositionY(Math.random())
@@ -142,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                             if (object != null) {
                                 backgroundView.setImageBitmap(object);
                                 // Save to local needs permission.
-                                BitmapUtils.saveAsPNG(object, "sdcard/DCIM/", true);
+//                                BitmapUtils.saveAsPNG(object, "sdcard/DCIM/", true);
                             }
                         }
 
@@ -234,13 +229,6 @@ public class MainActivity extends AppCompatActivity {
         // reload the background.
         btnClear.setOnClickListener((View v) -> {
             Glide.with(this).load(R.drawable.test)
-                    .into(backgroundView);
-            watermarkView.setVisibility(View.GONE);
-        });
-
-        // load the invisible watermarked image from local devices.
-        btnLoad.setOnClickListener((View v) -> {
-            Glide.with(this).load(R.drawable.built1)
                     .into(backgroundView);
             watermarkView.setVisibility(View.GONE);
         });

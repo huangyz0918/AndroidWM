@@ -24,10 +24,17 @@ import com.watermark.androidwm.listener.BuildFinishListener;
 import com.watermark.androidwm.bean.AsyncTaskParams;
 import com.watermark.androidwm.utils.BitmapUtils;
 
+import static com.watermark.androidwm.utils.Constant.ERROR_CREATE_FAILED;
+import static com.watermark.androidwm.utils.Constant.ERROR_NO_BACKGROUND;
+import static com.watermark.androidwm.utils.Constant.ERROR_NO_WATERMARKS;
+import static com.watermark.androidwm.utils.Constant.ERROR_PIXELS_NOT_ENOUGH;
 import static com.watermark.androidwm.utils.Constant.LSB_IMG_PREFIX_FLAG;
 import static com.watermark.androidwm.utils.Constant.LSB_IMG_SUFFIX_FLAG;
 import static com.watermark.androidwm.utils.Constant.LSB_TEXT_PREFIX_FLAG;
 import static com.watermark.androidwm.utils.Constant.LSB_TEXT_SUFFIX_FLAG;
+import static com.watermark.androidwm.utils.StringUtils.replaceSingleDigit;
+import static com.watermark.androidwm.utils.StringUtils.stringToBinary;
+import static com.watermark.androidwm.utils.StringUtils.stringToIntArray;
 
 /**
  * This is a background task for adding the specific invisible text
@@ -38,10 +45,6 @@ import static com.watermark.androidwm.utils.Constant.LSB_TEXT_SUFFIX_FLAG;
  * @author huangyz0918 (huangyz0918@gmail.com)
  */
 public class LSBWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
-
-    static {
-        System.loadLibrary("LSB");
-    }
 
     private BuildFinishListener<Bitmap> listener;
 
@@ -57,28 +60,18 @@ public class LSBWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
         int[] backgroundColorArray;
 
         if (backgroundBitmap == null) {
-            listener.onFailure("No background image! please load an image in your WatermarkBuilder!");
+            listener.onFailure(ERROR_NO_BACKGROUND);
             return null;
         }
 
-        // resize the watermark bitmap.
         // convert the watermark bitmap into a String.
         if (watermarkBitmap != null) {
-            if (params[0].getMaxImageSize() > 0) {
-                watermarkBitmap = BitmapUtils.resizeBitmap(watermarkBitmap, params[0].getMaxImageSize());
-            }
             watermarkString = BitmapUtils.BitmapToString(watermarkBitmap);
         }
 
         if (watermarkString == null) {
-            listener.onFailure("No input text or image! please load an " +
-                    "image or a text in your WatermarkBuilder!");
+            listener.onFailure(ERROR_NO_WATERMARKS);
             return null;
-        }
-
-        // resize the background bitmap and create the empty output bitmap.
-        if (params[0].getMaxImageSize() > 0) {
-            backgroundBitmap = BitmapUtils.resizeBitmap(backgroundBitmap, params[0].getMaxImageSize());
         }
 
         Bitmap outputBitmap = Bitmap.createBitmap(backgroundBitmap.getWidth(), backgroundBitmap.getHeight(),
@@ -110,8 +103,7 @@ public class LSBWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
 
         int[] watermarkColorArray = stringToIntArray(watermarkBinary);
         if (watermarkColorArray.length > backgroundColorArray.length) {
-            listener.onFailure("The Pixels in background are too small to put the watermark in, " +
-                    "the data has been lost! Please make sure the maxImageSize is bigger enough!");
+            listener.onFailure(ERROR_PIXELS_NOT_ENOUGH);
         } else {
             int chunkSize = watermarkColorArray.length;
             int numOfChunks = (int) Math.ceil((double) backgroundColorArray.length / chunkSize);
@@ -148,30 +140,10 @@ public class LSBWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
             if (resultBitmap != null) {
                 listener.onSuccess(resultBitmap);
             } else {
-                listener.onFailure("created watermark failed!");
+                listener.onFailure(ERROR_CREATE_FAILED);
             }
         }
         super.onPostExecute(resultBitmap);
     }
 
-    /**
-     * Converting a {@link String} text into a binary text.
-     * <p>
-     * This is the native version.
-     */
-    private native String stringToBinary(String inputText);
-
-    /**
-     * String to integer array.
-     * <p>
-     * This is the native version.
-     */
-    private native int[] stringToIntArray(String inputString);
-
-    /**
-     * get the single digit number and set it to the target one.
-     */
-    private int replaceSingleDigit(int target, int singleDigit) {
-        return (target / 10) * 10 + singleDigit;
-    }
 }

@@ -25,10 +25,14 @@ import com.watermark.androidwm.bean.DetectionReturnValue;
 import com.watermark.androidwm.listener.DetectFinishListener;
 import com.watermark.androidwm.utils.BitmapUtils;
 
+import static com.watermark.androidwm.utils.Constant.ERROR_BITMAP_NULL;
+import static com.watermark.androidwm.utils.Constant.ERROR_DETECT_FAILED;
+import static com.watermark.androidwm.utils.Constant.ERROR_NO_WATERMARK_FOUND;
 import static com.watermark.androidwm.utils.Constant.LSB_IMG_PREFIX_FLAG;
 import static com.watermark.androidwm.utils.Constant.LSB_IMG_SUFFIX_FLAG;
 import static com.watermark.androidwm.utils.Constant.LSB_TEXT_PREFIX_FLAG;
 import static com.watermark.androidwm.utils.Constant.LSB_TEXT_SUFFIX_FLAG;
+import static com.watermark.androidwm.utils.StringUtils.binaryToString;
 
 /**
  * This is a task for watermark image detection.
@@ -37,10 +41,6 @@ import static com.watermark.androidwm.utils.Constant.LSB_TEXT_SUFFIX_FLAG;
  * @author huangyz0918 (huangyz0918@gmail.com)
  */
 public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, DetectionReturnValue> {
-
-    static {
-        System.loadLibrary("LSB");
-    }
 
     private DetectFinishListener listener;
 
@@ -55,7 +55,7 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
         DetectionReturnValue resultValue = new DetectionReturnValue();
 
         if (markedBitmap == null) {
-            listener.onFailure("Cannot detect the watermark! markedBitmap is null object!");
+            listener.onFailure(ERROR_BITMAP_NULL);
             return null;
         }
 
@@ -101,26 +101,19 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
                     && !detectionReturnValue.getWatermarkString().equals("")) {
                 listener.onText(detectionReturnValue.getWatermarkString());
             } else {
-                listener.onFailure("Failed to detect the watermark!");
+                listener.onFailure(ERROR_DETECT_FAILED);
             }
         } else {
-            listener.onFailure("Failed to detect the watermark!");
+            listener.onFailure(ERROR_DETECT_FAILED);
         }
         super.onPostExecute(detectionReturnValue);
     }
-
-    /**
-     * Converting a binary string to a ASCII string.
-     */
-    private native String binaryToString(String inputText);
 
     /**
      * Replace the wrong rgb number in a form of binary,
      * the only case is 0 - 1 = 9, so, we need to replace
      * all nines to zero.
      */
-//    private native void replaceNines(int[] inputArray);
-
     private void replaceNinesJ(int[] inputArray) {
         for (int i = 0; i < inputArray.length; i++) {
             if (inputArray[i] == 9) {
@@ -132,8 +125,6 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
     /**
      * Int array to string.
      */
-//    private native String intArrayToString(int[] inputArray);
-
     private String intArrayToStringJ(int[] inputArray) {
         StringBuilder binary = new StringBuilder();
         for (int num : inputArray) {
@@ -157,7 +148,7 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
                         text.length());
                 result = result.substring(0, result.indexOf(LSB_TEXT_SUFFIX_FLAG));
             } catch (StringIndexOutOfBoundsException e) {
-                listener.onFailure("No watermarks found in this image!");
+                listener.onFailure(ERROR_NO_WATERMARK_FOUND);
             }
         } else {
             try {
@@ -165,7 +156,7 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
                         text.length());
                 result = result.substring(0, result.indexOf(LSB_IMG_SUFFIX_FLAG));
             } catch (StringIndexOutOfBoundsException e) {
-                listener.onFailure("No watermarks found in this image!");
+                listener.onFailure(ERROR_NO_WATERMARK_FOUND);
             }
         }
 

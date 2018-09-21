@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="5"
-        android:src="@drawable/built" />
+        android:src="@drawable/test" />
 
     <ImageView
         android:id="@+id/imageView_watermark"
@@ -106,12 +106,6 @@
             android:layout_weight="1"
             android:text="@string/btn_clear_watermark" />
 
-        <Button
-            android:id="@+id/btn_load_marked"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/btn_load_marked" />
 
     </LinearLayout>
 

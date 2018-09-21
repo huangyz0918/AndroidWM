@@ -28,25 +28,21 @@ public class AsyncTaskParams {
     private Bitmap backgroundImg;
     private String watermarkText;
     private Bitmap watermarkImg;
-    private int maxImageSize;
 
-    public AsyncTaskParams(Bitmap backgroundImg, String watermarkText, Bitmap watermarkImg, int maxImageSize) {
+    public AsyncTaskParams(Bitmap backgroundImg, String watermarkText, Bitmap watermarkImg) {
         this.backgroundImg = backgroundImg;
         this.watermarkText = watermarkText;
         this.watermarkImg = watermarkImg;
-        this.maxImageSize = maxImageSize;
     }
 
-    public AsyncTaskParams(Bitmap backgroundImg, Bitmap watermarkImg, int maxImageSize) {
+    public AsyncTaskParams(Bitmap backgroundImg, Bitmap watermarkImg) {
         this.backgroundImg = backgroundImg;
         this.watermarkImg = watermarkImg;
-        this.maxImageSize = maxImageSize;
     }
 
-    public AsyncTaskParams(Bitmap backgroundImg, String watermarkText, int maxImageSize) {
+    public AsyncTaskParams(Bitmap backgroundImg, String watermarkText) {
         this.backgroundImg = backgroundImg;
         this.watermarkText = watermarkText;
-        this.maxImageSize = maxImageSize;
     }
 
     /**
@@ -76,11 +72,4 @@ public class AsyncTaskParams {
         this.watermarkImg = watermarkImg;
     }
 
-    public int getMaxImageSize() {
-        return maxImageSize;
-    }
-
-    public void setMaxImageSize(int maxImageSize) {
-        this.maxImageSize = maxImageSize;
-    }
 }

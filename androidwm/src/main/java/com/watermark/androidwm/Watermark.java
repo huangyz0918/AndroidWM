@@ -56,7 +56,6 @@ public class Watermark {
     private boolean isTileMode;
     private boolean isInvisible;
     private boolean isLSB;
-    private int maxImageSize;
     private BuildFinishListener<Bitmap> buildFinishListener;
 
     /**
@@ -72,7 +71,6 @@ public class Watermark {
               boolean isTileMode,
               boolean isInvisible,
               boolean isLSB,
-              int maxImageSize,
               @Nullable BuildFinishListener<Bitmap> buildFinishListener) {
 
         this.context = context;
@@ -82,7 +80,6 @@ public class Watermark {
         this.watermarkText = inputText;
         this.isInvisible = isInvisible;
         this.buildFinishListener = buildFinishListener;
-        this.maxImageSize = maxImageSize;
         this.isLSB = isLSB;
 
         canvasBitmap = backgroundImg;
@@ -123,11 +120,11 @@ public class Watermark {
                 Bitmap scaledWMBitmap = resizeBitmap(watermarkImg.getImage(), (float) watermarkImg.getSize(), backgroundImg);
                 if (isLSB) {
                     new LSBWatermarkTask(buildFinishListener).execute(
-                            new AsyncTaskParams(backgroundImg, scaledWMBitmap, maxImageSize)
+                            new AsyncTaskParams(backgroundImg, scaledWMBitmap)
                     );
                 } else {
                     new FDWatermarkTask(buildFinishListener).execute(
-                            new AsyncTaskParams(backgroundImg, scaledWMBitmap, maxImageSize)
+                            new AsyncTaskParams(backgroundImg, scaledWMBitmap)
                     );
                 }
             } else {
@@ -184,11 +181,11 @@ public class Watermark {
             if (isInvisible) {
                 if (isLSB) {
                     new LSBWatermarkTask(buildFinishListener).execute(
-                            new AsyncTaskParams(backgroundImg, watermarkText.getText(), maxImageSize)
+                            new AsyncTaskParams(backgroundImg, watermarkText.getText())
                     );
                 } else {
                     new FDWatermarkTask(buildFinishListener).execute(
-                            new AsyncTaskParams(backgroundImg, watermarkText.getText(), maxImageSize)
+                            new AsyncTaskParams(backgroundImg, watermarkText.getText())
                     );
                 }
             } else {

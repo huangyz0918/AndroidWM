@@ -1,4 +1,4 @@
-/**
+/*
  *    Copyright 2018 huangyz0918
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +15,13 @@
  *
  */
 
+
+/**
+ * All the native methods in AndroidWM (https://github.com/huangyz0918/AndroidWM).
+ *
+ * @author huangyz0918 (huangyz0918@gmail.com)
+ */
+
 #include <jni.h>
 #include <string>
 #include <bitset>
@@ -23,12 +30,69 @@
 
 using namespace std;
 
-#define  LOG_TAG    "===> androidWM-native"
+#define  LOG_TAG    "androidWM-native"
 #define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
 #define  LOGW(...)  __android_log_print(ANDROID_LOG_WARN, LOG_TAG, __VA_ARGS__)
 #define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
 #define  LOGF(...)  __android_log_print(ANDROID_LOG_FATAL, LOG_TAG, __VA_ARGS__)
 #define  LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
+
+bool convolve1D(jdouble *in, jdouble *kernel, jdouble *out, jsize kernelSize, jsize dataSize);
+
+/**
+ * native method for calculating the Convolution 1D.
+ */
+extern "C"
+JNIEXPORT jdoubleArray JNICALL
+Java_com_watermark_androidwm_utils_StringUtils_calConv1D(JNIEnv *env, jobject instance,
+                                                         jdoubleArray inputArray1_,
+                                                         jdoubleArray inputArray2_) {
+    jdouble *inputArray1 = env->GetDoubleArrayElements(inputArray1_, NULL);
+    jdouble *inputArray2 = env->GetDoubleArrayElements(inputArray2_, NULL);
+
+    jsize size1 = env->GetArrayLength(inputArray1_);
+    jsize size2 = env->GetArrayLength(inputArray2_);
+    jsize outSize = size1 + size2 - 1;
+    jsize kernelSize;
+
+    if (size1 > size2) {
+        kernelSize = size1;
+    } else {
+        kernelSize = size2;
+    }
+
+    jdoubleArray outputArray = env->NewDoubleArray(outSize);
+    jdouble *outputValues = env->GetDoubleArrayElements(outputArray, NULL);
+    convolve1D(inputArray1, inputArray2, outputValues, kernelSize, outSize);
+
+    env->SetDoubleArrayRegion(outputArray, 0, outSize, outputValues);
+    env->ReleaseDoubleArrayElements(inputArray1_, inputArray1, 0);
+    env->ReleaseDoubleArrayElements(inputArray2_, inputArray2, 0);
+    return outputArray;
+}
+
+bool convolve1D(jdouble *in, jdouble *kernel, jdouble *out, jsize kernelSize, jsize dataSize) {
+    int i, j, k;
+    if (!in || !out || !kernel) return false;
+    if (dataSize <= 0 || kernelSize <= 0) return false;
+
+    for (i = kernelSize - 1; i < dataSize; ++i) {
+        out[i] = 0;
+
+        for (j = i, k = 0; k < kernelSize; --j, ++k)
+            out[i] += in[j] * kernel[k];
+    }
+
+    for (i = 0; i < kernelSize - 1; ++i) {
+        out[i] = 0;
+
+        for (j = i, k = 0; j >= 0; --j, ++k)
+            out[i] += in[j] * kernel[k];
+    }
+
+    return true;
+}
+
 
 /*
  * Convent the Jstring to the C++ style string (std::string).
@@ -41,7 +105,6 @@ string jstring2string(JNIEnv *env, jstring jStr) {
     const jmethodID getBytes = env->GetMethodID(stringClass, "getBytes", "(Ljava/lang/String;)[B");
     const jbyteArray stringJbytes = (jbyteArray) env->CallObjectMethod(jStr, getBytes,
                                                                        env->NewStringUTF("UTF-8"));
-
     size_t length = (size_t) env->GetArrayLength(stringJbytes);
     jbyte *pBytes = env->GetByteArrayElements(stringJbytes, NULL);
 
@@ -53,10 +116,16 @@ string jstring2string(JNIEnv *env, jstring jStr) {
     return ret;
 }
 
+
+/**
+ * Converting a {@link String} text into a binary text.
+ * <p>
+ * This is the native version.
+ */
 extern "C"
 JNIEXPORT jstring JNICALL
-Java_com_watermark_androidwm_task_LSBWatermarkTask_stringToBinary(JNIEnv *env, jobject instance,
-                                                                  jstring inputText_) {
+Java_com_watermark_androidwm_utils_StringUtils_stringToBinary(JNIEnv *env, jobject instance,
+                                                              jstring inputText_) {
     const char *inputText = env->GetStringUTFChars(inputText_, 0);
     if (inputText == NULL) {
         return NULL;
@@ -76,10 +145,15 @@ Java_com_watermark_androidwm_task_LSBWatermarkTask_stringToBinary(JNIEnv *env, j
 }
 
 
+/**
+ * String to integer array.
+ * <p>
+ * This is the native version.
+ */
 extern "C"
 JNIEXPORT jintArray JNICALL
-Java_com_watermark_androidwm_task_LSBWatermarkTask_stringToIntArray(JNIEnv *env, jobject instance,
-                                                                    jstring inputString_) {
+Java_com_watermark_androidwm_utils_StringUtils_stringToIntArray(JNIEnv *env, jobject instance,
+                                                                jstring inputString_) {
     const char *inputString = env->GetStringUTFChars(inputString_, 0);
     string input = jstring2string(env, inputString_);
 
@@ -99,10 +173,13 @@ Java_com_watermark_androidwm_task_LSBWatermarkTask_stringToIntArray(JNIEnv *env,
 }
 
 
+/**
+ * Converting a binary string to a ASCII string.
+ */
 extern "C"
 JNIEXPORT jstring JNICALL
-Java_com_watermark_androidwm_task_LSBDetectionTask_binaryToString(JNIEnv *env, jobject instance,
-                                                                  jstring inputText_) {
+Java_com_watermark_androidwm_utils_StringUtils_binaryToString(JNIEnv *env, jobject instance,
+                                                              jstring inputText_) {
     const char *inputText = env->GetStringUTFChars(inputText_, 0);
     string inputString = jstring2string(env, inputText_);
 
@@ -121,11 +198,15 @@ Java_com_watermark_androidwm_task_LSBDetectionTask_binaryToString(JNIEnv *env, j
     return outputString;
 }
 
-
+/**
+ * Replace the wrong rgb number in a form of binary,
+ * the only case is 0 - 1 = 9, so, we need to replace
+ * all nines to zero.
+ */
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_watermark_androidwm_task_LSBDetectionTask_replaceNines(JNIEnv *env, jobject instance,
-                                                                jintArray inputArray_) {
+Java_com_watermark_androidwm_utils_StringUtils_replaceNines(JNIEnv *env, jobject instance,
+                                                            jintArray inputArray_) {
     jint *inputArray = env->GetIntArrayElements(inputArray_, NULL);
     jsize size = env->GetArrayLength(inputArray_);
 
@@ -138,11 +219,13 @@ Java_com_watermark_androidwm_task_LSBDetectionTask_replaceNines(JNIEnv *env, job
     env->ReleaseIntArrayElements(inputArray_, inputArray, 0);
 }
 
-
+/**
+ * Int array to string.
+ */
 extern "C"
 JNIEXPORT jstring JNICALL
-Java_com_watermark_androidwm_task_LSBDetectionTask_intArrayToString(JNIEnv *env, jobject instance,
-                                                                    jintArray inputArray_) {
+Java_com_watermark_androidwm_utils_StringUtils_intArrayToString(JNIEnv *env, jobject instance,
+                                                                jintArray inputArray_) {
     jint *inputArray = env->GetIntArrayElements(inputArray_, NULL);
     jsize size = env->GetArrayLength(inputArray_);
     ostringstream oss("");

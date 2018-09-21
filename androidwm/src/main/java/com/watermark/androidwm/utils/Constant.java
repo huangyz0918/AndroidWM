@@ -22,10 +22,24 @@ package com.watermark.androidwm.utils;
  * @author huangyz0918 (huangyz0918@gmail.com)
  */
 public class Constant {
-    public static final String LSB_IMG_PREFIX_FLAG = "222222";
-    public static final String LSB_TEXT_PREFIX_FLAG = "444444";
-    public static final String LSB_IMG_SUFFIX_FLAG = "333333";
-    public static final String LSB_TEXT_SUFFIX_FLAG = "555555";
+    public static final String LSB_IMG_PREFIX_FLAG = "1212";
+    public static final String FD_IMG_PREFIX_FLAG = "1122";
+    public static final String LSB_TEXT_PREFIX_FLAG = "2323";
+    public static final String FD_TEXT_PREFIX_FLAG = "3322";
+    public static final String LSB_IMG_SUFFIX_FLAG = "3434";
+    public static final String FD_IMG_SUFFIX_FLAG = "3344";
+    public static final String LSB_TEXT_SUFFIX_FLAG = "4545";
+    public static final String FD_TEXT_SUFFIX_FLAG = "5544";
 
     public static final int MAX_IMAGE_SIZE = 1024;
+
+    public static final String ERROR_NO_WATERMARKS = "No input text or image! please load an image or a text in your WatermarkBuilder!";
+    public static final String ERROR_CREATE_FAILED = "created watermark failed!";
+    public static final String ERROR_NO_BACKGROUND = "No background image! please load an image in your WatermarkBuilder!";
+    public static final String ERROR_PIXELS_NOT_ENOUGH = "The Pixels in background are too small to put the watermark in, " +
+            "the data has been lost! Please make sure the maxImageSize is bigger enough!";
+
+    public static final String ERROR_DETECT_FAILED = "Failed to detect the watermark!";
+    public static final String ERROR_NO_WATERMARK_FOUND = "No watermarks found in this image!";
+    public static final String ERROR_BITMAP_NULL = "Cannot detect the watermark! markedBitmap is null object!";
 }

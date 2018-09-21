@@ -21,6 +21,7 @@ package com.watermark.androidwm.listener;
  * This interface is for listening if the task of
  * creating invisible watermark is finished.
  *
+ * @param <T> can be the image and the string watermarks.
  * @author huangyz0918 (huangyz0918@gmail.com)
  */
 public interface BuildFinishListener<T> {

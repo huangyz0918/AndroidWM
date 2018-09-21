@@ -9,6 +9,7 @@ import static org.junit.Assert.*;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
+@SuppressWarnings("PMD")
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {

@@ -12,6 +12,7 @@ import static org.junit.Assert.assertEquals;
  *
  * @author huangyz0918 (huangyz0918@gmail.com)
  */
+@SuppressWarnings("PMD")
 public class LSBDetectionTest {
 
     @Test

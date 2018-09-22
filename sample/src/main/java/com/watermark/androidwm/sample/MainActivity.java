@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
             WatermarkBuilder
                     .create(this, backgroundView)
                     .loadWatermarkText(watermarkText)
-                    .setInvisibleWMListener(true, new BuildFinishListener<Bitmap>() {
+                    .setInvisibleWMListener(false, new BuildFinishListener<Bitmap>() {
                         @Override
                         public void onSuccess(Bitmap object) {
                             Toast.makeText(MainActivity.this,
@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
 
         // detect the text watermark.
         btnDetectText.setOnClickListener((View v) -> {
-            WatermarkDetector.create(backgroundView, true)
+            WatermarkDetector.create(backgroundView, false)
                     .detect(true, new DetectFinishListener() {
                         @Override
                         public void onImage(Bitmap watermark) {
@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
 
         // detect the image watermark.
         btnDetectImage.setOnClickListener((View v) -> {
-            WatermarkDetector.create(backgroundView, true)
+            WatermarkDetector.create(backgroundView, false)
                     .detect(false, new DetectFinishListener() {
                         @Override
                         public void onImage(Bitmap watermark) {

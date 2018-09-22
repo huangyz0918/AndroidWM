@@ -17,6 +17,14 @@
 package com.watermark.androidwm.utils;
 
 
+import com.watermark.androidwm.listener.DetectFinishListener;
+
+import static com.watermark.androidwm.utils.Constant.ERROR_NO_WATERMARK_FOUND;
+import static com.watermark.androidwm.utils.Constant.LSB_IMG_PREFIX_FLAG;
+import static com.watermark.androidwm.utils.Constant.LSB_IMG_SUFFIX_FLAG;
+import static com.watermark.androidwm.utils.Constant.LSB_TEXT_PREFIX_FLAG;
+import static com.watermark.androidwm.utils.Constant.LSB_TEXT_SUFFIX_FLAG;
+
 /**
  * Util class for operations with {@link String}.
  *
@@ -54,10 +62,26 @@ public class StringUtils {
      */
     public static native void replaceNines(int[] inputArray);
 
+    public static void replaceNinesJ(int[] inputArray) {
+        for (int i = 0; i < inputArray.length; i++) {
+            if (inputArray[i] == 9) {
+                inputArray[i] = 0;
+            }
+        }
+    }
+
     /**
      * Int array to string.
      */
     public static native String intArrayToString(int[] inputArray);
+
+    public static String intArrayToStringJ(int[] inputArray) {
+        StringBuilder binary = new StringBuilder();
+        for (int num : inputArray) {
+            binary.append(num);
+        }
+        return binary.toString();
+    }
 
     /**
      * native method for calculating the Convolution 1D.
@@ -69,6 +93,53 @@ public class StringUtils {
      */
     public static int replaceSingleDigit(int target, int singleDigit) {
         return (target / 10) * 10 + singleDigit;
+    }
+
+    public static int replaceSingleDigit(double target, int singleDigit) {
+        return ((int) target / 10) * 10 + singleDigit;
+    }
+
+
+    /**
+     * Get text between two strings. Passed limiting strings are not
+     * included into result.
+     *
+     * @param text Text to search in.
+     */
+    public static String getBetweenStrings(String text, boolean isText, DetectFinishListener listener) {
+        String result = null;
+        if (isText) {
+            try {
+                result = text.substring(text.indexOf(LSB_TEXT_PREFIX_FLAG) + LSB_TEXT_SUFFIX_FLAG.length(),
+                        text.length());
+                result = result.substring(0, result.indexOf(LSB_TEXT_SUFFIX_FLAG));
+            } catch (StringIndexOutOfBoundsException e) {
+                listener.onFailure(ERROR_NO_WATERMARK_FOUND);
+            }
+        } else {
+            try {
+                result = text.substring(text.indexOf(LSB_IMG_PREFIX_FLAG) + LSB_IMG_SUFFIX_FLAG.length(),
+                        text.length());
+                result = result.substring(0, result.indexOf(LSB_IMG_SUFFIX_FLAG));
+            } catch (StringIndexOutOfBoundsException e) {
+                listener.onFailure(ERROR_NO_WATERMARK_FOUND);
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * cast an int array to a double array.
+     * System.arrayCopy cannot cast the int array to a double one.
+     */
+    @SuppressWarnings("PMD")
+    public static double[] copyFromIntArray(int[] source) {
+        double[] dest = new double[source.length];
+        for (int i = 0; i < source.length; i++) {
+            dest[i] = source[i];
+        }
+        return dest;
     }
 
 }

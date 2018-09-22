@@ -36,6 +36,7 @@ import static com.watermark.androidwm.utils.Constant.FD_IMG_PREFIX_FLAG;
 import static com.watermark.androidwm.utils.Constant.FD_IMG_SUFFIX_FLAG;
 import static com.watermark.androidwm.utils.Constant.FD_TEXT_PREFIX_FLAG;
 import static com.watermark.androidwm.utils.Constant.FD_TEXT_SUFFIX_FLAG;
+import static com.watermark.androidwm.utils.StringUtils.copyFromIntArray;
 import static com.watermark.androidwm.utils.StringUtils.replaceSingleDigit;
 import static com.watermark.androidwm.utils.StringUtils.stringToBinary;
 import static com.watermark.androidwm.utils.StringUtils.stringToIntArray;
@@ -87,18 +88,22 @@ public class FDWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
         int[] backgroundPixels = getBitmapPixels(backgroundBitmap);
         int[] backgroundColorArray = bitmap2ARGBArray(backgroundPixels);
 
+        // TODO: the two arrays make the maxsize smaller than 1024.
         double[] backgroundColorArrayD = copyFromIntArray(backgroundColorArray);
         DoubleFFT_1D backgroundFFT = new DoubleFFT_1D(backgroundColorArrayD.length);
         backgroundFFT.realForward(backgroundColorArrayD);
 
-        if (watermarkColorArray.length > backgroundColorArray.length) {
+        if (watermarkColorArray.length > backgroundColorArrayD.length) {
             listener.onFailure(ERROR_PIXELS_NOT_ENOUGH);
         } else {
+
+//            Log.e("===>", Arrays.toString(backgroundColorArrayD));
             for (int i = 0; i < watermarkColorArray.length; i++) {
-                backgroundColorArray[i] = replaceSingleDigit(backgroundColorArray[i]
+                backgroundColorArrayD[i] = replaceSingleDigit(backgroundColorArrayD[i]
                         , watermarkColorArray[i]);
             }
-
+//            Log.e("===>", Arrays.toString(watermarkColorArray));
+//            Log.e("===>", Arrays.toString(backgroundColorArrayD));
             backgroundFFT.realInverse(backgroundColorArrayD, 0, true);
 
             for (int i = 0; i < backgroundPixels.length; i++) {
@@ -129,19 +134,6 @@ public class FDWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
             }
         }
         super.onPostExecute(bitmap);
-    }
-
-    /**
-     * cast an int array to a double array.
-     * System.arrayCopy cannot cast the int array to a double one.
-     */
-    @SuppressWarnings("PMD")
-    private double[] copyFromIntArray(int[] source) {
-        double[] dest = new double[source.length];
-        for (int i = 0; i < source.length; i++) {
-            dest[i] = source[i];
-        }
-        return dest;
     }
 
 }

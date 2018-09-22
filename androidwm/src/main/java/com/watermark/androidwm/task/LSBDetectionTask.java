@@ -17,7 +17,6 @@
 package com.watermark.androidwm.task;
 
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.AsyncTask;
 
 import com.watermark.androidwm.bean.DetectionParams;
@@ -25,14 +24,14 @@ import com.watermark.androidwm.bean.DetectionReturnValue;
 import com.watermark.androidwm.listener.DetectFinishListener;
 import com.watermark.androidwm.utils.BitmapUtils;
 
+import static com.watermark.androidwm.utils.BitmapUtils.bitmap2ARGBArray;
+import static com.watermark.androidwm.utils.BitmapUtils.getBitmapPixels;
 import static com.watermark.androidwm.utils.Constant.ERROR_BITMAP_NULL;
 import static com.watermark.androidwm.utils.Constant.ERROR_DETECT_FAILED;
-import static com.watermark.androidwm.utils.Constant.ERROR_NO_WATERMARK_FOUND;
-import static com.watermark.androidwm.utils.Constant.LSB_IMG_PREFIX_FLAG;
-import static com.watermark.androidwm.utils.Constant.LSB_IMG_SUFFIX_FLAG;
-import static com.watermark.androidwm.utils.Constant.LSB_TEXT_PREFIX_FLAG;
-import static com.watermark.androidwm.utils.Constant.LSB_TEXT_SUFFIX_FLAG;
 import static com.watermark.androidwm.utils.StringUtils.binaryToString;
+import static com.watermark.androidwm.utils.StringUtils.getBetweenStrings;
+import static com.watermark.androidwm.utils.StringUtils.intArrayToStringJ;
+import static com.watermark.androidwm.utils.StringUtils.replaceNinesJ;
 
 /**
  * This is a task for watermark image detection.
@@ -59,18 +58,8 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
             return null;
         }
 
-        int[] pixels = new int[markedBitmap.getWidth() * markedBitmap.getHeight()];
-        markedBitmap.getPixels(pixels, 0, markedBitmap.getWidth(), 0, 0,
-                markedBitmap.getWidth(), markedBitmap.getHeight());
-
-        int[] colorArray = new int[4 * pixels.length];
-
-        for (int i = 0; i < pixels.length; i++) {
-            colorArray[4 * i] = Color.alpha(pixels[i]);
-            colorArray[4 * i + 1] = Color.red(pixels[i]);
-            colorArray[4 * i + 2] = Color.green(pixels[i]);
-            colorArray[4 * i + 3] = Color.blue(pixels[i]);
-        }
+        int[] pixels = getBitmapPixels(markedBitmap);
+        int[] colorArray = bitmap2ARGBArray(pixels);
 
         for (int i = 0; i < colorArray.length; i++) {
             colorArray[i] = colorArray[i] % 10;
@@ -109,57 +98,4 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
         super.onPostExecute(detectionReturnValue);
     }
 
-    /**
-     * Replace the wrong rgb number in a form of binary,
-     * the only case is 0 - 1 = 9, so, we need to replace
-     * all nines to zero.
-     */
-    private void replaceNinesJ(int[] inputArray) {
-        for (int i = 0; i < inputArray.length; i++) {
-            if (inputArray[i] == 9) {
-                inputArray[i] = 0;
-            }
-        }
-    }
-
-    /**
-     * Int array to string.
-     */
-    private String intArrayToStringJ(int[] inputArray) {
-        StringBuilder binary = new StringBuilder();
-        for (int num : inputArray) {
-            binary.append(num);
-        }
-        return binary.toString();
-    }
-
-
-    /**
-     * Get text between two strings. Passed limiting strings are not
-     * included into result.
-     *
-     * @param text Text to search in.
-     */
-    private String getBetweenStrings(String text, boolean isText, DetectFinishListener listener) {
-        String result = null;
-        if (isText) {
-            try {
-                result = text.substring(text.indexOf(LSB_TEXT_PREFIX_FLAG) + LSB_TEXT_SUFFIX_FLAG.length(),
-                        text.length());
-                result = result.substring(0, result.indexOf(LSB_TEXT_SUFFIX_FLAG));
-            } catch (StringIndexOutOfBoundsException e) {
-                listener.onFailure(ERROR_NO_WATERMARK_FOUND);
-            }
-        } else {
-            try {
-                result = text.substring(text.indexOf(LSB_IMG_PREFIX_FLAG) + LSB_IMG_SUFFIX_FLAG.length(),
-                        text.length());
-                result = result.substring(0, result.indexOf(LSB_IMG_SUFFIX_FLAG));
-            } catch (StringIndexOutOfBoundsException e) {
-                listener.onFailure(ERROR_NO_WATERMARK_FOUND);
-            }
-        }
-
-        return result;
-    }
 }

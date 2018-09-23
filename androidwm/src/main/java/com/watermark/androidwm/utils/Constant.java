@@ -31,7 +31,7 @@ public class Constant {
     public static final String LSB_TEXT_SUFFIX_FLAG = "4545";
     public static final String FD_TEXT_SUFFIX_FLAG = "5544";
 
-    public static final int MAX_IMAGE_SIZE = 400;
+    public static final int MAX_IMAGE_SIZE = 1024;
 
     public static final String ERROR_NO_WATERMARKS = "No input text or image! please load an image or a text in your WatermarkBuilder!";
     public static final String ERROR_CREATE_FAILED = "created watermark failed!";

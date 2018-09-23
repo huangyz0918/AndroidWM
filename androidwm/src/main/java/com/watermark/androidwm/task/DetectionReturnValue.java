@@ -14,7 +14,7 @@
  *   limitations under the License.
  *
  */
-package com.watermark.androidwm.bean;
+package com.watermark.androidwm.task;
 
 import android.graphics.Bitmap;
 
@@ -42,7 +42,7 @@ public class DetectionReturnValue {
         return watermarkBitmap;
     }
 
-    public void setWatermarkBitmap(Bitmap watermarkBitmap) {
+    protected void setWatermarkBitmap(Bitmap watermarkBitmap) {
         this.watermarkBitmap = watermarkBitmap;
     }
 
@@ -50,7 +50,7 @@ public class DetectionReturnValue {
         return watermarkString;
     }
 
-    public void setWatermarkString(String watermarkString) {
+    protected void setWatermarkString(String watermarkString) {
         this.watermarkString = watermarkString;
     }
 }

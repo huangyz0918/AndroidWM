@@ -71,7 +71,7 @@ public class WatermarkText {
     }
 
     /**
-     * Getters for those attrs.
+     * Getters and Setters for those attrs.
      */
     public String getText() {
         return text;
@@ -93,9 +93,6 @@ public class WatermarkText {
         return position;
     }
 
-    /**
-     * Setters for those attrs.
-     */
     public WatermarkText setPosition(WatermarkPosition position) {
         this.position = position;
         return this;

@@ -50,7 +50,7 @@ public class WatermarkPosition {
     }
 
     /**
-     * Getters for those attrs.
+     * Getters and Setters for those attrs.
      */
     public double getPositionX() {
         return positionX;
@@ -74,9 +74,6 @@ public class WatermarkPosition {
         return rotation;
     }
 
-    /**
-     * Setters for those attrs.
-     */
     public WatermarkPosition setRotation(double rotation) {
         this.rotation = rotation;
         return this;

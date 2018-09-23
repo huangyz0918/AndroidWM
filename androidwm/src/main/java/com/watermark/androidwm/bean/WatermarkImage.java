@@ -75,7 +75,7 @@ public class WatermarkImage {
     }
 
     /**
-     * Getters for those attrs.
+     * Getters and Setters for those attrs.
      */
     public Bitmap getImage() {
         return image;
@@ -89,9 +89,6 @@ public class WatermarkImage {
         return position;
     }
 
-    /**
-     * Setters for those attrs.
-     */
     public WatermarkImage setPosition(WatermarkPosition position) {
         this.position = position;
         return this;

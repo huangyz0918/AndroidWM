@@ -16,7 +16,7 @@
  */
 package com.watermark.androidwm.listener;
 
-import android.graphics.Bitmap;
+import com.watermark.androidwm.task.DetectionReturnValue;
 
 /**
  * This interface is for listening if the task of
@@ -26,9 +26,7 @@ import android.graphics.Bitmap;
  */
 public interface DetectFinishListener {
 
-    void onImage(Bitmap watermark);
-
-    void onText(String watermark);
+    void onSuccess(DetectionReturnValue returnValue);
 
     void onFailure(String message);
 }

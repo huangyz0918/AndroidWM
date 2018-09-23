@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.watermark.androidwm.WatermarkDetector;
+import com.watermark.androidwm.task.DetectionReturnValue;
 import com.watermark.androidwm.listener.BuildFinishListener;
 import com.watermark.androidwm.WatermarkBuilder;
 import com.watermark.androidwm.bean.WatermarkImage;
@@ -177,18 +178,10 @@ public class MainActivity extends AppCompatActivity {
             WatermarkDetector.create(backgroundView, true)
                     .detect(new DetectFinishListener() {
                         @Override
-                        public void onImage(Bitmap watermark) {
-                            Toast.makeText(MainActivity.this,
-                                    "Successfully detected invisible watermark!", Toast.LENGTH_SHORT).show();
-                            if (watermark != null) {
-                                backgroundView.setImageBitmap(watermark);
-                            }
-                        }
-
-                        @Override
-                        public void onText(String watermark) {
-                            if (watermark != null) {
-                                Toast.makeText(MainActivity.this, "The invisible watermark is: " + watermark, Toast.LENGTH_SHORT).show();
+                        public void onSuccess(DetectionReturnValue returnValue) {
+                            if (returnValue != null) {
+                                Toast.makeText(MainActivity.this, "Successfully detected invisible text: "
+                                        + returnValue.getWatermarkString(), Toast.LENGTH_SHORT).show();
                             }
                         }
 
@@ -204,19 +197,12 @@ public class MainActivity extends AppCompatActivity {
             WatermarkDetector.create(backgroundView, true)
                     .detect(new DetectFinishListener() {
                         @Override
-                        public void onImage(Bitmap watermark) {
+                        public void onSuccess(DetectionReturnValue returnValue) {
                             Toast.makeText(MainActivity.this,
                                     "Successfully detected invisible watermark!", Toast.LENGTH_SHORT).show();
-                            if (watermark != null) {
+                            if (returnValue != null) {
                                 watermarkView.setVisibility(View.VISIBLE);
-                                watermarkView.setImageBitmap(watermark);
-                            }
-                        }
-
-                        @Override
-                        public void onText(String watermark) {
-                            if (watermark != null) {
-                                Toast.makeText(MainActivity.this, "The invisible watermark is: " + watermark, Toast.LENGTH_SHORT).show();
+                                watermarkView.setImageBitmap(returnValue.getWatermarkBitmap());
                             }
                         }
 

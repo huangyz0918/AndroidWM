@@ -19,7 +19,6 @@ package com.watermark.androidwm.task;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 
-import com.watermark.androidwm.bean.DetectionReturnValue;
 import com.watermark.androidwm.listener.DetectFinishListener;
 import com.watermark.androidwm.utils.BitmapUtils;
 
@@ -87,14 +86,7 @@ public class LSBDetectionTask extends AsyncTask<Bitmap, Void, DetectionReturnVal
     @Override
     protected void onPostExecute(DetectionReturnValue detectionReturnValue) {
         if (detectionReturnValue != null) {
-            if (detectionReturnValue.getWatermarkBitmap() != null) {
-                listener.onImage(detectionReturnValue.getWatermarkBitmap());
-            } else if (detectionReturnValue.getWatermarkString() != null
-                    && !detectionReturnValue.getWatermarkString().equals("")) {
-                listener.onText(detectionReturnValue.getWatermarkString());
-            } else {
-                listener.onFailure(ERROR_DETECT_FAILED);
-            }
+            listener.onSuccess(detectionReturnValue);
         } else {
             listener.onFailure(ERROR_DETECT_FAILED);
         }

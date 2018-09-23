@@ -1,5 +1,5 @@
 # AndroidWM 
- [ ![Download](https://api.bintray.com/packages/huangyz0918/androidwm/androidwm/images/download.svg) ](https://bintray.com/huangyz0918/androidwm/androidwm/_latestVersion) [![Build Status](https://travis-ci.org/huangyz0918/AndroidWM.svg?branch=master)](https://travis-ci.org/huangyz0918/AndroidWM) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/7f8e55520309410a95f71b54cfe8c381)](https://app.codacy.com/app/huangyz0918/AndroidWM?utm_source=github.com&utm_medium=referral&utm_content=huangyz0918/AndroidWM&utm_campaign=Badge_Grade_Dashboard)
+[![Build Status](https://travis-ci.org/huangyz0918/AndroidWM.svg?branch=master)](https://travis-ci.org/huangyz0918/AndroidWM) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/7f8e55520309410a95f71b54cfe8c381)](https://app.codacy.com/app/huangyz0918/AndroidWM?utm_source=github.com&utm_medium=referral&utm_content=huangyz0918/AndroidWM&utm_campaign=Badge_Grade_Dashboard)
  ![progress](https://img.shields.io/badge/progress-developing-yellow.svg)
 
  
@@ -9,11 +9,16 @@
 
 # 下载与安装 
 
-### Gradle:
+## AndroidWM 
+[ ![Download](https://api.bintray.com/packages/huangyz0918/androidwm/androidwm/images/download.svg) ](https://bintray.com/huangyz0918/androidwm/androidwm/_latestVersion) 
+
+下载完整版本水印框架 (包大小: 2.5Mb):
+### Gradle
 
 ```gradle
 implementation 'com.huangyz0918:androidwm:0.2.2'
 ```
+
 ### Maven:
 
 ```xml
@@ -25,11 +30,24 @@ implementation 'com.huangyz0918:androidwm:0.2.2'
 </dependency>
 ```
 
-### Lvy:
+## AndroidWM Light:
+[ ![Download](https://api.bintray.com/packages/huangyz0918/androidwm/androidwm-light/images/download.svg) ](https://bintray.com/huangyz0918/androidwm/androidwm-light/_latestVersion)
+
+下载轻量级版本，只支持可见图像水印 (包大小: 28Kb):
+### Gradle:
+
+```gradle
+implementation 'com.huangyz0918:androidwm-light:0.1.1'
+```
+
+### Maven:
 
 ```xml
-<dependency org='com.huangyz0918' name='androidwm' rev='0.2.2'>
-  <artifact name='androidwm' ext='pom' ></artifact>
+<dependency>
+  <groupId>com.huangyz0918</groupId>
+  <artifactId>androidwm-light</artifactId>
+  <version>0.1.1</version>
+  <type>pom</type>
 </dependency>
 ```
 

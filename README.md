@@ -1,5 +1,5 @@
 # AndroidWM
-[ ![Download](https://api.bintray.com/packages/huangyz0918/androidwm/androidwm/images/download.svg) ](https://bintray.com/huangyz0918/androidwm/androidwm/_latestVersion) [![Build Status](https://travis-ci.org/huangyz0918/AndroidWM.svg?branch=master)](https://travis-ci.org/huangyz0918/AndroidWM) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/7f8e55520309410a95f71b54cfe8c381)](https://app.codacy.com/app/huangyz0918/AndroidWM?utm_source=github.com&utm_medium=referral&utm_content=huangyz0918/AndroidWM&utm_campaign=Badge_Grade_Dashboard) ![progress](https://img.shields.io/badge/progress-developing-yellow.svg)
+[![Build Status](https://travis-ci.org/huangyz0918/AndroidWM.svg?branch=master)](https://travis-ci.org/huangyz0918/AndroidWM) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/7f8e55520309410a95f71b54cfe8c381)](https://app.codacy.com/app/huangyz0918/AndroidWM?utm_source=github.com&utm_medium=referral&utm_content=huangyz0918/AndroidWM&utm_campaign=Badge_Grade_Dashboard) ![progress](https://img.shields.io/badge/progress-developing-yellow.svg)
 
 A lightweight android image watermark library that supports encrypted watermarks. [中文版本](./README-CN.md)
 
@@ -9,11 +9,16 @@ A lightweight android image watermark library that supports encrypted watermarks
 
 # Download Library 
 
-### Gradle:
+## AndroidWM 
+[ ![Download](https://api.bintray.com/packages/huangyz0918/androidwm/androidwm/images/download.svg) ](https://bintray.com/huangyz0918/androidwm/androidwm/_latestVersion) 
+
+For androidWM supports the invisible digital watermarks (package size: 2.5Mb):
+### Gradle
 
 ```gradle
 implementation 'com.huangyz0918:androidwm:0.2.2'
 ```
+
 ### Maven:
 
 ```xml
@@ -25,11 +30,24 @@ implementation 'com.huangyz0918:androidwm:0.2.2'
 </dependency>
 ```
 
-### Lvy:
+## AndroidWM Light:
+[ ![Download](https://api.bintray.com/packages/huangyz0918/androidwm/androidwm-light/images/download.svg) ](https://bintray.com/huangyz0918/androidwm/androidwm-light/_latestVersion)
+
+For androidWM-light only supports the visible watermarks (package size: 28Kb):
+### Gradle
+
+```gradle
+implementation 'com.huangyz0918:androidwm-light:0.1.1'
+```
+
+### Maven:
 
 ```xml
-<dependency org='com.huangyz0918' name='androidwm' rev='0.2.2'>
-  <artifact name='androidwm' ext='pom' ></artifact>
+<dependency>
+  <groupId>com.huangyz0918</groupId>
+  <artifactId>androidwm-light</artifactId>
+  <version>0.1.1</version>
+  <type>pom</type>
 </dependency>
 ```
 

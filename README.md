@@ -12,7 +12,7 @@ A lightweight android image watermark library that supports encrypted watermarks
 ### Gradle:
 
 ```gradle
-implementation 'com.huangyz0918:androidwm:0.2.1'
+implementation 'com.huangyz0918:androidwm:0.2.2'
 ```
 ### Maven:
 
@@ -20,7 +20,7 @@ implementation 'com.huangyz0918:androidwm:0.2.1'
 <dependency>
   <groupId>com.huangyz0918</groupId>
   <artifactId>androidwm</artifactId>
-  <version>0.2.1</version>
+  <version>0.2.2</version>
   <type>pom</type>
 </dependency>
 ```
@@ -28,7 +28,7 @@ implementation 'com.huangyz0918:androidwm:0.2.1'
 ### Lvy:
 
 ```xml
-<dependency org='com.huangyz0918' name='androidwm' rev='0.2.1'>
+<dependency org='com.huangyz0918' name='androidwm' rev='0.2.2'>
   <artifact name='androidwm' ext='pom' ></artifact>
 </dependency>
 ```
@@ -140,24 +140,23 @@ You can create a new invisible watermark by the `WatermarkBuilder`'s `.setInvisi
 
                 @Override
                 public void onFailure(String message) {
-                   // do something...
+                      // do something...
                 }
             });
 ```
 The first paramter of `setInvisibleWMListener` is `isLSB`, if false, the invisible algorithm will change to the frequency domain. 
 
-To detect the invisible watermark, you can use `WatermarkDetector`, the first paramter is the kind of watermark, if you want to detect the image watermark, the paramter is false, if it's a text, then true. The input bitmap is a image with invisible watermarks.
+To detect the invisible watermark, you can use `WatermarkDetector`, you need to put a boolean parameter in `.create` method, since we have two kinds of invisible watermarks, if `isLSB` is true, the detector can detect LSB watermarks, if not, the detector can detect the watermarks in the frequency domain.
 
 ```java
      WatermarkDetector
             .create(inputBitmap, true)
             .detect(false, new DetectFinishListener() {
                 @Override
-                public void onImage(Bitmap watermark) {
-                    if (watermark != null) {
-                         // do something...
-                    }
-                }
+                public void onSuccess(DetectionReturnValue returnValue) {
+                       Bitmap watermarkImage = returnValue.getWatermarkBitmap();
+                       String watermarkString = returnValue.getWatermarkString();
+                 }
 
                 @Override
                 public void onFailure(String message) {

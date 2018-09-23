@@ -8,7 +8,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/androidwm" />
+            <option value="$PROJECT_DIR$/androidwm-light" />
             <option value="$PROJECT_DIR$/sample" />
           </set>
         </option>

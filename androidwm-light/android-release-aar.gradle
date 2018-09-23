@@ -1,0 +1,59 @@
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+group = properties.getProperty('group')
+version = properties.getProperty('version')
+
+static def getDate() {
+    def date = new Date()
+    def formattedDate = date.format('yyyyMMddHHmmss')
+    return formattedDate
+}
+
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+
+    pkg {
+        repo = 'androidwm'
+        name = 'androidwm-light'
+
+        version {
+            name = '0.1.0'
+            desc = "A lightweight android image watermark library."
+            vcsTag = version
+        }
+
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/huangyz0918/AndroidWM'
+        websiteUrl = 'http://huangyz.name/AndroidWM/'
+    }
+
+    configurations = ['archives']
+
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+task findConventions << {
+    println project.getConvention()
+}

@@ -1,1 +1,1 @@
-include ':sample', ':androidwm'
+include ':sample', ':androidwm-light'

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.watermark.androidwm.sample.MainActivity">
+    tools:context="com.watermark.androidwm_light.sample.MainActivity">
 
     <ImageView
         android:id="@+id/imageView"

@@ -27,7 +27,6 @@ import android.widget.ImageView;
 import com.watermark.androidwm.bean.WatermarkImage;
 import com.watermark.androidwm.bean.WatermarkPosition;
 import com.watermark.androidwm.bean.WatermarkText;
-import com.watermark.androidwm.listener.BuildFinishListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,8 +43,6 @@ public final class WatermarkBuilder {
     private Context context;
     private Bitmap backgroundImg;
     private boolean isTileMode = false;
-    private boolean isLSB = false;
-    private BuildFinishListener<Bitmap> buildFinishListener = null;
 
     private WatermarkImage watermarkImage;
     private WatermarkText watermarkText;
@@ -219,30 +216,6 @@ public final class WatermarkBuilder {
     }
 
     /**
-     * set a listener for building progress.
-     */
-    public void setInvisibleWMListener(
-            boolean isLSB,
-            BuildFinishListener<Bitmap> listener
-    ) {
-        this.buildFinishListener = listener;
-        this.isLSB = isLSB;
-        new Watermark(
-                context,
-                backgroundImg,
-                watermarkImage,
-                watermarkBitmaps,
-                watermarkText,
-                watermarkTexts,
-                isTileMode,
-                true,
-                isLSB,
-                buildFinishListener
-        );
-    }
-
-
-    /**
      * load a bitmap as background image from a ImageView.
      *
      * @param imageView the {@link ImageView} we need to use.
@@ -268,10 +241,7 @@ public final class WatermarkBuilder {
                 watermarkBitmaps,
                 watermarkText,
                 watermarkTexts,
-                isTileMode,
-                false,
-                isLSB,
-                buildFinishListener
+                isTileMode
         );
     }
 }

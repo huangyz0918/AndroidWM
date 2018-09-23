@@ -13,13 +13,6 @@
         android:layout_weight="5"
         android:src="@drawable/test" />
 
-    <ImageView
-        android:id="@+id/imageView_watermark"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3"
-        android:visibility="gone" />
-
     <EditText
         android:id="@+id/editText"
         android:layout_width="match_parent"
@@ -50,46 +43,24 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btn_add_invisible_image"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/btn_add_invisible_image" />
-
-        <Button
-            android:id="@+id/btn_add_invisible_text"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/btn_add_invisible_text" />
-
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btn_detect_image"
+            android:id="@+id/btn_single_text"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/btn_detect_image" />
+            android:text="@string/btn_single_text" />
 
         <Button
-            android:id="@+id/btn_detect_text"
+            android:id="@+id/btn_single_image"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/btn_detect_text" />
+            android:text="@string/btn_single_image" />
 
     </LinearLayout>
 

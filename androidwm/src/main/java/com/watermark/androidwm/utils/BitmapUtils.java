@@ -19,9 +19,7 @@ package com.watermark.androidwm.utils;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -30,13 +28,11 @@ import android.os.Environment;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.StaticLayout;
 import android.text.TextPaint;
-import android.util.Base64;
 import android.util.TypedValue;
 
 import com.watermark.androidwm.bean.WatermarkImage;
 import com.watermark.androidwm.bean.WatermarkText;
 
-import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -155,31 +151,6 @@ public class BitmapUtils {
     }
 
     /**
-     * Convert a Bitmap to a String.
-     */
-    public static String bitmapToString(Bitmap bitmap) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-        byte[] b = byteArrayOutputStream.toByteArray();
-        return Base64.encodeToString(b, Base64.DEFAULT);
-    }
-
-    /**
-     * Convert a String to a Bitmap.
-     *
-     * @return bitmap (from given string)
-     */
-    public static Bitmap stringToBitmap(String encodedString) {
-        try {
-            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
-            return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-        } catch (Exception e) {
-            Timber.e(e.toString());
-            return null;
-        }
-    }
-
-    /**
      * Saving a bitmap instance into local PNG.
      */
     public static void saveAsPNG(Bitmap inputBitmap, String filePath, boolean withTime) {
@@ -213,29 +184,4 @@ public class BitmapUtils {
         }
     }
 
-    /**
-     * convert the background bitmap into pixel array.
-     */
-    public static int[] getBitmapPixels(Bitmap inputBitmap) {
-        int[] backgroundPixels = new int[inputBitmap.getWidth() * inputBitmap.getHeight()];
-        inputBitmap.getPixels(backgroundPixels, 0, inputBitmap.getWidth(), 0, 0,
-                inputBitmap.getWidth(), inputBitmap.getHeight());
-        return backgroundPixels;
-    }
-
-
-    /**
-     * Bitmap to Pixels then converting it to an ARGB int array.
-     */
-    public static int[] bitmap2ARGBArray(int[] inputPixels) {
-        int[] bitmapArray = new int[4 * inputPixels.length];
-        for (int i = 0; i < inputPixels.length; i++) {
-            bitmapArray[4 * i] = Color.alpha(inputPixels[i]);
-            bitmapArray[4 * i + 1] = Color.red(inputPixels[i]);
-            bitmapArray[4 * i + 2] = Color.green(inputPixels[i]);
-            bitmapArray[4 * i + 3] = Color.blue(inputPixels[i]);
-        }
-
-        return bitmapArray;
-    }
 }

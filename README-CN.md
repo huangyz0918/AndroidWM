@@ -3,7 +3,7 @@
  ![progress](https://img.shields.io/badge/progress-developing-yellow.svg)
 
  
-一个轻量级的 Android 图片水印框架，支持隐形水印和加密水印。 [English version](./README.md)
+一个轻量级的 Android 图片水印框架，支持隐形数字水印。 [English version](./README.md)
 
 ![](https://i.loli.net/2018/09/11/5b97dddb4e407.png)
 
@@ -12,7 +12,7 @@
 ### Gradle:
 
 ```gradle
-implementation 'com.huangyz0918:androidwm:0.2.1'
+implementation 'com.huangyz0918:androidwm:0.2.2'
 ```
 ### Maven:
 
@@ -20,7 +20,7 @@ implementation 'com.huangyz0918:androidwm:0.2.1'
 <dependency>
   <groupId>com.huangyz0918</groupId>
   <artifactId>androidwm</artifactId>
-  <version>0.2.1</version>
+  <version>0.2.2</version>
   <type>pom</type>
 </dependency>
 ```
@@ -28,7 +28,7 @@ implementation 'com.huangyz0918:androidwm:0.2.1'
 ### Lvy:
 
 ```xml
-<dependency org='com.huangyz0918' name='androidwm' rev='0.2.1'>
+<dependency org='com.huangyz0918' name='androidwm' rev='0.2.2'>
   <artifact name='androidwm' ext='pom' ></artifact>
 </dependency>
 ```
@@ -143,23 +143,22 @@ androidwm 支持两种模式的隐形水印：
 
                 @Override
                 public void onFailure(String message) {
-                   // do something...
+                      // do something...
                 }
             });
 ```
 
-同理，检测隐形水印可以使用类`WatermarkDetector`，通过一个`create`方法获取到实例，同时传进去一张加过水印的图片，第一个布尔参数代表着水印的种类，true 代表着检测文字水印，反之则检测图形水印。
+同理，检测隐形水印可以使用类`WatermarkDetector`，通过一个`create`方法获取到实例，同时传进去一张加过水印的图片。`.create`方法的第一个布尔参数是水印的种类(`isLSB`)，这决定了可检测水印的种类。
 
 ```java
      WatermarkDetector
             .create(inputBitmap, true)
             .detect(false, new DetectFinishListener() {
                 @Override
-                public void onImage(Bitmap watermark) {
-                    if (watermark != null) {
-                         // do something...
-                    }
-                }
+                public void onSuccess(DetectionReturnValue returnValue) {
+                       Bitmap watermarkImage = returnValue.getWatermarkBitmap();
+                       String watermarkString = returnValue.getWatermarkString();
+                 }
 
                 @Override
                 public void onFailure(String message) {

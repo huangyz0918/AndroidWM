@@ -21,7 +21,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,6 +34,8 @@ import com.watermark.androidwm.WatermarkBuilder;
 import com.watermark.androidwm.bean.WatermarkImage;
 import com.watermark.androidwm.bean.WatermarkText;
 import com.watermark.androidwm.listener.DetectFinishListener;
+
+import timber.log.Timber;
 //import com.watermark.androidwm.utils.BitmapUtils;
 
 /**
@@ -143,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailure(String message) {
-                            Log.e("===>", "onFailure: " + message);
+                            Timber.e(message);
                         }
                     });
         });
@@ -154,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
             WatermarkBuilder
                     .create(this, backgroundView)
                     .loadWatermarkText(watermarkText)
-                    .setInvisibleWMListener(false, new BuildFinishListener<Bitmap>() {
+                    .setInvisibleWMListener(true, new BuildFinishListener<Bitmap>() {
                         @Override
                         public void onSuccess(Bitmap object) {
                             Toast.makeText(MainActivity.this,
@@ -166,15 +167,15 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailure(String message) {
-                            Log.e("===>", "onFailure: " + message);
+                            Timber.e(message);
                         }
                     });
         });
 
         // detect the text watermark.
         btnDetectText.setOnClickListener((View v) -> {
-            WatermarkDetector.create(backgroundView, false)
-                    .detect(true, new DetectFinishListener() {
+            WatermarkDetector.create(backgroundView, true)
+                    .detect(new DetectFinishListener() {
                         @Override
                         public void onImage(Bitmap watermark) {
                             Toast.makeText(MainActivity.this,
@@ -193,15 +194,15 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailure(String message) {
-                            Log.e("===>", "onFailure: " + message);
+                            Timber.e(message);
                         }
                     });
         });
 
         // detect the image watermark.
         btnDetectImage.setOnClickListener((View v) -> {
-            WatermarkDetector.create(backgroundView, false)
-                    .detect(false, new DetectFinishListener() {
+            WatermarkDetector.create(backgroundView, true)
+                    .detect(new DetectFinishListener() {
                         @Override
                         public void onImage(Bitmap watermark) {
                             Toast.makeText(MainActivity.this,
@@ -221,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailure(String message) {
-                            Log.e("===>", "onFailure: " + message);
+                            Timber.e(message);
                         }
                     });
         });

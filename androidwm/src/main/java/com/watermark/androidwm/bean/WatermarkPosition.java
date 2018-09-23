@@ -56,8 +56,18 @@ public class WatermarkPosition {
         return positionX;
     }
 
+    public WatermarkPosition setPositionX(double positionX) {
+        this.positionX = positionX;
+        return this;
+    }
+
     public double getPositionY() {
         return positionY;
+    }
+
+    public WatermarkPosition setPositionY(double positionY) {
+        this.positionY = positionY;
+        return this;
     }
 
     public double getRotation() {
@@ -69,16 +79,6 @@ public class WatermarkPosition {
      */
     public WatermarkPosition setRotation(double rotation) {
         this.rotation = rotation;
-        return this;
-    }
-
-    public WatermarkPosition setPositionX(double positionX) {
-        this.positionX = positionX;
-        return this;
-    }
-
-    public WatermarkPosition setPositionY(double positionY) {
-        this.positionY = positionY;
         return this;
     }
 }

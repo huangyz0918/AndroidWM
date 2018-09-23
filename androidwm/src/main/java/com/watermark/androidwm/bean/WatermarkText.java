@@ -81,24 +81,63 @@ public class WatermarkText {
         return alpha;
     }
 
+    /**
+     * @param textAlpha can be set to 0-255.
+     */
+    public WatermarkText setTextAlpha(int textAlpha) {
+        this.alpha = textAlpha;
+        return this;
+    }
+
     public WatermarkPosition getPosition() {
         return position;
+    }
+
+    /**
+     * Setters for those attrs.
+     */
+    public WatermarkText setPosition(WatermarkPosition position) {
+        this.position = position;
+        return this;
     }
 
     public double getTextSize() {
         return size;
     }
 
+    /**
+     * @param size can be set to normal text size.
+     */
+    public WatermarkText setTextSize(double size) {
+        this.size = size;
+        return this;
+    }
+
     public int getTextColor() {
         return color;
+    }
+
+    public WatermarkText setTextColor(int color) {
+        this.color = color;
+        return this;
     }
 
     public Paint.Style getTextStyle() {
         return style;
     }
 
+    public WatermarkText setTextStyle(Paint.Style style) {
+        this.style = style;
+        return this;
+    }
+
     public int getBackgroundColor() {
         return backgroundColor;
+    }
+
+    public WatermarkText setBackgroundColor(int backgroundColor) {
+        this.backgroundColor = backgroundColor;
+        return this;
     }
 
     public float getTextShadowBlurRadius() {
@@ -122,10 +161,10 @@ public class WatermarkText {
     }
 
     /**
-     * Setters for those attrs.
+     * Use the typeface path to get the text typeface.
      */
-    public WatermarkText setPosition(WatermarkPosition position) {
-        this.position = position;
+    public WatermarkText setTextFont(@FontRes int typeFaceId) {
+        this.typeFaceId = typeFaceId;
         return this;
     }
 
@@ -144,29 +183,6 @@ public class WatermarkText {
         return this;
     }
 
-    public WatermarkText setTextColor(int color) {
-        this.color = color;
-        return this;
-    }
-
-    public WatermarkText setTextStyle(Paint.Style style) {
-        this.style = style;
-        return this;
-    }
-
-    public WatermarkText setBackgroundColor(int backgroundColor) {
-        this.backgroundColor = backgroundColor;
-        return this;
-    }
-
-    /**
-     * Use the typeface path to get the text typeface.
-     */
-    public WatermarkText setTextFont(@FontRes int typeFaceId) {
-        this.typeFaceId = typeFaceId;
-        return this;
-    }
-
     /**
      * Set the shadow of the text watermark.
      */
@@ -176,22 +192,6 @@ public class WatermarkText {
         this.textShadowXOffset = shadowXOffset;
         this.textShadowYOffset = shadowYOffset;
         this.textShadowColor = shadowColor;
-        return this;
-    }
-
-    /**
-     * @param textAlpha can be set to 0-255.
-     */
-    public WatermarkText setTextAlpha(int textAlpha) {
-        this.alpha = textAlpha;
-        return this;
-    }
-
-    /**
-     * @param size can be set to normal text size.
-     */
-    public WatermarkText setTextSize(double size) {
-        this.size = size;
         return this;
     }
 

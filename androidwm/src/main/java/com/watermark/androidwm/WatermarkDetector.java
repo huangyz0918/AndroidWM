@@ -21,7 +21,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.support.annotation.NonNull;
 import android.widget.ImageView;
 
-import com.watermark.androidwm.bean.DetectionParams;
 import com.watermark.androidwm.listener.DetectFinishListener;
 import com.watermark.androidwm.task.FDDetectionTask;
 import com.watermark.androidwm.task.LSBDetectionTask;
@@ -65,15 +64,11 @@ public final class WatermarkDetector {
     /**
      * The method for watermark detecting.
      */
-    public void detect(boolean isTextWatermark, DetectFinishListener listener) {
+    public void detect(DetectFinishListener listener) {
         if (isLSB) {
-            new LSBDetectionTask(listener).execute(
-                    new DetectionParams(imageWithWatermark, isTextWatermark)
-            );
+            new LSBDetectionTask(listener).execute(imageWithWatermark);
         } else {
-            new FDDetectionTask(listener).execute(
-                    new DetectionParams(imageWithWatermark, isTextWatermark)
-            );
+            new FDDetectionTask(listener).execute(imageWithWatermark);
         }
     }
 }

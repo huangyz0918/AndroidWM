@@ -89,19 +89,33 @@ public class WatermarkImage {
         return position;
     }
 
+    /**
+     * Setters for those attrs.
+     */
+    public WatermarkImage setPosition(WatermarkPosition position) {
+        this.position = position;
+        return this;
+    }
+
     public double getSize() {
         return size;
+    }
+
+    /**
+     * @param size can be set to 0-1 as the proportion of
+     *             background image.
+     */
+    public WatermarkImage setSize(@FloatRange(from = 0, to = 1) double size) {
+        this.size = size;
+        return this;
     }
 
     public int getImageDrawable() {
         return imageDrawable;
     }
 
-    /**
-     * Setters for those attrs.
-     */
-    public WatermarkImage setPosition(WatermarkPosition position) {
-        this.position = position;
+    public WatermarkImage setImageDrawable(@DrawableRes int imageDrawable) {
+        this.imageDrawable = imageDrawable;
         return this;
     }
 
@@ -120,25 +134,11 @@ public class WatermarkImage {
         return this;
     }
 
-    public WatermarkImage setImageDrawable(@DrawableRes int imageDrawable) {
-        this.imageDrawable = imageDrawable;
-        return this;
-    }
-
     /**
      * @param imageAlpha can be set to 0-255.
      */
     public WatermarkImage setImageAlpha(int imageAlpha) {
         this.alpha = imageAlpha;
-        return this;
-    }
-
-    /**
-     * @param size can be set to 0-1 as the proportion of
-     *             background image.
-     */
-    public WatermarkImage setSize(@FloatRange(from = 0, to = 1) double size) {
-        this.size = size;
         return this;
     }
 

@@ -19,7 +19,6 @@ package com.watermark.androidwm.task;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 
-import com.watermark.androidwm.bean.DetectionParams;
 import com.watermark.androidwm.bean.DetectionReturnValue;
 import com.watermark.androidwm.listener.DetectFinishListener;
 import com.watermark.androidwm.utils.BitmapUtils;
@@ -28,6 +27,10 @@ import static com.watermark.androidwm.utils.BitmapUtils.bitmap2ARGBArray;
 import static com.watermark.androidwm.utils.BitmapUtils.getBitmapPixels;
 import static com.watermark.androidwm.utils.Constant.ERROR_BITMAP_NULL;
 import static com.watermark.androidwm.utils.Constant.ERROR_DETECT_FAILED;
+import static com.watermark.androidwm.utils.Constant.LSB_IMG_PREFIX_FLAG;
+import static com.watermark.androidwm.utils.Constant.LSB_IMG_SUFFIX_FLAG;
+import static com.watermark.androidwm.utils.Constant.LSB_TEXT_PREFIX_FLAG;
+import static com.watermark.androidwm.utils.Constant.LSB_TEXT_SUFFIX_FLAG;
 import static com.watermark.androidwm.utils.StringUtils.binaryToString;
 import static com.watermark.androidwm.utils.StringUtils.getBetweenStrings;
 import static com.watermark.androidwm.utils.StringUtils.intArrayToStringJ;
@@ -39,7 +42,7 @@ import static com.watermark.androidwm.utils.StringUtils.replaceNinesJ;
  *
  * @author huangyz0918 (huangyz0918@gmail.com)
  */
-public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, DetectionReturnValue> {
+public class LSBDetectionTask extends AsyncTask<Bitmap, Void, DetectionReturnValue> {
 
     private DetectFinishListener listener;
 
@@ -48,9 +51,8 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
     }
 
     @Override
-    protected DetectionReturnValue doInBackground(DetectionParams... detectionParams) {
-        boolean isText = detectionParams[0].isTextWatermark();
-        Bitmap markedBitmap = detectionParams[0].getWatermarkBitmap();
+    protected DetectionReturnValue doInBackground(Bitmap... bitmaps) {
+        Bitmap markedBitmap = bitmaps[0];
         DetectionReturnValue resultValue = new DetectionReturnValue();
 
         if (markedBitmap == null) {
@@ -68,11 +70,12 @@ public class LSBDetectionTask extends AsyncTask<DetectionParams, Void, Detection
         replaceNinesJ(colorArray);
         String binaryString = intArrayToStringJ(colorArray);
         String resultString;
-        if (isText) {
+
+        if (binaryString.contains(LSB_TEXT_PREFIX_FLAG) && binaryString.contains(LSB_TEXT_SUFFIX_FLAG)) {
             resultString = getBetweenStrings(binaryString, true, listener);
             resultString = binaryToString(resultString);
             resultValue.setWatermarkString(resultString);
-        } else {
+        } else if (binaryString.contains(LSB_IMG_PREFIX_FLAG) && binaryString.contains(LSB_IMG_SUFFIX_FLAG)) {
             binaryString = getBetweenStrings(binaryString, false, listener);
             resultString = binaryToString(binaryString);
             resultValue.setWatermarkBitmap(BitmapUtils.stringToBitmap(resultString));

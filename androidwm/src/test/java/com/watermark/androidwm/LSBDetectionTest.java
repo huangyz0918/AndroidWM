@@ -14,6 +14,22 @@ import static org.junit.Assert.assertEquals;
  */
 public class LSBDetectionTest {
 
+    private static int[][] chunkArray(int[] array, int chunkSize) {
+        int numOfChunks = (int) Math.ceil((double) array.length / chunkSize);
+        int[][] output = new int[numOfChunks][];
+
+        for (int i = 0; i < numOfChunks; ++i) {
+            int start = i * chunkSize;
+            int length = Math.min(array.length - start, chunkSize);
+
+            int[] temp = new int[length];
+            System.arraycopy(array, start, temp, 0, length);
+            output[i] = temp;
+        }
+
+        return output;
+    }
+
     @Test
     public void arrayToStringTest() {
         int[] inputArray = {
@@ -73,22 +89,6 @@ public class LSBDetectionTest {
         assertEquals(Arrays.toString(result[result.length - 1]), "[13, 14]");
         assertEquals(result.length, 5);
 
-    }
-
-    private static int[][] chunkArray(int[] array, int chunkSize) {
-        int numOfChunks = (int) Math.ceil((double) array.length / chunkSize);
-        int[][] output = new int[numOfChunks][];
-
-        for (int i = 0; i < numOfChunks; ++i) {
-            int start = i * chunkSize;
-            int length = Math.min(array.length - start, chunkSize);
-
-            int[] temp = new int[length];
-            System.arraycopy(array, start, temp, 0, length);
-            output[i] = temp;
-        }
-
-        return output;
     }
 
 }

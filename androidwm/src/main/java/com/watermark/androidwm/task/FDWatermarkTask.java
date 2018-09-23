@@ -97,13 +97,11 @@ public class FDWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
             listener.onFailure(ERROR_PIXELS_NOT_ENOUGH);
         } else {
 
-//            Log.e("===>", Arrays.toString(backgroundColorArrayD));
             for (int i = 0; i < watermarkColorArray.length; i++) {
                 backgroundColorArrayD[i] = replaceSingleDigit(backgroundColorArrayD[i]
                         , watermarkColorArray[i]);
             }
-//            Log.e("===>", Arrays.toString(watermarkColorArray));
-//            Log.e("===>", Arrays.toString(backgroundColorArrayD));
+
             backgroundFFT.realInverse(backgroundColorArrayD, 0, true);
 
             for (int i = 0; i < backgroundPixels.length; i++) {

@@ -25,6 +25,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -61,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText editText;
 
+    private ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
         editText = findViewById(R.id.editText);
         backgroundView = findViewById(R.id.imageView);
         watermarkView = findViewById(R.id.imageView_watermark);
+
+        progressBar = findViewById(R.id.progressBar);
 
         watermarkBitmap = BitmapFactory.decodeResource(getResources(),
                 R.drawable.test_watermark);
@@ -128,12 +133,14 @@ public class MainActivity extends AppCompatActivity {
 
         // The sample method of adding an invisible image watermark.
         btnAddInVisibleImage.setOnClickListener((View v) -> {
+            progressBar.setVisibility(View.VISIBLE);
             WatermarkBuilder
                     .create(this, backgroundView)
                     .loadWatermarkImage(watermarkBitmap)
                     .setInvisibleWMListener(false, new BuildFinishListener<Bitmap>() {
                         @Override
                         public void onSuccess(Bitmap object) {
+                            progressBar.setVisibility(View.GONE);
                             Toast.makeText(MainActivity.this,
                                     "Successfully create invisible watermark!", Toast.LENGTH_SHORT).show();
                             if (object != null) {
@@ -145,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailure(String message) {
+                            progressBar.setVisibility(View.GONE);
                             Timber.e(message);
                         }
                     });
@@ -152,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
 
         // The sample method of adding an invisible text watermark.
         btnAddInvisibleText.setOnClickListener((View v) -> {
+            progressBar.setVisibility(View.VISIBLE);
             WatermarkText watermarkText = new WatermarkText(editText.getText().toString());
             WatermarkBuilder
                     .create(this, backgroundView)
@@ -159,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
                     .setInvisibleWMListener(false, new BuildFinishListener<Bitmap>() {
                         @Override
                         public void onSuccess(Bitmap object) {
+                            progressBar.setVisibility(View.GONE);
                             Toast.makeText(MainActivity.this,
                                     "Successfully create invisible watermark!", Toast.LENGTH_SHORT).show();
                             if (object != null) {
@@ -168,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailure(String message) {
+                            progressBar.setVisibility(View.GONE);
                             Timber.e(message);
                         }
                     });
@@ -175,10 +186,12 @@ public class MainActivity extends AppCompatActivity {
 
         // detect the text watermark.
         btnDetectText.setOnClickListener((View v) -> {
+            progressBar.setVisibility(View.VISIBLE);
             WatermarkDetector.create(backgroundView, false)
                     .detect(new DetectFinishListener() {
                         @Override
                         public void onSuccess(DetectionReturnValue returnValue) {
+                            progressBar.setVisibility(View.GONE);
                             if (returnValue != null) {
                                 Toast.makeText(MainActivity.this, "Successfully detected invisible text: "
                                         + returnValue.getWatermarkString(), Toast.LENGTH_SHORT).show();
@@ -187,6 +200,7 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailure(String message) {
+                            progressBar.setVisibility(View.GONE);
                             Timber.e(message);
                         }
                     });
@@ -194,10 +208,12 @@ public class MainActivity extends AppCompatActivity {
 
         // detect the image watermark.
         btnDetectImage.setOnClickListener((View v) -> {
+            progressBar.setVisibility(View.VISIBLE);
             WatermarkDetector.create(backgroundView, false)
                     .detect(new DetectFinishListener() {
                         @Override
                         public void onSuccess(DetectionReturnValue returnValue) {
+                            progressBar.setVisibility(View.GONE);
                             Toast.makeText(MainActivity.this,
                                     "Successfully detected invisible watermark!", Toast.LENGTH_SHORT).show();
                             if (returnValue != null) {
@@ -208,6 +224,7 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailure(String message) {
+                            progressBar.setVisibility(View.GONE);
                             Timber.e(message);
                         }
                     });

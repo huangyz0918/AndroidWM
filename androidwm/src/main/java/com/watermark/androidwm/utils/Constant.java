@@ -31,7 +31,7 @@ public class Constant {
     public static final String LSB_TEXT_SUFFIX_FLAG = "4545";
     public static final String FD_TEXT_SUFFIX_FLAG = "5544";
 
-    // 1024 is a proper value.
+    // 1024 is a proper value for publishing a release.
     public static final int MAX_IMAGE_SIZE = 512;
     public static final int CHUNK_SIZE = 4000;
 

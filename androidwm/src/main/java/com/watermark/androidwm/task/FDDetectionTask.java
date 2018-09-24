@@ -22,8 +22,6 @@ import android.os.AsyncTask;
 import com.watermark.androidwm.listener.DetectFinishListener;
 import com.watermark.androidwm.utils.BitmapUtils;
 
-import org.jtransforms.fft.DoubleFFT_1D;
-
 import static com.watermark.androidwm.utils.BitmapUtils.pixel2ARGBArray;
 import static com.watermark.androidwm.utils.BitmapUtils.getBitmapPixels;
 import static com.watermark.androidwm.utils.Constant.ERROR_BITMAP_NULL;
@@ -75,9 +73,6 @@ public class FDDetectionTask extends AsyncTask<Bitmap, Void, DetectionReturnValu
 
         // TODO: the two arrays make the maxsize smaller than 1024.
         double[] colorArrayD = copyFromIntArray(colorArray);
-
-        DoubleFFT_1D backgroundFFT = new DoubleFFT_1D(colorArrayD.length);
-        backgroundFFT.realForward(colorArrayD);
 
         for (int i = 0; i < colorArrayD.length; i++) {
             colorArrayD[i] = (int) colorArrayD[i] % 10;

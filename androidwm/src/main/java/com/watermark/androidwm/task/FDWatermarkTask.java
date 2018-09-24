@@ -24,8 +24,7 @@ import android.os.AsyncTask;
 import com.watermark.androidwm.listener.BuildFinishListener;
 import com.watermark.androidwm.bean.AsyncTaskParams;
 import com.watermark.androidwm.utils.BitmapUtils;
-
-import org.jtransforms.dct.DoubleDCT_1D;
+import com.watermark.androidwm.utils.FastDctFft;
 
 import static com.watermark.androidwm.utils.BitmapUtils.pixel2ARGBArray;
 import static com.watermark.androidwm.utils.BitmapUtils.getBitmapPixels;
@@ -95,10 +94,15 @@ public class FDWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
                 int[] backgroundColorArray = pixel2ARGBArray(backgroundPixels);
                 double[] backgroundColorArrayD = copyFromIntArray(backgroundColorArray);
 
-                DoubleDCT_1D backgroundDCT = new DoubleDCT_1D(backgroundColorArrayD.length);
-                backgroundDCT.forward(backgroundColorArrayD, false);
+                FastDctFft.transform(backgroundColorArrayD);
 
                 // do the operations.
+
+                FastDctFft.inverseTransform(backgroundColorArrayD);
+                double scale = (double) backgroundColorArrayD.length / 2;
+                for (int j = 0; j < backgroundColorArrayD.length; j++) {
+                    backgroundColorArrayD[j] = (int) Math.round(backgroundColorArrayD[j] / scale);
+                }
 
                 for (int i = 0; i < backgroundPixels.length; i++) {
                     int color = Color.argb(
@@ -118,12 +122,15 @@ public class FDWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
                     int[] temp = new int[length];
                     System.arraycopy(backgroundPixels, start, temp, 0, length);
                     double[] colorTempD = copyFromIntArray(pixel2ARGBArray(temp));
-                    DoubleDCT_1D backgroundDCT = new DoubleDCT_1D(length * 4);
-                    backgroundDCT.forward(colorTempD, false);
+                    FastDctFft.transform(colorTempD);
 
                     // do the operations.
+                    FastDctFft.inverseTransform(colorTempD);
 
-                    backgroundDCT.inverse(colorTempD, 0, false);
+                    double scale = (double) colorTempD.length / 2;
+                    for (int j = 0; j < colorTempD.length; j++) {
+                        colorTempD[j] = (int) Math.round(colorTempD[j] / scale);
+                    }
 
                     for (int j = 0; j < length; j++) {
                         int color = Color.argb(

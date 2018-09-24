@@ -24,7 +24,7 @@ import com.watermark.androidwm.utils.BitmapUtils;
 
 import org.jtransforms.fft.DoubleFFT_1D;
 
-import static com.watermark.androidwm.utils.BitmapUtils.bitmap2ARGBArray;
+import static com.watermark.androidwm.utils.BitmapUtils.pixel2ARGBArray;
 import static com.watermark.androidwm.utils.BitmapUtils.getBitmapPixels;
 import static com.watermark.androidwm.utils.Constant.ERROR_BITMAP_NULL;
 import static com.watermark.androidwm.utils.Constant.ERROR_DETECT_FAILED;
@@ -32,6 +32,8 @@ import static com.watermark.androidwm.utils.Constant.LSB_IMG_PREFIX_FLAG;
 import static com.watermark.androidwm.utils.Constant.LSB_IMG_SUFFIX_FLAG;
 import static com.watermark.androidwm.utils.Constant.LSB_TEXT_PREFIX_FLAG;
 import static com.watermark.androidwm.utils.Constant.LSB_TEXT_SUFFIX_FLAG;
+import static com.watermark.androidwm.utils.Constant.MAX_IMAGE_SIZE;
+import static com.watermark.androidwm.utils.Constant.WARNNING_BIG_IMAGE;
 import static com.watermark.androidwm.utils.StringUtils.binaryToString;
 import static com.watermark.androidwm.utils.StringUtils.copyFromIntArray;
 import static com.watermark.androidwm.utils.StringUtils.getBetweenStrings;
@@ -63,8 +65,13 @@ public class FDDetectionTask extends AsyncTask<Bitmap, Void, DetectionReturnValu
             return null;
         }
 
+        if (markedBitmap.getWidth() > MAX_IMAGE_SIZE || markedBitmap.getHeight() > MAX_IMAGE_SIZE) {
+            listener.onFailure(WARNNING_BIG_IMAGE);
+            return null;
+        }
+
         int[] pixels = getBitmapPixels(markedBitmap);
-        int[] colorArray = bitmap2ARGBArray(pixels);
+        int[] colorArray = pixel2ARGBArray(pixels);
 
         // TODO: the two arrays make the maxsize smaller than 1024.
         double[] colorArrayD = copyFromIntArray(colorArray);
@@ -95,7 +102,14 @@ public class FDDetectionTask extends AsyncTask<Bitmap, Void, DetectionReturnValu
 
     @Override
     protected void onPostExecute(DetectionReturnValue detectionReturnValue) {
-        if (detectionReturnValue != null) {
+        if (detectionReturnValue == null) {
+            listener.onFailure(ERROR_DETECT_FAILED);
+            return;
+        }
+
+        if (detectionReturnValue.getWatermarkString() != null &&
+                !"".equals(detectionReturnValue.getWatermarkString()) ||
+                detectionReturnValue.getWatermarkBitmap() != null) {
             listener.onSuccess(detectionReturnValue);
         } else {
             listener.onFailure(ERROR_DETECT_FAILED);

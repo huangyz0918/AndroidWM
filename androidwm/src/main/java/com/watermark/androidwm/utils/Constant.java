@@ -31,7 +31,9 @@ public class Constant {
     public static final String LSB_TEXT_SUFFIX_FLAG = "4545";
     public static final String FD_TEXT_SUFFIX_FLAG = "5544";
 
-    public static final int MAX_IMAGE_SIZE = 1024;
+    // 1024 is a proper value.
+    public static final int MAX_IMAGE_SIZE = 512;
+    public static final int CHUNK_SIZE = 4000;
 
     public static final String ERROR_NO_WATERMARKS = "No input text or image! please load an image or a text in your WatermarkBuilder!";
     public static final String ERROR_CREATE_FAILED = "created watermark failed!";
@@ -42,4 +44,6 @@ public class Constant {
     public static final String ERROR_DETECT_FAILED = "Failed to detect the watermark!";
     public static final String ERROR_NO_WATERMARK_FOUND = "No watermarks found in this image!";
     public static final String ERROR_BITMAP_NULL = "Cannot detect the watermark! markedBitmap is null object!";
+
+    public static final String WARNNING_BIG_IMAGE = "The input image may be too large to put into the memory, please be careful of the OOM!";
 }

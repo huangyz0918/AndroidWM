@@ -22,7 +22,7 @@ import android.os.AsyncTask;
 import com.watermark.androidwm.listener.DetectFinishListener;
 import com.watermark.androidwm.utils.BitmapUtils;
 
-import static com.watermark.androidwm.utils.BitmapUtils.bitmap2ARGBArray;
+import static com.watermark.androidwm.utils.BitmapUtils.pixel2ARGBArray;
 import static com.watermark.androidwm.utils.BitmapUtils.getBitmapPixels;
 import static com.watermark.androidwm.utils.Constant.ERROR_BITMAP_NULL;
 import static com.watermark.androidwm.utils.Constant.ERROR_DETECT_FAILED;
@@ -30,6 +30,8 @@ import static com.watermark.androidwm.utils.Constant.LSB_IMG_PREFIX_FLAG;
 import static com.watermark.androidwm.utils.Constant.LSB_IMG_SUFFIX_FLAG;
 import static com.watermark.androidwm.utils.Constant.LSB_TEXT_PREFIX_FLAG;
 import static com.watermark.androidwm.utils.Constant.LSB_TEXT_SUFFIX_FLAG;
+import static com.watermark.androidwm.utils.Constant.MAX_IMAGE_SIZE;
+import static com.watermark.androidwm.utils.Constant.WARNNING_BIG_IMAGE;
 import static com.watermark.androidwm.utils.StringUtils.binaryToString;
 import static com.watermark.androidwm.utils.StringUtils.getBetweenStrings;
 import static com.watermark.androidwm.utils.StringUtils.intArrayToStringJ;
@@ -59,8 +61,13 @@ public class LSBDetectionTask extends AsyncTask<Bitmap, Void, DetectionReturnVal
             return null;
         }
 
+        if (markedBitmap.getWidth() > MAX_IMAGE_SIZE || markedBitmap.getHeight() > MAX_IMAGE_SIZE) {
+            listener.onFailure(WARNNING_BIG_IMAGE);
+            return null;
+        }
+
         int[] pixels = getBitmapPixels(markedBitmap);
-        int[] colorArray = bitmap2ARGBArray(pixels);
+        int[] colorArray = pixel2ARGBArray(pixels);
 
         for (int i = 0; i < colorArray.length; i++) {
             colorArray[i] = colorArray[i] % 10;
@@ -85,7 +92,14 @@ public class LSBDetectionTask extends AsyncTask<Bitmap, Void, DetectionReturnVal
 
     @Override
     protected void onPostExecute(DetectionReturnValue detectionReturnValue) {
-        if (detectionReturnValue != null) {
+        if (detectionReturnValue == null) {
+            listener.onFailure(ERROR_DETECT_FAILED);
+            return;
+        }
+
+        if (detectionReturnValue.getWatermarkString() != null &&
+                !"".equals(detectionReturnValue.getWatermarkString()) ||
+                detectionReturnValue.getWatermarkBitmap() != null) {
             listener.onSuccess(detectionReturnValue);
         } else {
             listener.onFailure(ERROR_DETECT_FAILED);

@@ -25,10 +25,11 @@ import com.watermark.androidwm.listener.BuildFinishListener;
 import com.watermark.androidwm.bean.AsyncTaskParams;
 import com.watermark.androidwm.utils.BitmapUtils;
 
-import org.jtransforms.fft.DoubleFFT_1D;
+import org.jtransforms.dct.DoubleDCT_1D;
 
-import static com.watermark.androidwm.utils.BitmapUtils.bitmap2ARGBArray;
+import static com.watermark.androidwm.utils.BitmapUtils.pixel2ARGBArray;
 import static com.watermark.androidwm.utils.BitmapUtils.getBitmapPixels;
+import static com.watermark.androidwm.utils.Constant.CHUNK_SIZE;
 import static com.watermark.androidwm.utils.Constant.ERROR_CREATE_FAILED;
 import static com.watermark.androidwm.utils.Constant.ERROR_NO_WATERMARKS;
 import static com.watermark.androidwm.utils.Constant.ERROR_PIXELS_NOT_ENOUGH;
@@ -37,7 +38,6 @@ import static com.watermark.androidwm.utils.Constant.FD_IMG_SUFFIX_FLAG;
 import static com.watermark.androidwm.utils.Constant.FD_TEXT_PREFIX_FLAG;
 import static com.watermark.androidwm.utils.Constant.FD_TEXT_SUFFIX_FLAG;
 import static com.watermark.androidwm.utils.StringUtils.copyFromIntArray;
-import static com.watermark.androidwm.utils.StringUtils.replaceSingleDigit;
 import static com.watermark.androidwm.utils.StringUtils.stringToBinary;
 import static com.watermark.androidwm.utils.StringUtils.stringToIntArray;
 
@@ -86,32 +86,56 @@ public class FDWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
 
         // convert the background bitmap into pixel array.
         int[] backgroundPixels = getBitmapPixels(backgroundBitmap);
-        int[] backgroundColorArray = bitmap2ARGBArray(backgroundPixels);
 
-        // TODO: the two arrays make the maxsize smaller than 1024.
-        double[] backgroundColorArrayD = copyFromIntArray(backgroundColorArray);
-        DoubleFFT_1D backgroundFFT = new DoubleFFT_1D(backgroundColorArrayD.length);
-        backgroundFFT.realForward(backgroundColorArrayD);
-
-        if (watermarkColorArray.length > backgroundColorArrayD.length) {
+        if (watermarkColorArray.length > backgroundPixels.length * 4) {
             listener.onFailure(ERROR_PIXELS_NOT_ENOUGH);
         } else {
+            // divide and conquer
+            if (backgroundPixels.length < CHUNK_SIZE) {
+                int[] backgroundColorArray = pixel2ARGBArray(backgroundPixels);
+                double[] backgroundColorArrayD = copyFromIntArray(backgroundColorArray);
 
-            for (int i = 0; i < watermarkColorArray.length; i++) {
-                backgroundColorArrayD[i] = replaceSingleDigit(backgroundColorArrayD[i]
-                        , watermarkColorArray[i]);
-            }
+                DoubleDCT_1D backgroundDCT = new DoubleDCT_1D(backgroundColorArrayD.length);
+                backgroundDCT.forward(backgroundColorArrayD, false);
 
-            backgroundFFT.realInverse(backgroundColorArrayD, 0, true);
+                // do the operations.
 
-            for (int i = 0; i < backgroundPixels.length; i++) {
-                int color = Color.argb(
-                        (int) backgroundColorArrayD[4 * i],
-                        (int) backgroundColorArrayD[4 * i + 1],
-                        (int) backgroundColorArrayD[4 * i + 2],
-                        (int) backgroundColorArrayD[4 * i + 3]
-                );
-                backgroundPixels[i] = color;
+                for (int i = 0; i < backgroundPixels.length; i++) {
+                    int color = Color.argb(
+                            (int) backgroundColorArrayD[4 * i],
+                            (int) backgroundColorArrayD[4 * i + 1],
+                            (int) backgroundColorArrayD[4 * i + 2],
+                            (int) backgroundColorArrayD[4 * i + 3]
+                    );
+
+                    backgroundPixels[i] = color;
+                }
+            } else {
+                int numOfChunks = (int) Math.ceil((double) backgroundPixels.length / CHUNK_SIZE);
+                for (int i = 0; i < numOfChunks; i++) {
+                    int start = i * CHUNK_SIZE;
+                    int length = Math.min(backgroundPixels.length - start, CHUNK_SIZE);
+                    int[] temp = new int[length];
+                    System.arraycopy(backgroundPixels, start, temp, 0, length);
+                    double[] colorTempD = copyFromIntArray(pixel2ARGBArray(temp));
+                    DoubleDCT_1D backgroundDCT = new DoubleDCT_1D(length * 4);
+                    backgroundDCT.forward(colorTempD, false);
+
+                    // do the operations.
+
+                    backgroundDCT.inverse(colorTempD, 0, false);
+
+                    for (int j = 0; j < length; j++) {
+                        int color = Color.argb(
+                                (int) colorTempD[4 * j],
+                                (int) colorTempD[4 * j + 1],
+                                (int) colorTempD[4 * j + 2],
+                                (int) colorTempD[4 * j + 3]
+                        );
+
+                        backgroundPixels[start + j] = color;
+                    }
+                }
             }
 
             outputBitmap.setPixels(backgroundPixels, 0, backgroundBitmap.getWidth(), 0, 0,

@@ -142,4 +142,17 @@ public class StringUtils {
         return dest;
     }
 
+    /**
+     * cast a double array to an int array.
+     * System.arrayCopy cannot cast the double array to an int one.
+     */
+    @SuppressWarnings("PMD")
+    public static int[] copyFromDoubleArray(double[] source) {
+        int[] dest = new int[source.length];
+        for (int i = 0; i < source.length; i++) {
+            dest[i] = (int) source[i];
+        }
+        return dest;
+    }
+
 }

@@ -24,7 +24,7 @@ import com.watermark.androidwm.listener.BuildFinishListener;
 import com.watermark.androidwm.bean.AsyncTaskParams;
 import com.watermark.androidwm.utils.BitmapUtils;
 
-import static com.watermark.androidwm.utils.BitmapUtils.bitmap2ARGBArray;
+import static com.watermark.androidwm.utils.BitmapUtils.pixel2ARGBArray;
 import static com.watermark.androidwm.utils.BitmapUtils.getBitmapPixels;
 import static com.watermark.androidwm.utils.Constant.ERROR_CREATE_FAILED;
 import static com.watermark.androidwm.utils.Constant.ERROR_NO_BACKGROUND;
@@ -79,7 +79,7 @@ public class LSBWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
                 backgroundBitmap.getConfig());
 
         int[] backgroundPixels = getBitmapPixels(backgroundBitmap);
-        int[] backgroundColorArray = bitmap2ARGBArray(backgroundPixels);
+        int[] backgroundColorArray = pixel2ARGBArray(backgroundPixels);
 
         // convert the Sting into a binary string, and, replace the single digit number.
         // using the rebuilt pixels to create a new watermarked image.

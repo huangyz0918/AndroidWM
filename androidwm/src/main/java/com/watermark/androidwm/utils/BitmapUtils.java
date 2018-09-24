@@ -227,7 +227,7 @@ public class BitmapUtils {
     /**
      * Bitmap to Pixels then converting it to an ARGB int array.
      */
-    public static int[] bitmap2ARGBArray(int[] inputPixels) {
+    public static int[] pixel2ARGBArray(int[] inputPixels) {
         int[] bitmapArray = new int[4 * inputPixels.length];
         for (int i = 0; i < inputPixels.length; i++) {
             bitmapArray[4 * i] = Color.alpha(inputPixels[i]);

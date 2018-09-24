@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
             WatermarkBuilder
                     .create(this, backgroundView)
                     .loadWatermarkImage(watermarkBitmap)
-                    .setInvisibleWMListener(true, new BuildFinishListener<Bitmap>() {
+                    .setInvisibleWMListener(false, new BuildFinishListener<Bitmap>() {
                         @Override
                         public void onSuccess(Bitmap object) {
                             Toast.makeText(MainActivity.this,
@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
             WatermarkBuilder
                     .create(this, backgroundView)
                     .loadWatermarkText(watermarkText)
-                    .setInvisibleWMListener(true, new BuildFinishListener<Bitmap>() {
+                    .setInvisibleWMListener(false, new BuildFinishListener<Bitmap>() {
                         @Override
                         public void onSuccess(Bitmap object) {
                             Toast.makeText(MainActivity.this,
@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
 
         // detect the text watermark.
         btnDetectText.setOnClickListener((View v) -> {
-            WatermarkDetector.create(backgroundView, true)
+            WatermarkDetector.create(backgroundView, false)
                     .detect(new DetectFinishListener() {
                         @Override
                         public void onSuccess(DetectionReturnValue returnValue) {
@@ -194,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
 
         // detect the image watermark.
         btnDetectImage.setOnClickListener((View v) -> {
-            WatermarkDetector.create(backgroundView, true)
+            WatermarkDetector.create(backgroundView, false)
                     .detect(new DetectFinishListener() {
                         @Override
                         public void onSuccess(DetectionReturnValue returnValue) {
@@ -215,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
 
         // reload the background.
         btnClear.setOnClickListener((View v) -> {
-            Glide.with(this).load(R.drawable.test)
+            Glide.with(this).load(R.drawable.test2)
                     .into(backgroundView);
             watermarkView.setVisibility(View.GONE);
         });

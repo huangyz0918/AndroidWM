@@ -131,26 +131,6 @@ public class BitmapUtils {
     }
 
     /**
-     * this method is for image resizing, used in invisible watermark
-     * creating progress. To make the progress faster, we should do
-     * some pre-settings, user can set whether to do this part.
-     * <p>
-     * We set the new {@link Bitmap} to a fixed width = 512 pixels.
-     *
-     * @return {@link Bitmap} the new bitmap.
-     */
-    public static Bitmap resizeBitmap(Bitmap inputBitmap, int maxImageSize) {
-        float ratio = Math.min(
-                (float) maxImageSize / inputBitmap.getWidth(),
-                (float) maxImageSize / inputBitmap.getHeight());
-        int width = Math.round(ratio * inputBitmap.getWidth());
-        int height = Math.round(ratio * inputBitmap.getHeight());
-
-        return Bitmap.createScaledBitmap(inputBitmap, width,
-                height, true);
-    }
-
-    /**
      * Saving a bitmap instance into local PNG.
      */
     public static void saveAsPNG(Bitmap inputBitmap, String filePath, boolean withTime) {

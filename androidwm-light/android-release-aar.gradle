@@ -20,7 +20,7 @@ bintray {
         name = 'androidwm-light'
 
         version {
-            name = '0.1.1'
+            name = '0.1.2'
             desc = "A lightweight android image watermark library."
             vcsTag = version
         }

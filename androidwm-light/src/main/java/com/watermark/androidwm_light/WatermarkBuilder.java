@@ -31,9 +31,6 @@ import com.watermark.androidwm_light.bean.WatermarkText;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.watermark.androidwm_light.utils.BitmapUtils.resizeBitmap;
-import static com.watermark.androidwm_light.utils.Constant.MAX_IMAGE_SIZE;
-
 /**
  * A builder class for setting default structural classes for watermark to use.
  *
@@ -54,7 +51,7 @@ public final class WatermarkBuilder {
      */
     private WatermarkBuilder(@NonNull Context context, @NonNull Bitmap backgroundImg) {
         this.context = context;
-        this.backgroundImg = resizeBitmap(backgroundImg, MAX_IMAGE_SIZE);
+        this.backgroundImg = backgroundImg;
     }
 
     private WatermarkBuilder(@NonNull Context context, @NonNull ImageView backgroundImageView) {
@@ -64,8 +61,7 @@ public final class WatermarkBuilder {
 
     private WatermarkBuilder(@NonNull Context context, @DrawableRes int backgroundDrawable) {
         this.context = context;
-        this.backgroundImg = resizeBitmap(BitmapFactory.decodeResource(context.getResources(),
-                backgroundDrawable), MAX_IMAGE_SIZE);
+        this.backgroundImg = BitmapFactory.decodeResource(context.getResources(), backgroundDrawable);
     }
 
     /**
@@ -224,7 +220,7 @@ public final class WatermarkBuilder {
         imageView.invalidate();
         if (imageView.getDrawable() != null) {
             BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
-            backgroundImg = resizeBitmap(drawable.getBitmap(), MAX_IMAGE_SIZE);
+            backgroundImg = drawable.getBitmap();
         }
     }
 

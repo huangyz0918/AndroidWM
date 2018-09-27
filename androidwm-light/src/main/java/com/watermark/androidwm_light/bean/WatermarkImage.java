@@ -24,9 +24,6 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.FloatRange;
 import android.widget.ImageView;
 
-import static com.watermark.androidwm_light.utils.BitmapUtils.resizeBitmap;
-import static com.watermark.androidwm_light.utils.Constant.MAX_IMAGE_SIZE;
-
 /**
  * It's a wrapper of the watermark image.
  *
@@ -49,7 +46,7 @@ public class WatermarkImage {
      * we set the maxsize of an image to 1024x1024.
      */
     public WatermarkImage(Bitmap image) {
-        this.image = resizeBitmap(image, MAX_IMAGE_SIZE);
+        this.image = image;
     }
 
     public WatermarkImage(Context context, @DrawableRes int imageDrawable, WatermarkPosition position) {
@@ -66,7 +63,7 @@ public class WatermarkImage {
     }
 
     public WatermarkImage(Bitmap image, WatermarkPosition position) {
-        this.image = resizeBitmap(image, MAX_IMAGE_SIZE);
+        this.image = image;
         this.position = position;
     }
 
@@ -147,12 +144,10 @@ public class WatermarkImage {
     private void watermarkFromImageView(ImageView imageView) {
         imageView.invalidate();
         BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
-        // set the limitation of input bitmap.
-        this.image = resizeBitmap(drawable.getBitmap(), MAX_IMAGE_SIZE);
+        this.image = drawable.getBitmap();
     }
 
     private Bitmap getBitmapFromDrawable(@DrawableRes int imageDrawable) {
-        return resizeBitmap(BitmapFactory.decodeResource(context.getResources(),
-                imageDrawable), MAX_IMAGE_SIZE);
+        return BitmapFactory.decodeResource(context.getResources(), imageDrawable);
     }
 }

@@ -17,7 +17,7 @@ For androidWM supports the invisible digital watermarks (package size: 2.5Mb):
 ### Gradle:
 
 ```gradle
-implementation 'com.huangyz0918:androidwm:0.2.2'
+implementation 'com.huangyz0918:androidwm:0.2.3'
 ```
 
 ### Maven:
@@ -26,7 +26,7 @@ implementation 'com.huangyz0918:androidwm:0.2.2'
 <dependency>
   <groupId>com.huangyz0918</groupId>
   <artifactId>androidwm</artifactId>
-  <version>0.2.2</version>
+  <version>0.2.3</version>
   <type>pom</type>
 </dependency>
 ```

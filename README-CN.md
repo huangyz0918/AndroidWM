@@ -38,7 +38,7 @@ implementation 'com.huangyz0918:androidwm:0.2.3'
 ### Gradle:
 
 ```gradle
-implementation 'com.huangyz0918:androidwm-light:0.1.1'
+implementation 'com.huangyz0918:androidwm-light:0.1.2'
 ```
 
 ### Maven:
@@ -47,7 +47,7 @@ implementation 'com.huangyz0918:androidwm-light:0.1.1'
 <dependency>
   <groupId>com.huangyz0918</groupId>
   <artifactId>androidwm-light</artifactId>
-  <version>0.1.1</version>
+  <version>0.1.2</version>
   <type>pom</type>
 </dependency>
 ```

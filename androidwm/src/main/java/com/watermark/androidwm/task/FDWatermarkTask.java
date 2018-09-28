@@ -96,14 +96,9 @@ public class FDWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
 
                 FastDctFft.transform(backgroundColorArrayD);
 
-                // do the operations.
+                //TODO: do the operations.
 
                 FastDctFft.inverseTransform(backgroundColorArrayD);
-                double scale = (double) backgroundColorArrayD.length / 2;
-                for (int j = 0; j < backgroundColorArrayD.length; j++) {
-                    backgroundColorArrayD[j] = (int) Math.round(backgroundColorArrayD[j] / scale);
-                }
-
                 for (int i = 0; i < backgroundPixels.length; i++) {
                     int color = Color.argb(
                             (int) backgroundColorArrayD[4 * i],
@@ -124,13 +119,12 @@ public class FDWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
                     double[] colorTempD = copyFromIntArray(pixel2ARGBArray(temp));
                     FastDctFft.transform(colorTempD);
 
-                    // do the operations.
-                    FastDctFft.inverseTransform(colorTempD);
-
-                    double scale = (double) colorTempD.length / 2;
-                    for (int j = 0; j < colorTempD.length; j++) {
-                        colorTempD[j] = (int) Math.round(colorTempD[j] / scale);
+//                    //TODO: do the operations.
+                    for (int j = 0; j < length; j++) {
+                        colorTempD[j] += 255;
                     }
+
+                    FastDctFft.inverseTransform(colorTempD);
 
                     for (int j = 0; j < length; j++) {
                         int color = Color.argb(

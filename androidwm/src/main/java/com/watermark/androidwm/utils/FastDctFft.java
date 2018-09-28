@@ -75,7 +75,7 @@ public final class FastDctFft {
         Objects.requireNonNull(vector);
         int len = vector.length;
         if (len > 0) {
-            vector[0] /= 2;
+            vector[0] = vector[0] / 2;
         }
 
         double[] real = new double[len];
@@ -97,6 +97,12 @@ public final class FastDctFft {
         if (len % 2 == 1) {
             vector[len - 1] = real[halfLen];
         }
+
+        double scale = (double) len / 2;
+        for (int i = 0; i < len; i++) {
+            vector[i] = (int) Math.round(vector[i] / scale);
+        }
+
     }
 
 }

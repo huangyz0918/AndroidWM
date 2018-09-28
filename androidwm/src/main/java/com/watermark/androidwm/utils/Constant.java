@@ -32,8 +32,8 @@ public class Constant {
     public static final String FD_TEXT_SUFFIX_FLAG = "5544";
 
     // 1024 is a proper value for publishing a release.
-    public static final int MAX_IMAGE_SIZE = 512;
-    public static final int CHUNK_SIZE = 4000;
+    public static final int MAX_IMAGE_SIZE = 1024;
+    public static final int CHUNK_SIZE = 5000;
 
     public static final String ERROR_NO_WATERMARKS = "No input text or image! please load an image or a text in your WatermarkBuilder!";
     public static final String ERROR_CREATE_FAILED = "created watermark failed!";

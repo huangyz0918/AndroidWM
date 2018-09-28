@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
             WatermarkBuilder
                     .create(this, backgroundView)
                     .loadWatermarkImage(watermarkBitmap)
-                    .setInvisibleWMListener(false, new BuildFinishListener<Bitmap>() {
+                    .setInvisibleWMListener(true, new BuildFinishListener<Bitmap>() {
                         @Override
                         public void onSuccess(Bitmap object) {
                             progressBar.setVisibility(View.GONE);
@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
             WatermarkBuilder
                     .create(this, backgroundView)
                     .loadWatermarkText(watermarkText)
-                    .setInvisibleWMListener(false, new BuildFinishListener<Bitmap>() {
+                    .setInvisibleWMListener(true, new BuildFinishListener<Bitmap>() {
                         @Override
                         public void onSuccess(Bitmap object) {
                             progressBar.setVisibility(View.GONE);
@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
         // detect the text watermark.
         btnDetectText.setOnClickListener((View v) -> {
             progressBar.setVisibility(View.VISIBLE);
-            WatermarkDetector.create(backgroundView, false)
+            WatermarkDetector.create(backgroundView, true)
                     .detect(new DetectFinishListener() {
                         @Override
                         public void onSuccess(DetectionReturnValue returnValue) {
@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
         // detect the image watermark.
         btnDetectImage.setOnClickListener((View v) -> {
             progressBar.setVisibility(View.VISIBLE);
-            WatermarkDetector.create(backgroundView, false)
+            WatermarkDetector.create(backgroundView, true)
                     .detect(new DetectFinishListener() {
                         @Override
                         public void onSuccess(DetectionReturnValue returnValue) {

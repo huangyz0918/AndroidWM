@@ -13,7 +13,7 @@
 ## AndroidWM 
 [ ![Download](https://api.bintray.com/packages/huangyz0918/androidwm/androidwm/images/download.svg) ](https://bintray.com/huangyz0918/androidwm/androidwm/_latestVersion) 
 
-下载完整版本水印框架 (包大小: 2.5Mb):
+下载完整版本水印框架 (包大小: 1Mb):
 ### Gradle
 
 ```gradle

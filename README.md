@@ -166,25 +166,6 @@ Here are the Demos for Least Significant Bits (LSB) invisible watermark:
 | :-------------: | :-------------: | 
 |    Invisible Text (LSB)   |   Invisible Image (LSB)    | 
 
-<p align="center"></p>
-<table>
-    <thead>
-        <tr>
-            <th align="left">Column1</th>
-            <th align="center">Column1</th>
-            <th align="right">Column1</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td align="left">Column1</td>
-            <td align="center">Column1</td>
-            <td align="right">Column1</td>
-        </tr>
-    </tbody>
-</table>
-<p></p>
-
 For more information, please checkout [Wiki](https://github.com/huangyz0918/AndroidWM/blob/master/wikis/WIKI.md), enjoy yourself! :kissing_heart:
 
 

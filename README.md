@@ -10,9 +10,9 @@ A lightweight android image watermark library that supports encrypted watermarks
 
 # Download Library 
 
-|AndroidWM|AndroidWM-Light|
+|__Full Version__|[ ![Download](https://api.bintray.com/packages/huangyz0918/androidwm/androidwm/images/download.svg) ](https://bintray.com/huangyz0918/androidwm/androidwm/_latestVersion)|
 |:--:|:--:|
-|[ ![Download](https://api.bintray.com/packages/huangyz0918/androidwm/androidwm/images/download.svg) ](https://bintray.com/huangyz0918/androidwm/androidwm/_latestVersion) |[ ![Download](https://api.bintray.com/packages/huangyz0918/androidwm/androidwm-light/images/download.svg) ](https://bintray.com/huangyz0918/androidwm/androidwm-light/_latestVersion)|
+|__Light Version__ |[ ![Download](https://api.bintray.com/packages/huangyz0918/androidwm/androidwm-light/images/download.svg) ](https://bintray.com/huangyz0918/androidwm/androidwm-light/_latestVersion)|
 
 ### Gradle:
 For androidWM supports the invisible digital watermarks (package size: 1Mb):

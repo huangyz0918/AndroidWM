@@ -16,6 +16,7 @@
  */
 package com.watermark.androidwm.bean;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 
 /**
@@ -26,21 +27,22 @@ import android.graphics.Bitmap;
  */
 public class AsyncTaskParams {
     private Bitmap backgroundImg;
-    private String watermarkText;
+    private WatermarkText watermarkText;
     private Bitmap watermarkImg;
+    private Context context;
 
-    public AsyncTaskParams(Bitmap backgroundImg, String watermarkText, Bitmap watermarkImg) {
+    public AsyncTaskParams(Context context, Bitmap backgroundImg, WatermarkText watermarkText, Bitmap watermarkImg) {
         this.backgroundImg = backgroundImg;
         this.watermarkText = watermarkText;
         this.watermarkImg = watermarkImg;
     }
 
-    public AsyncTaskParams(Bitmap backgroundImg, Bitmap watermarkImg) {
+    public AsyncTaskParams(Context context, Bitmap backgroundImg, Bitmap watermarkImg) {
         this.backgroundImg = backgroundImg;
         this.watermarkImg = watermarkImg;
     }
 
-    public AsyncTaskParams(Bitmap backgroundImg, String watermarkText) {
+    public AsyncTaskParams(Context context, Bitmap backgroundImg, WatermarkText watermarkText) {
         this.backgroundImg = backgroundImg;
         this.watermarkText = watermarkText;
     }
@@ -56,11 +58,11 @@ public class AsyncTaskParams {
         this.backgroundImg = backgroundImg;
     }
 
-    public String getWatermarkText() {
+    public WatermarkText getWatermarkText() {
         return watermarkText;
     }
 
-    public void setWatermarkText(String watermarkText) {
+    public void setWatermarkText(WatermarkText watermarkText) {
         this.watermarkText = watermarkText;
     }
 
@@ -72,4 +74,11 @@ public class AsyncTaskParams {
         this.watermarkImg = watermarkImg;
     }
 
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
 }

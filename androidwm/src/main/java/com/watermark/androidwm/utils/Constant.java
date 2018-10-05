@@ -23,16 +23,13 @@ package com.watermark.androidwm.utils;
  */
 public class Constant {
     public static final String LSB_IMG_PREFIX_FLAG = "1212";
-    public static final String FD_IMG_PREFIX_FLAG = "1122";
     public static final String LSB_TEXT_PREFIX_FLAG = "2323";
-    public static final String FD_TEXT_PREFIX_FLAG = "3322";
     public static final String LSB_IMG_SUFFIX_FLAG = "3434";
-    public static final String FD_IMG_SUFFIX_FLAG = "3344";
     public static final String LSB_TEXT_SUFFIX_FLAG = "4545";
-    public static final String FD_TEXT_SUFFIX_FLAG = "5544";
 
     // 1024 is a proper value for publishing a release.
     public static final int MAX_IMAGE_SIZE = 512;
+    // use the watermark image's size
     public static final int CHUNK_SIZE = 5000;
 
     public static final String ERROR_NO_WATERMARKS = "No input text or image! please load an image or a text in your WatermarkBuilder!";

@@ -120,11 +120,11 @@ public class Watermark {
                 Bitmap scaledWMBitmap = resizeBitmap(watermarkImg.getImage(), (float) watermarkImg.getSize(), backgroundImg);
                 if (isLSB) {
                     new LSBWatermarkTask(buildFinishListener).execute(
-                            new AsyncTaskParams(backgroundImg, scaledWMBitmap)
+                            new AsyncTaskParams(context, backgroundImg, scaledWMBitmap)
                     );
                 } else {
                     new FDWatermarkTask(buildFinishListener).execute(
-                            new AsyncTaskParams(backgroundImg, scaledWMBitmap)
+                            new AsyncTaskParams(context, backgroundImg, scaledWMBitmap)
                     );
                 }
             } else {
@@ -181,11 +181,11 @@ public class Watermark {
             if (isInvisible) {
                 if (isLSB) {
                     new LSBWatermarkTask(buildFinishListener).execute(
-                            new AsyncTaskParams(backgroundImg, watermarkText.getText())
+                            new AsyncTaskParams(context, backgroundImg, watermarkText)
                     );
                 } else {
                     new FDWatermarkTask(buildFinishListener).execute(
-                            new AsyncTaskParams(backgroundImg, watermarkText.getText())
+                            new AsyncTaskParams(context, backgroundImg, watermarkText)
                     );
                 }
             } else {

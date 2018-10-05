@@ -20,6 +20,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.AsyncTask;
 
+import com.watermark.androidwm.bean.WatermarkText;
 import com.watermark.androidwm.listener.BuildFinishListener;
 import com.watermark.androidwm.bean.AsyncTaskParams;
 import com.watermark.androidwm.utils.BitmapUtils;
@@ -57,8 +58,9 @@ public class LSBWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
     @Override
     protected Bitmap doInBackground(AsyncTaskParams... params) {
         Bitmap backgroundBitmap = params[0].getBackgroundImg();
-        String watermarkString = params[0].getWatermarkText();
+        WatermarkText watermarkText = params[0].getWatermarkText();
         Bitmap watermarkBitmap = params[0].getWatermarkImg();
+        String watermarkString;
 
         if (backgroundBitmap == null) {
             listener.onFailure(ERROR_NO_BACKGROUND);
@@ -68,6 +70,8 @@ public class LSBWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
         // convert the watermark bitmap into a String.
         if (watermarkBitmap != null) {
             watermarkString = BitmapUtils.bitmapToString(watermarkBitmap);
+        } else {
+            watermarkString = watermarkText.getText();
         }
 
         if (watermarkString == null) {

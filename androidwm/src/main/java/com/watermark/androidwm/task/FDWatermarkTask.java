@@ -17,28 +17,24 @@
 package com.watermark.androidwm.task;
 
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.AsyncTask;
 
+import com.watermark.androidwm.bean.WatermarkText;
 import com.watermark.androidwm.listener.BuildFinishListener;
 import com.watermark.androidwm.bean.AsyncTaskParams;
-import com.watermark.androidwm.utils.BitmapUtils;
 import com.watermark.androidwm.utils.FastDctFft;
 
 import static com.watermark.androidwm.utils.BitmapUtils.pixel2ARGBArray;
 import static com.watermark.androidwm.utils.BitmapUtils.getBitmapPixels;
-import static com.watermark.androidwm.utils.Constant.CHUNK_SIZE;
+import static com.watermark.androidwm.utils.BitmapUtils.textAsBitmap;
 import static com.watermark.androidwm.utils.Constant.ERROR_CREATE_FAILED;
+import static com.watermark.androidwm.utils.Constant.ERROR_NO_BACKGROUND;
 import static com.watermark.androidwm.utils.Constant.ERROR_NO_WATERMARKS;
 import static com.watermark.androidwm.utils.Constant.ERROR_PIXELS_NOT_ENOUGH;
-import static com.watermark.androidwm.utils.Constant.FD_IMG_PREFIX_FLAG;
-import static com.watermark.androidwm.utils.Constant.FD_IMG_SUFFIX_FLAG;
-import static com.watermark.androidwm.utils.Constant.FD_TEXT_PREFIX_FLAG;
-import static com.watermark.androidwm.utils.Constant.FD_TEXT_SUFFIX_FLAG;
 import static com.watermark.androidwm.utils.StringUtils.copyFromIntArray;
-import static com.watermark.androidwm.utils.StringUtils.stringToBinary;
-import static com.watermark.androidwm.utils.StringUtils.stringToIntArray;
 
 /**
  * This is a tack that use Fast Fourier Transform for an image, to
@@ -57,29 +53,26 @@ public class FDWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
     @Override
     protected Bitmap doInBackground(AsyncTaskParams... params) {
         Bitmap backgroundBitmap = params[0].getBackgroundImg();
-        String watermarkString = params[0].getWatermarkText();
+        WatermarkText watermarkText = params[0].getWatermarkText();
         Bitmap watermarkBitmap = params[0].getWatermarkImg();
+        Context context = params[0].getContext();
 
-        // checkout if the kind of input watermark is bitmap or a string text.
-        // add convert them into an ascii string.
-        if (watermarkBitmap != null) {
-            watermarkString = BitmapUtils.bitmapToString(watermarkBitmap);
+        if (backgroundBitmap == null) {
+            listener.onFailure(ERROR_NO_BACKGROUND);
+            return null;
         }
 
-        if (watermarkString == null) {
+        if (watermarkText != null) {
+            watermarkBitmap = textAsBitmap(context, watermarkText);
+        }
+
+        if (watermarkBitmap == null) {
             listener.onFailure(ERROR_NO_WATERMARKS);
             return null;
         }
 
-        String watermarkBinary = stringToBinary(watermarkString);
-        if (watermarkBitmap != null) {
-            watermarkBinary = FD_IMG_PREFIX_FLAG + watermarkBinary + FD_IMG_SUFFIX_FLAG;
-        } else {
-            watermarkBinary = FD_TEXT_PREFIX_FLAG + watermarkBinary + FD_TEXT_SUFFIX_FLAG;
-        }
-
-        int[] watermarkColorArray = stringToIntArray(watermarkBinary);
-
+        int[] watermarkPixels = getBitmapPixels(watermarkBitmap);
+        int[] watermarkColorArray = pixel2ARGBArray(watermarkPixels);
         Bitmap outputBitmap = Bitmap.createBitmap(backgroundBitmap.getWidth(), backgroundBitmap.getHeight(),
                 backgroundBitmap.getConfig());
 
@@ -90,7 +83,8 @@ public class FDWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
             listener.onFailure(ERROR_PIXELS_NOT_ENOUGH);
         } else {
             // divide and conquer
-            if (backgroundPixels.length < CHUNK_SIZE) {
+            // use fixed chunk size or the size of watermark image.
+            if (backgroundPixels.length < watermarkColorArray.length) {
                 int[] backgroundColorArray = pixel2ARGBArray(backgroundPixels);
                 double[] backgroundColorArrayD = copyFromIntArray(backgroundColorArray);
 
@@ -110,19 +104,35 @@ public class FDWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
                     backgroundPixels[i] = color;
                 }
             } else {
-                int numOfChunks = (int) Math.ceil((double) backgroundPixels.length / CHUNK_SIZE);
+                // use fixed chunk size or the size of watermark image.
+                int numOfChunks = (int) Math.ceil((double) backgroundPixels.length / watermarkColorArray.length);
                 for (int i = 0; i < numOfChunks; i++) {
-                    int start = i * CHUNK_SIZE;
-                    int length = Math.min(backgroundPixels.length - start, CHUNK_SIZE);
+                    int start = i * watermarkColorArray.length;
+                    int length = Math.min(backgroundPixels.length - start, watermarkColorArray.length);
                     int[] temp = new int[length];
                     System.arraycopy(backgroundPixels, start, temp, 0, length);
                     double[] colorTempD = copyFromIntArray(pixel2ARGBArray(temp));
                     FastDctFft.transform(colorTempD);
 
-//                    //TODO: do the operations.
+//                    for (int j = 0; j < length; j++) {
+//                        colorTempD[4 * j] = colorTempD[4 * j] + watermarkColorArray[j];
+//                        colorTempD[4 * j + 1] = colorTempD[4 * j + 1] + watermarkColorArray[j];
+//                        colorTempD[4 * j + 2] = colorTempD[4 * j + 2] + watermarkColorArray[j];
+//                        colorTempD[4 * j + 3] = colorTempD[4 * j + 3] + watermarkColorArray[j];
+//                    }
+
+                    double enhanceNum = 1;
+
+                    // The energy in frequency scaled.
                     for (int j = 0; j < length; j++) {
-                        colorTempD[j] += 255;
+                        colorTempD[4 * j] = colorTempD[4 * j] * enhanceNum;
+                        colorTempD[4 * j + 1] = colorTempD[4 * j + 1] * enhanceNum;
+                        colorTempD[4 * j + 2] = colorTempD[4 * j + 2] * enhanceNum;
+                        colorTempD[4 * j + 3] = colorTempD[4 * j + 3] * enhanceNum;
                     }
+
+                    //TODO: do the operations.
+
 
                     FastDctFft.inverseTransform(colorTempD);
 
@@ -157,6 +167,23 @@ public class FDWatermarkTask extends AsyncTask<AsyncTaskParams, Void, Bitmap> {
             }
         }
         super.onPostExecute(bitmap);
+    }
+
+    /**
+     * Normalize array.
+     *
+     * @param inputArray The array to be normalized.
+     * @return The result of the normalization.
+     */
+    public double[] normalizeArray(double[] inputArray, double dataHigh,
+                                    double dataLow, double normalizedHigh,
+                                    double normalizedLow) {
+        for (int i = 0; i < inputArray.length; i++) {
+            inputArray[i] = ((inputArray[i] - dataLow)
+                    / (dataHigh - dataLow))
+                    * (normalizedHigh - normalizedLow) + normalizedLow;
+        }
+        return inputArray;
     }
 
 }

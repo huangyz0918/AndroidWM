@@ -107,9 +107,9 @@ public class DCTTest {
 
         // the operations need to be done.
 
-//        for (int j = 10; j < test64.length; j++) {
-//            test64[j] = 0;
-//        }
+        for (int j = 0; j < test64.length; j++) {
+            test64[j] = test64[j] * 2;
+        }
 
         FastDctFft.inverseTransform(test64);
 //
@@ -118,7 +118,7 @@ public class DCTTest {
 //        }
 
 //        for (double i : test64) {
-//            System.out.println(i);
+//            System.out.println(i / 2);
 //        }
 
     }

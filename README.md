@@ -1,5 +1,5 @@
 # AndroidWM 
-[![Build Status](https://travis-ci.org/huangyz0918/AndroidWM.svg?branch=master)](https://travis-ci.org/huangyz0918/AndroidWM) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/7f8e55520309410a95f71b54cfe8c381)](https://app.codacy.com/app/huangyz0918/AndroidWM?utm_source=github.com&utm_medium=referral&utm_content=huangyz0918/AndroidWM&utm_campaign=Badge_Grade_Dashboard) ![progress](https://img.shields.io/badge/progress-developing-yellow.svg) [![wiki](https://img.shields.io/badge/wiki-english-blue.svg)](https://github.com/huangyz0918/AndroidWM/blob/master/wikis/WIKI.md) 
+[ ![Download](https://api.bintray.com/packages/huangyz0918/androidwm/androidwm/images/download.svg) ](https://bintray.com/huangyz0918/androidwm/androidwm/_latestVersion) [![Build Status](https://travis-ci.org/huangyz0918/AndroidWM.svg?branch=master)](https://travis-ci.org/huangyz0918/AndroidWM) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/7f8e55520309410a95f71b54cfe8c381)](https://app.codacy.com/app/huangyz0918/AndroidWM?utm_source=github.com&utm_medium=referral&utm_content=huangyz0918/AndroidWM&utm_campaign=Badge_Grade_Dashboard) ![progress](https://img.shields.io/badge/progress-developing-yellow.svg) [![wiki](https://img.shields.io/badge/wiki-english-blue.svg)](https://github.com/huangyz0918/AndroidWM/blob/master/wikis/WIKI.md) 
 
 A lightweight android image watermark library that supports encrypted watermarks. [中文版本](./README-CN.md)
 
@@ -9,10 +9,6 @@ A lightweight android image watermark library that supports encrypted watermarks
 <!--![](https://i.loli.net/2018/09/11/5b97dddb4e407.png) -->
 
 # Download Library 
-
-|__Full Version__|[ ![Download](https://api.bintray.com/packages/huangyz0918/androidwm/androidwm/images/download.svg) ](https://bintray.com/huangyz0918/androidwm/androidwm/_latestVersion)|
-|:--:|:--:|
-|__Light Version__ |[ ![Download](https://api.bintray.com/packages/huangyz0918/androidwm/androidwm-light/images/download.svg) ](https://bintray.com/huangyz0918/androidwm/androidwm-light/_latestVersion)|
 
 ### Gradle:
 For __androidWM__ supports the invisible digital watermarks (package size: 1Mb):

@@ -1,24 +1,18 @@
 /*
- * Fast discrete cosine transform algorithms (Java)
+ *    Copyright 2018 Yizheng Huang
  *
- * Copyright (c) 2017 Project Nayuki. (MIT License)
- * https://www.nayuki.io/page/fast-discrete-cosine-transform-algorithms
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
- * this software and associated documentation files (the "Software"), to deal in
- * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
- * the Software, and to permit persons to whom the Software is furnished to do so,
- * subject to the following conditions:
- * - The above copyright notice and this permission notice shall be included in
- *   all copies or substantial portions of the Software.
- * - The Software is provided "as is", without warranty of any kind, express or
- *   implied, including but not limited to the warranties of merchantability,
- *   fitness for a particular purpose and noninfringement. In no event shall the
- *   authors or copyright holders be liable for any claim, damages or other
- *   liability, whether in an action of contract, tort or otherwise, arising from,
- *   out of or in connection with the Software or the use or other dealings in the
- *   Software.
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ *
  */
 
 package com.watermark.androidwm.utils;
@@ -32,8 +26,6 @@ public final class FastDctFft {
     /**
      * Computes the unscaled DCT type II on the specified array in place.
      * The array length must be a power of 2 or zero.
-     * <p>For the formula, see <a href="https://en.wikipedia.org/wiki/Discrete_cosine_transform#DCT-II">
-     * Wikipedia: Discrete cosine transform - DCT-II</a>.</p>
      *
      * @param vector the vector of numbers to transform
      * @throws NullPointerException if the array is {@code null}
@@ -65,8 +57,6 @@ public final class FastDctFft {
     /**
      * Computes the unscaled DCT type III on the specified array in place.
      * The array length must be a power of 2 or zero.
-     * <p>For the formula, see <a href="https://en.wikipedia.org/wiki/Discrete_cosine_transform#DCT-III">
-     * Wikipedia: Discrete cosine transform - DCT-III</a>.</p>
      *
      * @param vector the vector of numbers to transform
      * @throws NullPointerException if the array is {@code null}

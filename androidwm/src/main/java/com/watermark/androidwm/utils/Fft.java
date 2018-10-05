@@ -1,24 +1,18 @@
 /*
- * Free FFT and convolution (Java)
+ *    Copyright 2018 Yizheng Huang
  *
- * Copyright (c) 2017 Project Nayuki. (MIT License)
- * https://www.nayuki.io/page/free-small-fft-in-multiple-languages
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
- * this software and associated documentation files (the "Software"), to deal in
- * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
- * the Software, and to permit persons to whom the Software is furnished to do so,
- * subject to the following conditions:
- * - The above copyright notice and this permission notice shall be included in
- *   all copies or substantial portions of the Software.
- * - The Software is provided "as is", without warranty of any kind, express or
- *   implied, including but not limited to the warranties of merchantability,
- *   fitness for a particular purpose and noninfringement. In no event shall the
- *   authors or copyright holders be liable for any claim, damages or other
- *   liability, whether in an action of contract, tort or otherwise, arising from,
- *   out of or in connection with the Software or the use or other dealings in the
- *   Software.
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ *
  */
 
 package com.watermark.androidwm.utils;
@@ -26,8 +20,10 @@ package com.watermark.androidwm.utils;
 
 public final class Fft {
 
-    /*
-     * Computes the discrete Fourier transform (DFT) of the given complex vector, storing the result back into the vector.
+    /**
+     * Computes the discrete Fourier transform (DFT) of the given complex vector,
+     * storing the result back into the vector.
+     * <p>
      * The vector can have any length. This is a wrapper function.
      */
     public static void transform(double[] real, double[] imag) {
@@ -36,42 +32,43 @@ public final class Fft {
             throw new IllegalArgumentException("Mismatched lengths");
         }
         if ((n & (n - 1)) == 0) {
-            // Is power of 2
             transformRadix2(real, imag);
         } else {
-            // More complicated algorithm for arbitrary sizes
-            transformBluestein(real, imag);
+            transformBlueStein(real, imag);
         }
 
     }
 
 
-    /*
-     * Computes the inverse discrete Fourier transform (IDFT) of the given complex vector, storing the result back into the vector.
-     * The vector can have any length. This is a wrapper function. This transform does not perform scaling, so the inverse is not a true inverse.
+    /**
+     * Computes the inverse discrete Fourier transform (IDFT) of the given
+     * complex vector, storing the result back into the vector.
+     * <p>
+     * The vector can have any length. This is a wrapper function.
+     * This transform does not perform scaling, so the inverse is not a true inverse.
      */
-    public static void inverseTransform(double[] real, double[] imag) {
+    private static void inverseTransform(double[] real, double[] imag) {
         transform(imag, real);
     }
 
-
-    /*
-     * Computes the discrete Fourier transform (DFT) of the given complex vector, storing the result back into the vector.
-     * The vector's length must be a power of 2. Uses the Cooley-Tukey decimation-in-time radix-2 algorithm.
+    /**
+     * Computes the discrete Fourier transform (DFT) of the given complex vector,
+     * storing the result back into the vector.
+     * <p>
+     * The vector's length must be a power of 2. Uses the Cooley-Tukey
+     * decimation-in-time radix-2 algorithm.
      */
-    public static void transformRadix2(double[] real, double[] imag) {
-        // Length variables
+    private static void transformRadix2(double[] real, double[] imag) {
         int n = real.length;
         if (n != imag.length) {
             throw new IllegalArgumentException("Mismatched lengths");
         }
 
-        int levels = 31 - Integer.numberOfLeadingZeros(n);  // Equal to floor(log2(n))
+        int levels = 31 - Integer.numberOfLeadingZeros(n);
         if (1 << levels != n) {
             throw new IllegalArgumentException("Length is not a power of 2");
         }
 
-        // Trigonometric tables
         double[] cosTable = new double[n / 2];
         double[] sinTable = new double[n / 2];
         for (int i = 0; i < n / 2; i++) {
@@ -79,7 +76,6 @@ public final class Fft {
             sinTable[i] = Math.sin(2 * Math.PI * i / n);
         }
 
-        // Bit-reversed addressing permutation
         for (int i = 0; i < n; i++) {
             int j = Integer.reverse(i) >>> (32 - levels);
             if (j > i) {
@@ -92,14 +88,13 @@ public final class Fft {
             }
         }
 
-        // Cooley-Tukey decimation-in-time radix-2 FFT
         for (int size = 2; size <= n; size *= 2) {
-            int halfsize = size / 2;
-            int tablestep = n / size;
+            int halfSize = size / 2;
+            int tableStep = n / size;
 
             for (int i = 0; i < n; i += size) {
-                for (int j = i, k = 0; j < i + halfsize; j++, k += tablestep) {
-                    int l = j + halfsize;
+                for (int j = i, k = 0; j < i + halfSize; j++, k += tableStep) {
+                    int l = j + halfSize;
                     double tpre = real[l] * cosTable[k] + imag[l] * sinTable[k];
                     double tpim = -real[l] * sinTable[k] + imag[l] * cosTable[k];
                     real[l] = real[j] - tpre;
@@ -110,7 +105,6 @@ public final class Fft {
             }
 
             if (size == n) {
-                // Prevent overflow in 'size *= 2'
                 break;
             }
 
@@ -118,13 +112,16 @@ public final class Fft {
     }
 
 
-    /*
-     * Computes the discrete Fourier transform (DFT) of the given complex vector, storing the result back into the vector.
-     * The vector can have any length. This requires the convolution function, which in turn requires the radix-2 FFT function.
+    /**
+     * Computes the discrete Fourier transform (DFT) of the given complex vector,
+     * storing the result back into the vector.
+     * <p>
+     * The vector can have any length. This requires the convolution function,
+     * which in turn requires the radix-2 FFT function.
+     * <p>
      * Uses Bluestein's chirp z-transform algorithm.
      */
-    public static void transformBluestein(double[] real, double[] imag) {
-        // Find a power-of-2 convolution length m such that m >= n * 2 + 1
+    private static void transformBlueStein(double[] real, double[] imag) {
         int n = real.length;
         if (n != imag.length) {
             throw new IllegalArgumentException("Mismatched lengths");
@@ -135,86 +132,70 @@ public final class Fft {
 
         int m = Integer.highestOneBit(n) * 4;
 
-        // Trignometric tables
         double[] cosTable = new double[n];
         double[] sinTable = new double[n];
         for (int i = 0; i < n; i++) {
-            int j = (int) ((long) i * i % (n * 2));  // This is more accurate than j = i * i
+            int j = (int) ((long) i * i % (n * 2));
             cosTable[i] = Math.cos(Math.PI * j / n);
             sinTable[i] = Math.sin(Math.PI * j / n);
         }
 
-        // Temporary vectors and preprocessing
-        double[] areal = new double[m];
-        double[] aimag = new double[m];
+        double[] aReal = new double[m];
+        double[] aImag = new double[m];
         for (int i = 0; i < n; i++) {
-            areal[i] = real[i] * cosTable[i] + imag[i] * sinTable[i];
-            aimag[i] = -real[i] * sinTable[i] + imag[i] * cosTable[i];
+            aReal[i] = real[i] * cosTable[i] + imag[i] * sinTable[i];
+            aImag[i] = -real[i] * sinTable[i] + imag[i] * cosTable[i];
         }
-        double[] breal = new double[m];
-        double[] bimag = new double[m];
-        breal[0] = cosTable[0];
-        bimag[0] = sinTable[0];
+        double[] bReal = new double[m];
+        double[] bImag = new double[m];
+        bReal[0] = cosTable[0];
+        bImag[0] = sinTable[0];
         for (int i = 1; i < n; i++) {
-            breal[i] = breal[m - i] = cosTable[i];
-            bimag[i] = bimag[m - i] = sinTable[i];
+            bReal[i] = bReal[m - i] = cosTable[i];
+            bImag[i] = bImag[m - i] = sinTable[i];
         }
 
-        // Convolution
-        double[] creal = new double[m];
-        double[] cimag = new double[m];
-        convolve(areal, aimag, breal, bimag, creal, cimag);
+        double[] cReal = new double[m];
+        double[] cImag = new double[m];
+        convolve(aReal, aImag, bReal, bImag, cReal, cImag);
 
-        // Postprocessing
         for (int i = 0; i < n; i++) {
-            real[i] = creal[i] * cosTable[i] + cimag[i] * sinTable[i];
-            imag[i] = -creal[i] * sinTable[i] + cimag[i] * cosTable[i];
+            real[i] = cReal[i] * cosTable[i] + cImag[i] * sinTable[i];
+            imag[i] = -cReal[i] * sinTable[i] + cImag[i] * cosTable[i];
         }
     }
 
-
-    /*
-     * Computes the circular convolution of the given real vectors. Each vector's length must be the same.
+    /**
+     * Computes the circular convolution of the given complex vectors.
+     * Each vector's length must be the same.
      */
-    public static void convolve(double[] x, double[] y, double[] out) {
-        int n = x.length;
-        if (n != y.length || n != out.length) {
-            throw new IllegalArgumentException("Mismatched lengths");
-        }
-        convolve(x, new double[n], y, new double[n], out, new double[n]);
-    }
+    private static void convolve(double[] xReal, double[] xImag,
+                                 double[] yReal, double[] yImag, double[] outReal, double[] outImag) {
 
-
-    /*
-     * Computes the circular convolution of the given complex vectors. Each vector's length must be the same.
-     */
-    public static void convolve(double[] xreal, double[] ximag,
-                                double[] yreal, double[] yimag, double[] outreal, double[] outimag) {
-
-        int n = xreal.length;
-        if (n != ximag.length || n != yreal.length || n != yimag.length
-                || n != outreal.length || n != outimag.length) {
+        int n = xReal.length;
+        if (n != xImag.length || n != yReal.length || n != yImag.length
+                || n != outReal.length || n != outImag.length) {
             throw new IllegalArgumentException("Mismatched lengths");
         }
 
-        xreal = xreal.clone();
-        ximag = ximag.clone();
-        yreal = yreal.clone();
-        yimag = yimag.clone();
-        transform(xreal, ximag);
-        transform(yreal, yimag);
+        xReal = xReal.clone();
+        xImag = xImag.clone();
+        yReal = yReal.clone();
+        yImag = yImag.clone();
+        transform(xReal, xImag);
+        transform(yReal, yImag);
 
         for (int i = 0; i < n; i++) {
-            double temp = xreal[i] * yreal[i] - ximag[i] * yimag[i];
-            ximag[i] = ximag[i] * yreal[i] + xreal[i] * yimag[i];
-            xreal[i] = temp;
+            double temp = xReal[i] * yReal[i] - xImag[i] * yImag[i];
+            xImag[i] = xImag[i] * yReal[i] + xReal[i] * yImag[i];
+            xReal[i] = temp;
         }
 
-        inverseTransform(xreal, ximag);
+        inverseTransform(xReal, xImag);
 
-        for (int i = 0; i < n; i++) {  // Scaling (because this FFT implementation omits it)
-            outreal[i] = xreal[i] / n;
-            outimag[i] = ximag[i] / n;
+        for (int i = 0; i < n; i++) {
+            outReal[i] = xReal[i] / n;
+            outImag[i] = xImag[i] / n;
         }
     }
 

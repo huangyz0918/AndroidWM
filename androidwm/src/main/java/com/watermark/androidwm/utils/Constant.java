@@ -42,5 +42,5 @@ public class Constant {
     public static final String ERROR_NO_WATERMARK_FOUND = "No watermarks found in this image!";
     public static final String ERROR_BITMAP_NULL = "Cannot detect the watermark! markedBitmap is null object!";
 
-    public static final String WARNNING_BIG_IMAGE = "The input image may be too large to put into the memory, please be careful of the OOM!";
+    public static final String WARNING_BIG_IMAGE = "The input image may be too large to put into the memory, please be careful of the OOM!";
 }

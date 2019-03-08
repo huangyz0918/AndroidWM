@@ -28,7 +28,7 @@ import static com.watermark.androidwm.utils.Constant.CHUNK_SIZE;
 import static com.watermark.androidwm.utils.Constant.ERROR_BITMAP_NULL;
 import static com.watermark.androidwm.utils.Constant.ERROR_DETECT_FAILED;
 import static com.watermark.androidwm.utils.Constant.MAX_IMAGE_SIZE;
-import static com.watermark.androidwm.utils.Constant.WARNNING_BIG_IMAGE;
+import static com.watermark.androidwm.utils.Constant.WARNING_BIG_IMAGE;
 import static com.watermark.androidwm.utils.StringUtils.copyFromIntArray;
 
 /**
@@ -57,7 +57,7 @@ public class FDDetectionTask extends AsyncTask<Bitmap, Void, DetectionReturnValu
         }
 
         if (markedBitmap.getWidth() > MAX_IMAGE_SIZE || markedBitmap.getHeight() > MAX_IMAGE_SIZE) {
-            listener.onFailure(WARNNING_BIG_IMAGE);
+            listener.onFailure(WARNING_BIG_IMAGE);
             return null;
         }
 

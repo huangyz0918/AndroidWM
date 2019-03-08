@@ -45,6 +45,7 @@ public final class WatermarkBuilder {
     private Bitmap backgroundImg;
     private boolean isTileMode = false;
     private boolean isLSB = false;
+    private boolean resizeBackgroundImg;
     private BuildFinishListener<Bitmap> buildFinishListener = null;
 
     private WatermarkImage watermarkImage;
@@ -55,21 +56,47 @@ public final class WatermarkBuilder {
     /**
      * Constructors for WatermarkBuilder
      */
-    private WatermarkBuilder(@NonNull Context context, @NonNull Bitmap backgroundImg) {
+    private WatermarkBuilder(@NonNull Context context, @NonNull Bitmap backgroundImg, boolean resizeBackgroundImg) {
         this.context = context;
-        this.backgroundImg = resizeBitmap(backgroundImg, MAX_IMAGE_SIZE);
+        this.resizeBackgroundImg = resizeBackgroundImg;
+        if (resizeBackgroundImg) {
+            this.backgroundImg = resizeBitmap(backgroundImg, MAX_IMAGE_SIZE);
+        } else {
+            this.backgroundImg = backgroundImg;
+        }
     }
 
-    private WatermarkBuilder(@NonNull Context context, @NonNull ImageView backgroundImageView) {
+    private WatermarkBuilder(@NonNull Context context, @NonNull ImageView backgroundImageView, boolean resizeBackgroundImg) {
         this.context = context;
+        this.resizeBackgroundImg = resizeBackgroundImg;
         backgroundFromImageView(backgroundImageView);
     }
 
-    private WatermarkBuilder(@NonNull Context context, @DrawableRes int backgroundDrawable) {
+    private WatermarkBuilder(@NonNull Context context, @DrawableRes int backgroundDrawable, boolean resizeBackgroundImg) {
         this.context = context;
-        this.backgroundImg = resizeBitmap(BitmapFactory.decodeResource(context.getResources(),
-                backgroundDrawable), MAX_IMAGE_SIZE);
+        this.resizeBackgroundImg = resizeBackgroundImg;
+        if (resizeBackgroundImg) {
+            this.backgroundImg = resizeBitmap(BitmapFactory.decodeResource(context.getResources(),
+                    backgroundDrawable), MAX_IMAGE_SIZE);
+        } else {
+            this.backgroundImg = BitmapFactory.decodeResource(context.getResources(),
+                    backgroundDrawable);
+        }
+
     }
+
+    private WatermarkBuilder(@NonNull Context context, @NonNull Bitmap backgroundImg) {
+        this(context, backgroundImg, true);
+    }
+
+    private WatermarkBuilder(@NonNull Context context, @NonNull ImageView backgroundImageView) {
+        this(context, backgroundImageView, true);
+    }
+
+    private WatermarkBuilder(@NonNull Context context, @DrawableRes int backgroundDrawable) {
+        this(context, backgroundDrawable, true);
+    }
+
 
     /**
      * to get an instance form class.
@@ -101,6 +128,41 @@ public final class WatermarkBuilder {
     @SuppressWarnings("PMD")
     public static WatermarkBuilder create(Context context, @DrawableRes int backgroundDrawable) {
         return new WatermarkBuilder(context, backgroundDrawable);
+    }
+
+    /**
+     * to get an instance form class.
+     * with background image resize option
+     *
+     * @return instance of {@link WatermarkBuilder}
+     */
+    @SuppressWarnings("PMD")
+    public static WatermarkBuilder create(Context context, Bitmap backgroundImg, boolean resizeBackgroundImg) {
+        return new WatermarkBuilder(context, backgroundImg, resizeBackgroundImg);
+    }
+
+    /**
+     * to get an instance form class.
+     * Load the background image from a {@link ImageView}。
+     * with background image resize option
+     *
+     * @return instance of {@link WatermarkBuilder}
+     */
+    @SuppressWarnings("PMD")
+    public static WatermarkBuilder create(Context context, ImageView imageView, boolean resizeBackgroundImg) {
+        return new WatermarkBuilder(context, imageView, resizeBackgroundImg);
+    }
+
+    /**
+     * to get an instance form class.
+     * Load the background image from a DrawableRes。
+     * with background image resize option
+     *
+     * @return instance of {@link WatermarkBuilder}
+     */
+    @SuppressWarnings("PMD")
+    public static WatermarkBuilder create(Context context, @DrawableRes int backgroundDrawable, boolean resizeBackgroundImg) {
+        return new WatermarkBuilder(context, backgroundDrawable, resizeBackgroundImg);
     }
 
     /**
@@ -251,7 +313,11 @@ public final class WatermarkBuilder {
         imageView.invalidate();
         if (imageView.getDrawable() != null) {
             BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
-            backgroundImg = resizeBitmap(drawable.getBitmap(), MAX_IMAGE_SIZE);
+            if (resizeBackgroundImg) {
+                backgroundImg = resizeBitmap(drawable.getBitmap(), MAX_IMAGE_SIZE);
+            } else {
+                backgroundImg = drawable.getBitmap();
+            }
         }
     }
 

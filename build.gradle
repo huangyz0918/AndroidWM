@@ -47,10 +47,10 @@ subprojects { project ->
             xml.enabled = false
             html.enabled = true
             xml {
-                destination "$project.buildDir/reports/pmd/pmd.xml"
+                destination file("$project.buildDir/reports/pmd/pmd.xml")
             }
             html {
-                destination "$project.buildDir/reports/pmd/pmd.html"
+                destination file("$project.buildDir/reports/pmd/pmd.html")
             }
         }
     }
@@ -59,13 +59,15 @@ subprojects { project ->
 buildscript {
 
     repositories {
-        mavenCentral()
         google()
-        jcenter()
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        maven { url 'https://maven.aliyun.com/nexus/content/repositories/jcenter' }
+        maven { url 'https://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url 'https://maven.aliyun.com/repository/central' }
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.4'
+        classpath 'com.android.tools.build:gradle:3.4.2'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
 
@@ -77,7 +79,10 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
+        maven { url 'https://maven.aliyun.com/nexus/content/repositories/jcenter' }
+        maven { url 'https://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        maven { url 'https://jitpack.io' }
     }
 }
 

@@ -27,8 +27,7 @@ public class Constant {
     public static final String LSB_IMG_SUFFIX_FLAG = "3434";
     public static final String LSB_TEXT_SUFFIX_FLAG = "4545";
 
-    // 1024 is a proper value for publishing a release.
-    public static final int MAX_IMAGE_SIZE = 512;
+    public static final int MAX_IMAGE_SIZE = 1024;
     // use the watermark image's size
     public static final int CHUNK_SIZE = 5000;
 

@@ -112,7 +112,7 @@ If you didn't load a watermark ,the default value is as the same as background, 
 
 ### Invisible Watermarks (beta)
 
-In this library, we also support the invisible watermark and the detection of them. We can use two ways to build a invisible watermark: the LSB (spatial domain) and the wavelet transform (Frequency domain). All you need to do is to use a boolean (isLSB) to distinguish them. __(PS. the watermark in frequency domain is under developing)__
+In this library, we also support the invisible watermark and the detection of them. We can use two ways to build an invisible watermark: the LSB (spatial domain) and the wavelet transform (Frequency domain). All you need to do is to use a boolean (isLSB) to distinguish them. __(PS. the watermark in frequency domain is under developing)__
 
 You can create a new invisible watermark by the `WatermarkBuilder`'s `.setInvisibleWMListener`:
 

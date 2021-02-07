@@ -97,7 +97,7 @@ public class BitmapUtils {
         }
         StaticLayout staticLayout = new StaticLayout(watermarkText.getText(),
                 0, watermarkText.getText().length(),
-                watermarkPaint, mTextMaxWidth, android.text.Layout.Alignment.ALIGN_NORMAL, 2.0f,
+                watermarkPaint, mTextMaxWidth, android.text.Layout.Alignment.ALIGN_NORMAL, 1.0f,
                 2.0f, false);
 
         int lineCount = staticLayout.getLineCount();

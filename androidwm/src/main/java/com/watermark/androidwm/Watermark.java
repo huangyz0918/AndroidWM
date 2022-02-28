@@ -30,6 +30,8 @@ import android.widget.ImageView;
 
 import com.watermark.androidwm.bean.AsyncTaskParams;
 import com.watermark.androidwm.bean.WatermarkImage;
+import com.watermark.androidwm.bean.WatermarkObject;
+import com.watermark.androidwm.bean.WatermarkPosition;
 import com.watermark.androidwm.bean.WatermarkText;
 import com.watermark.androidwm.listener.BuildFinishListener;
 import com.watermark.androidwm.task.FDWatermarkTask;
@@ -145,10 +147,7 @@ public class Watermark {
                     Rect bitmapShaderRect = watermarkCanvas.getClipBounds();
                     watermarkCanvas.drawRect(bitmapShaderRect, watermarkPaint);
                 } else {
-                    watermarkCanvas.drawBitmap(scaledWMBitmap,
-                            (float) watermarkImg.getPosition().getPositionX() * backgroundImg.getWidth(),
-                            (float) watermarkImg.getPosition().getPositionY() * backgroundImg.getHeight(),
-                            watermarkPaint);
+                    drawObjWithAlignPosition(watermarkImg, scaledWMBitmap, watermarkCanvas, watermarkPaint);
                 }
 
                 canvasBitmap = newBitmap;
@@ -157,6 +156,16 @@ public class Watermark {
 
         }
 
+    }
+
+    private void drawObjWithAlignPosition(WatermarkObject obj, Bitmap mark, Canvas canvas, Paint paint){
+        WatermarkPosition objOrg = obj.getOrigin();
+        double originX = mark.getWidth() * objOrg.getPositionX();
+        double originY = mark.getHeight() * objOrg.getPositionY();
+        WatermarkPosition objPos = obj.getPosition();
+        double posX = objPos.getPositionX() * backgroundImg.getWidth() - originX;
+        double posY = objPos.getPositionY() * backgroundImg.getHeight() - originY;
+        canvas.drawBitmap(mark, (float) posX, (float)posY, paint);
     }
 
     /**
@@ -206,10 +215,7 @@ public class Watermark {
                     Rect bitmapShaderRect = watermarkCanvas.getClipBounds();
                     watermarkCanvas.drawRect(bitmapShaderRect, watermarkPaint);
                 } else {
-                    watermarkCanvas.drawBitmap(scaledWMBitmap,
-                            (float) watermarkText.getPosition().getPositionX() * backgroundImg.getWidth(),
-                            (float) watermarkText.getPosition().getPositionY() * backgroundImg.getHeight(),
-                            watermarkPaint);
+                    drawObjWithAlignPosition(watermarkText, scaledWMBitmap, watermarkCanvas, watermarkPaint);
                 }
 
                 canvasBitmap = newBitmap;

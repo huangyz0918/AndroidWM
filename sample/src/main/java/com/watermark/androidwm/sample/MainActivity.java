@@ -27,10 +27,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.watermark.androidwm.WatermarkDetector;
+import com.watermark.androidwm.bean.WatermarkPosition;
 import com.watermark.androidwm.task.DetectionReturnValue;
 import com.watermark.androidwm.listener.BuildFinishListener;
 import com.watermark.androidwm.WatermarkBuilder;
@@ -49,10 +51,11 @@ import timber.log.Timber;
  */
 public class MainActivity extends AppCompatActivity {
 
+    private RadioButton mode_single;
+    private RadioButton mode_tile;
+    private RadioButton mode_invisible;
     private Button btnAddText;
     private Button btnAddImg;
-    private Button btnAddInVisibleImage;
-    private Button btnAddInvisibleText;
     private Button btnDetectImage;
     private Button btnDetectText;
     private Button btnClear;
@@ -74,10 +77,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        mode_single = findViewById(R.id.mode_single);
+        mode_tile = findViewById(R.id.mode_tile);
+        mode_invisible = findViewById(R.id.mode_invisible);
         btnAddImg = findViewById(R.id.btn_add_image);
         btnAddText = findViewById(R.id.btn_add_text);
-        btnAddInVisibleImage = findViewById(R.id.btn_add_invisible_image);
-        btnAddInvisibleText = findViewById(R.id.btn_add_invisible_text);
         btnDetectImage = findViewById(R.id.btn_detect_image);
         btnDetectText = findViewById(R.id.btn_detect_text);
         btnClear = findViewById(R.id.btn_clear_watermark);
@@ -97,16 +101,26 @@ public class MainActivity extends AppCompatActivity {
     private void initEvents() {
         // The sample method of adding a text watermark.
         btnAddText.setOnClickListener((View v) -> {
-            WatermarkText watermarkText = new WatermarkText(editText.getText().toString())
-                    .setPositionX(0.5)
-                    .setPositionY(0.5)
+            String markText = editText.getText().toString();
+            if(markText.trim().isEmpty()){
+                Toast.makeText(this, "Please Input Text First", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if(mode_invisible.isChecked()){
+                createInvisibleTextMark();
+                return;
+            }
+            WatermarkText watermarkText = new WatermarkText(markText)
+                    .setPosition(new WatermarkPosition(0.5, 0.5))
+                    .setOrigin(new WatermarkPosition(0.5, 0.5))
+                    .setTextSize(40)
                     .setTextAlpha(255)
                     .setTextColor(Color.WHITE)
                     .setTextFont(R.font.champagne)
                     .setTextShadow(0.1f, 5, 5, Color.BLUE);
 
             WatermarkBuilder.create(this, backgroundView)
-                    .setTileMode(true)
+                    .setTileMode(mode_tile.isChecked())
                     .loadWatermarkText(watermarkText)
                     .getWatermark()
                     .setToImageView(backgroundView);
@@ -114,75 +128,27 @@ public class MainActivity extends AppCompatActivity {
 
         // The sample method of adding an image watermark.
         btnAddImg.setOnClickListener((View v) -> {
-
+            if(mode_invisible.isChecked()){
+                createInvisibleImgMark();
+                return;
+            }
             // Math.random()
             WatermarkImage watermarkImage = new WatermarkImage(watermarkBitmap)
                     .setImageAlpha(80)
                     .setPositionX(Math.random())
                     .setPositionY(Math.random())
+                    // .setPosition(new WatermarkPosition(0.5, 0.5))
+                    .setOrigin(new WatermarkPosition(0.5, 0.5))
                     .setRotation(15)
                     .setSize(0.1);
 
             WatermarkBuilder
                     .create(this, backgroundView)
                     .loadWatermarkImage(watermarkImage)
-                    .setTileMode(true)
+                    .setTileMode(mode_tile.isChecked())
                     .getWatermark()
                     .setToImageView(backgroundView);
 
-        });
-
-        // The sample method of adding an invisible image watermark.
-        btnAddInVisibleImage.setOnClickListener((View v) -> {
-            progressBar.setVisibility(View.VISIBLE);
-            WatermarkBuilder
-                    .create(this, backgroundView)
-                    .loadWatermarkImage(watermarkBitmap)
-                    .setInvisibleWMListener(true, new BuildFinishListener<Bitmap>() {
-                        @Override
-                        public void onSuccess(Bitmap object) {
-                            progressBar.setVisibility(View.GONE);
-                            Toast.makeText(MainActivity.this,
-                                    "Successfully create invisible watermark!", Toast.LENGTH_SHORT).show();
-                            if (object != null) {
-                                backgroundView.setImageBitmap(object);
-                                // Save to local needs permission.
-//                                BitmapUtils.saveAsPNG(object, "sdcard/DCIM/", true);
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(String message) {
-                            progressBar.setVisibility(View.GONE);
-                            Timber.e(message);
-                        }
-                    });
-        });
-
-        // The sample method of adding an invisible text watermark.
-        btnAddInvisibleText.setOnClickListener((View v) -> {
-            progressBar.setVisibility(View.VISIBLE);
-            WatermarkText watermarkText = new WatermarkText(editText.getText().toString());
-            WatermarkBuilder
-                    .create(this, backgroundView)
-                    .loadWatermarkText(watermarkText)
-                    .setInvisibleWMListener(true, new BuildFinishListener<Bitmap>() {
-                        @Override
-                        public void onSuccess(Bitmap object) {
-                            progressBar.setVisibility(View.GONE);
-                            Toast.makeText(MainActivity.this,
-                                    "Successfully create invisible watermark!", Toast.LENGTH_SHORT).show();
-                            if (object != null) {
-                                backgroundView.setImageBitmap(object);
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(String message) {
-                            progressBar.setVisibility(View.GONE);
-                            Timber.e(message);
-                        }
-                    });
         });
 
         // detect the text watermark.
@@ -238,5 +204,56 @@ public class MainActivity extends AppCompatActivity {
             watermarkView.setVisibility(View.GONE);
         });
 
+    }
+
+    private void createInvisibleImgMark(){
+        progressBar.setVisibility(View.VISIBLE);
+        WatermarkBuilder
+                .create(this, backgroundView)
+                .loadWatermarkImage(watermarkBitmap)
+                .setInvisibleWMListener(true, new BuildFinishListener<Bitmap>() {
+                    @Override
+                    public void onSuccess(Bitmap object) {
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(MainActivity.this,
+                                "Successfully create invisible watermark!", Toast.LENGTH_SHORT).show();
+                        if (object != null) {
+                            backgroundView.setImageBitmap(object);
+                            // Save to local needs permission.
+//                                BitmapUtils.saveAsPNG(object, "sdcard/DCIM/", true);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(String message) {
+                        progressBar.setVisibility(View.GONE);
+                        Timber.e(message);
+                    }
+                });
+    }
+
+    private void createInvisibleTextMark(){
+        progressBar.setVisibility(View.VISIBLE);
+        WatermarkText watermarkText = new WatermarkText(editText.getText().toString());
+        WatermarkBuilder
+                .create(this, backgroundView)
+                .loadWatermarkText(watermarkText)
+                .setInvisibleWMListener(true, new BuildFinishListener<Bitmap>() {
+                    @Override
+                    public void onSuccess(Bitmap object) {
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(MainActivity.this,
+                                "Successfully create invisible watermark!", Toast.LENGTH_SHORT).show();
+                        if (object != null) {
+                            backgroundView.setImageBitmap(object);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(String message) {
+                        progressBar.setVisibility(View.GONE);
+                        Timber.e(message);
+                    }
+                });
     }
 }

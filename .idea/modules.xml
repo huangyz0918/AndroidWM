@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/AndroidWM.iml" filepath="$PROJECT_DIR$/AndroidWM.iml" />
-      <module fileurl="file://$PROJECT_DIR$/androidwm/androidwm.iml" filepath="$PROJECT_DIR$/androidwm/androidwm.iml" />
-      <module fileurl="file://$PROJECT_DIR$/sample/sample.iml" filepath="$PROJECT_DIR$/sample/sample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/AndroidWM.iml" filepath="$PROJECT_DIR$/.idea/modules/AndroidWM.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/androidwm/AndroidWM.androidwm.iml" filepath="$PROJECT_DIR$/.idea/modules/androidwm/AndroidWM.androidwm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sample/AndroidWM.sample.iml" filepath="$PROJECT_DIR$/.idea/modules/sample/AndroidWM.sample.iml" />
     </modules>
   </component>
 </project>

@@ -20,8 +20,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.FloatRange;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.FloatRange;
 import android.widget.ImageView;
 
 import static com.watermark.androidwm.utils.BitmapUtils.resizeBitmap;

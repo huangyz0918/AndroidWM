@@ -1,6 +1,6 @@
 # AndroidWM 
-[ ![Download](https://api.bintray.com/packages/huangyz0918/androidwm/androidwm/images/download.svg) ](https://bintray.com/huangyz0918/androidwm/androidwm/_latestVersion) [![Build Status](https://travis-ci.org/huangyz0918/AndroidWM.svg?branch=master)](https://travis-ci.org/huangyz0918/AndroidWM) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/7f8e55520309410a95f71b54cfe8c381)](https://app.codacy.com/app/huangyz0918/AndroidWM?utm_source=github.com&utm_medium=referral&utm_content=huangyz0918/AndroidWM&utm_campaign=Badge_Grade_Dashboard)
- ![progress](https://img.shields.io/badge/progress-developing-yellow.svg) [![wiki](https://img.shields.io/badge/wiki-chinese-blue.svg)](https://github.com/huangyz0918/AndroidWM/blob/master/wikis/WIKI-CN.md) 
+ [![Codacy Badge](https://api.codacy.com/project/badge/Grade/7f8e55520309410a95f71b54cfe8c381)](https://app.codacy.com/app/huangyz0918/AndroidWM?utm_source=github.com&utm_medium=referral&utm_content=huangyz0918/AndroidWM&utm_campaign=Badge_Grade_Dashboard)
+[![wiki](https://img.shields.io/badge/wiki-chinese-blue.svg)](https://github.com/huangyz0918/AndroidWM/blob/master/wikis/WIKI-CN.md) 
 
 一个轻量级的 Android 图片水印框架，支持隐形数字水印。 [English version](./README.md)
 

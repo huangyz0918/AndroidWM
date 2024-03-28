@@ -8,7 +8,9 @@
    WatermarkPosition watermarkPosition = new WatermarkPosition(double position_x, double position_y);
 ```
 
-在函数构造器中，我们可以设定水印图片的横纵坐标，如果你想在构造器中初始化一个水印旋转角度也是可以的， 水印的坐标系以背景图片的左上角为原点，横轴向右，纵轴向下。
+在函数构造器中，我们可以设定水印图片的横纵坐标，如果你想在构造器中初始化一个水印旋转角度也是可以的， 水印的坐标系以背景图片的左上角为原点，横轴向右，纵轴向下。  
+如果需要将定位原点从左上角修改为其他位置，可以稍后给`WatermarkText`或`WatermarkImage`调用`setOrigin(new WatermarkPosition(0.5, 0.5))`方法，
+这里x,y都是0到1的浮点数，默认都是0，表示左上角对齐；0.5,0.5则表示中心对齐。
 
 `WatermarkPosition` 同时也支持动态调整水印的位置，这样你就不需要一次又一次地初始化新的位置对象了， androidwm 提供了一些方法：
 
@@ -52,6 +54,7 @@
     WatermarkText watermarkText = new WatermarkText(editText)
             .setPositionX(0.5)
             .setPositionY(0.5)
+            .setOrigin(new WatermarkPosition(0.5, 0.5))
             .setTextSize(40)
             .setTextAlpha(200)
             .setTextColor(Color.GREEN)
@@ -86,6 +89,9 @@
 | setPositionX  |  水印的横轴坐标，从背景图片左上角为(0,0)  | _0_  |
 | setPositionY  |  水印的纵轴坐标，从背景图片左上角为(0,0)  | _0_ |
 | setRotation  |  水印的旋转角度| _0_  |
+| setOrigin  |  水印的对齐原点| _null_  |
+| setOriginX  |  水印的横坐标对齐位置，0~1之间| _0_  |
+| setOriginY  |  水印的纵坐标对齐位置，0~1之间| _0_  |
 | setTextColor  (`WatermarkText`)  |  `WatermarkText` 的文字颜色 | _`Color.BLACK`_  |
 | setTextStyle  (`WatermarkText`)  |  `WatermarkText` 的文字样式| _`Paint.Style.FILL`_  |
 | setBackgroundColor  (`WatermarkText`) |  `WatermarkText` 的背景颜色 | _null_  |

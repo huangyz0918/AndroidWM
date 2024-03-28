@@ -32,6 +32,7 @@ implementation 'com.huangyz0918:androidwm-light:0.1.2'
     WatermarkText watermarkText = new WatermarkText(editText)
             .setPositionX(0.5)
             .setPositionY(0.5)
+            .setOrigin(new WatermarkPosition(0.5, 0.5))
             .setTextColor(Color.WHITE)
             .setTextFont(R.font.champagne)
             .setTextShadow(0.1f, 5, 5, Color.BLUE)

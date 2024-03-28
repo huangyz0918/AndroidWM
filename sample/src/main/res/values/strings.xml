@@ -8,5 +8,5 @@
     <string name="btn_detect_text">detect text</string>
     <string name="btn_clear_watermark">Clear watermarks</string>
     <string name="btn_load_marked">Load picture</string>
-    <string name="et_hint">Add a text for invisible watermark</string>
+    <string name="et_hint">input mark text here</string>
 </resources>

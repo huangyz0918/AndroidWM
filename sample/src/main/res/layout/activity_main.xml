@@ -35,17 +35,58 @@
         android:hint="@string/et_hint" />
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/lay_opts"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btn_add_text"
-            android:layout_width="0dp"
+        <RadioGroup
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/btn_add_text" />
+            android:orientation="horizontal">
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <RadioButton
+                android:id="@+id/mode_single"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Single" />
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <RadioButton
+                android:id="@+id/mode_tile"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:checked="true"
+                android:text="Tile" />
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <RadioButton
+                android:id="@+id/mode_invisible"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Invisible" />
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+        </RadioGroup>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/btn_add_image"
@@ -54,27 +95,12 @@
             android:layout_weight="1"
             android:text="@string/btn_add_image" />
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:orientation="horizontal">
-
         <Button
-            android:id="@+id/btn_add_invisible_image"
+            android:id="@+id/btn_add_text"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/btn_add_invisible_image" />
-
-        <Button
-            android:id="@+id/btn_add_invisible_text"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/btn_add_invisible_text" />
+            android:text="@string/btn_add_text" />
 
     </LinearLayout>
 

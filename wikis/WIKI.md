@@ -11,6 +11,9 @@ We use the class `WatermarkPosition` to control the position of a watermark.
 
 We can set the abscissa and ordinate of the watermark in the constructor, or you can optionally add the rotation angle. The coordinate system starts from the upper left corner of the background image, and the upper left corner is the origin.
 
+If you need to change the align origin point from the upper left corner to another position, you can call the `setOrigin(new WatermarkPosition(0.5, 0.5))` method for `WatermarkText` or `WatermarkImage` later,
+Here x, y are both floating point numbers from 0 to 1. The default is 0, which means align to the upper left corner; 0.5, 0.5 means aligns to the absolute center.
+
 The `WatermarkPosition` also supports change the position dynamically, androidwm offers several methods for you to modify the positions.
 
 ```java
@@ -36,6 +39,7 @@ You can set the text color and background color in `WatermarkText`:
     WatermarkText watermarkText = new WatermarkText(editText)
             .setPositionX(0.5)
             .setPositionY(0.5)
+            .setOrigin(new WatermarkPosition(0.5, 0.5))
             .setTextSize(30)
             .setTextAlpha(200)
             .setTextColor(Color.GREEN)
@@ -86,6 +90,9 @@ Here is a table of attributes in `WatermarkText` and `WatermarkImage` that you c
 | setPositionX  |  the x-axis coordinates of the watermark  | _0_  |
 | setPositionY  |  the y-axis coordinates of the watermark  | _0_ |
 | setRotation  |  the rotation of the watermark| _0_  |
+| setOrigin  |  the align origin of the watermark| _null_  |
+| setOriginX  |  the abscissa align position of the watermark, between 0 and 1| _0_  |
+| setOriginY  |  the ordinate align position of the watermark, between 0 and 1| _0_  |
 | setTextColor  (`WatermarkText`)  |  the text color of the `WatermarkText` | _`Color.BLACK`_  |
 | setTextStyle  (`WatermarkText`)  |  the text style of the `WatermarkText` | _`Paint.Style.FILL`_  |
 | setBackgroundColor  (`WatermarkText`) |  the background color of the `WatermarkText` | _null_  |

@@ -20,8 +20,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.FloatRange;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.FloatRange;
 import android.widget.ImageView;
 
 import static com.watermark.androidwm.utils.BitmapUtils.resizeBitmap;
@@ -33,15 +33,12 @@ import static com.watermark.androidwm.utils.Constant.MAX_IMAGE_SIZE;
  * @author huangyz0918 (huangyz0918@gmail.com)
  * @since 29/08/2018
  */
-public class WatermarkImage {
+public class WatermarkImage extends WatermarkObject<WatermarkImage> {
     private Bitmap image;
     @DrawableRes
     private int imageDrawable;
-    private int alpha = 50;
     private Context context;
     private double size = 0.2;
-    // set the default values for the position.
-    private WatermarkPosition position = new WatermarkPosition(0, 0, 0);
 
     /**
      * Constructors for WatermarkImage.
@@ -55,6 +52,14 @@ public class WatermarkImage {
     public WatermarkImage(Context context, @DrawableRes int imageDrawable, WatermarkPosition position) {
         this.imageDrawable = imageDrawable;
         this.position = position;
+        this.context = context;
+        this.image = getBitmapFromDrawable(imageDrawable);
+    }
+
+    public WatermarkImage(Context context, @DrawableRes int imageDrawable, WatermarkPosition position, WatermarkPosition origin) {
+        this.imageDrawable = imageDrawable;
+        this.position = position;
+        this.origin = origin;
         this.context = context;
         this.image = getBitmapFromDrawable(imageDrawable);
     }
@@ -85,15 +90,6 @@ public class WatermarkImage {
         return alpha;
     }
 
-    public WatermarkPosition getPosition() {
-        return position;
-    }
-
-    public WatermarkImage setPosition(WatermarkPosition position) {
-        this.position = position;
-        return this;
-    }
-
     public double getSize() {
         return size;
     }
@@ -113,21 +109,6 @@ public class WatermarkImage {
 
     public WatermarkImage setImageDrawable(@DrawableRes int imageDrawable) {
         this.imageDrawable = imageDrawable;
-        return this;
-    }
-
-    public WatermarkImage setPositionX(@FloatRange(from = 0, to = 1) double x) {
-        this.position.setPositionX(x);
-        return this;
-    }
-
-    public WatermarkImage setPositionY(@FloatRange(from = 0, to = 1) double y) {
-        this.position.setPositionY(y);
-        return this;
-    }
-
-    public WatermarkImage setRotation(double rotation) {
-        this.position.setRotation(rotation);
         return this;
     }
 

@@ -31,6 +31,7 @@ After downloading the library and adding it into your project, You can create a 
     WatermarkText watermarkText = new WatermarkText(inputText)
             .setPositionX(0.5)
             .setPositionY(0.5)
+            .setOrigin(new WatermarkPosition(0.5, 0.5))
             .setTextColor(Color.WHITE)
             .setTextFont(R.font.champagne)
             .setTextShadow(0.1f, 5, 5, Color.BLUE)

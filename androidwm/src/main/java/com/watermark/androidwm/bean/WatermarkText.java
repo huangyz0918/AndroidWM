@@ -19,8 +19,8 @@ package com.watermark.androidwm.bean;
 
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.support.annotation.ColorInt;
-import android.support.annotation.FontRes;
+import androidx.annotation.ColorInt;
+import androidx.annotation.FontRes;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -30,10 +30,9 @@ import android.widget.TextView;
  * @author huangyz0918 (huangyz0918@gmail.com)
  * @since 29/08/2018
  */
-public class WatermarkText {
+public class WatermarkText extends WatermarkObject<WatermarkText>{
 
     private String text;
-    private int alpha = 50;
     private double size = 20;
     @ColorInt
     private int color = Color.BLACK;
@@ -47,19 +46,26 @@ public class WatermarkText {
     private float textShadowYOffset;
     @ColorInt
     private int textShadowColor = Color.WHITE;
-    // set the default values for the position.
-    private WatermarkPosition position = new WatermarkPosition(0, 0, 0);
 
     /**
      * Constructors for WatermarkText
      */
     public WatermarkText(String text) {
-        this.text = text;
+        this(text, null, null);
     }
 
-    public WatermarkText(String text, WatermarkPosition position) {
+    public WatermarkText(String text, WatermarkPosition position){
+        this(text, position, null);
+    }
+
+    public WatermarkText(String text, WatermarkPosition position, WatermarkPosition origin) {
         this.text = text;
-        this.position = position;
+        if(position != null) {
+            this.position = position;
+        }
+        if (origin != null) {
+            this.origin = origin;
+        }
     }
 
     public WatermarkText(TextView textView) {
@@ -89,14 +95,6 @@ public class WatermarkText {
         return this;
     }
 
-    public WatermarkPosition getPosition() {
-        return position;
-    }
-
-    public WatermarkText setPosition(WatermarkPosition position) {
-        this.position = position;
-        return this;
-    }
 
     public double getTextSize() {
         return size;
@@ -162,21 +160,6 @@ public class WatermarkText {
      */
     public WatermarkText setTextFont(@FontRes int typeFaceId) {
         this.typeFaceId = typeFaceId;
-        return this;
-    }
-
-    public WatermarkText setPositionX(double x) {
-        this.position.setPositionX(x);
-        return this;
-    }
-
-    public WatermarkText setPositionY(double y) {
-        this.position.setPositionY(y);
-        return this;
-    }
-
-    public WatermarkText setRotation(double rotation) {
-        this.position.setRotation(rotation);
         return this;
     }
 
